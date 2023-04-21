@@ -1,0 +1,52 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic);
+
+:root {
+    --theme-color: #e7ad52;
+    --border-color: rgba(255, 255, 255, 0.25);
+    --bg-color: #111111;
+    --heading-font-family: Montserrat, Lato, sans-serif;
+    --body-font-family: Open Sans, Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+::-moz-selection {
+    background: var(--theme-color);
+    color: black;
+    text-shadow: none;
+}
+::selection {
+    background: var(--theme-color);
+    color: black;
+    text-shadow: none;
+}
+
+body {
+    font-family: var(--body-font-family);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font-family);
+}
+h1 > .anchor > span {
+    color: var(--theme-color);
+}
+
+body, .sidebar, .sidebar-toggle {
+    background: var(--bg-color);
+}
+.sidebar, .search {
+    border-color: var(--border-color) !important;
+}
+
+.name-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.name-wrapper > img {
+    width: 20%;
+}
+.name-wrapper > span {
+    color: var(--theme-color);
+    font-size: 0.8em;
+}
