@@ -24,11 +24,6 @@ Situations
 
 Only potentially worth using when working with special cases like Abstract Syntax Trees and deeply nested JSON.
 
-Misuses
--------
-
-Any apart from a few rare cases (e.g. Abstract Syntax Trees, deeply-nested JSON).
-
 TLDR;
 -----
 

@@ -52,11 +52,6 @@ avoids an expensive computation. For example:
 filtered_list = [res for item in items if (res := slow(item))]
 ```
 
-Misuses
--------
-
-Any apart from simple usage which avoids expensive computations.
-
 TLDR;
 -----
 
