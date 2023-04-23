@@ -1,6 +1,18 @@
 Match Case (Structural Pattern Matching)
 ========================================
 
+<div class='situational'>Situational Python</div>
+
+TL;DR
+-----
+
+Don't use match-case / structural pattern matching in Python unless working with Abstract Syntax Trees or deeply nested JSON - there are always alternatives that are more widely readable and less risky.
+
+Description
+-----------
+
+Conditional statement which collects matched data into variables ready to use. More a mini language than a fancy version of the switch statements found in some other languages.
+
 Examples
 --------
 
@@ -14,20 +26,10 @@ match len(name):
         print("Three behavior")
 ```
 
-Status
-------
-
-Situational Python
-
 Situations
 ----------
 
 Only potentially worth using when working with special cases like Abstract Syntax Trees and deeply nested JSON.
-
-TLDR;
------
-
-Don't use match-case / structural pattern matching in Python unless working with Abstract Syntax Trees or deeply nested JSON - there are always alternatives that are more widely readable and less risky.
 
 Links
 -----

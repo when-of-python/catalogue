@@ -1,6 +1,18 @@
 Comprehensions
 ==============
 
+<div class='common'>Common Python</div>
+
+TL;DR
+-----
+
+(Readable) Comprehensions are one of the great features of Python - enjoy.
+
+Description
+-----------
+
+A concise, readable way of creating lists, dictionaries, and sets from other sequences.
+
 Examples
 --------
 
@@ -25,21 +37,11 @@ Examples
 {'Camilla', 'Charles'}
 ```
 
-Status
-------
-
-Common Python
-
 Misuses
 -------
 
 If a comprehension is hard to read, use an alternative instead e.g. a
 loop. Comprehensions are good; incomprehensions less so.
-
-TLDR;
------
-
-(Readable) Comprehensions are one of the great features of Python - enjoy.
 
 Links
 -----

@@ -50,3 +50,7 @@ body, .sidebar, .sidebar-toggle {
     color: var(--theme-color);
     font-size: 0.8em;
 }
+.common {
+    color: #00ff7e;
+}
+

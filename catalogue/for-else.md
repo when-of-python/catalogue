@@ -1,6 +1,18 @@
 For else
 ========
 
+<div class='deprecated'>Deprecated Python</div>
+
+TL;DR
+-----
+
+Don't use - it confuses lots of programmers and there are much more readable alternatives using ```if else```.
+
+Description
+-----------
+
+Python-specific object serialisation.
+
 Example
 -------
 
@@ -16,11 +28,6 @@ Status
 ------
 
 Deprecated Python
-
-TLDR;
------
-
-Don't use - it confuses lots of programmers and there are much more readable alternatives using ```if else```.
 
 Links
 -----

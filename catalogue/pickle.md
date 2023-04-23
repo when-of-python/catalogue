@@ -1,6 +1,18 @@
 Pickle
 ======
 
+<div class='deprecated'>Deprecated Python</div>
+
+TL;DR
+-----
+
+Avoid (except possibly in distributed computing)
+
+Description
+-----------
+
+Python-specific object serialisation.
+
 Example
 -------
 
@@ -18,11 +30,6 @@ Status
 ------
 
 Deprecated Python
-
-TLDR;
------
-
-Avoid (except possibly in distributed computing)
 
 Links
 -----

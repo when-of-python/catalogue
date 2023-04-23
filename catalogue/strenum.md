@@ -1,6 +1,18 @@
 StrEnum
 =======
 
+<div class='common'>Common Python</div>
+
+TL;DR
+-----
+
+StrEnum is a very useful feature especially for strings we want to control as developer, sometimes in collections that cover available options.
+
+Description
+-----------
+
+Developer-controlled collections of strings.
+
 Example
 -------
 
@@ -56,16 +68,6 @@ city_popns = {
 city_popns[City.AUCKLAND]
 city_popns['Auckland']
 ```
-
-Status
-------
-
-Common Python
-
-TLDR;
------
-
-StrEnum is a very useful feature especially for strings we want to control as developer, sometimes in collections that cover available options.
 
 Links
 -----

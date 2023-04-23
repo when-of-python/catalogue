@@ -1,6 +1,32 @@
 Walrus Operator
 ===============
 
+<div class='deprecated'>Deprecated Python</div>
+
+The walrus operator is very rarely better than the alternatives and its
+very rare benefits are outweighed by the cost of adding yet more syntax
+and features to the language.
+
+Temporary alternative status:
+
+<div class='situational'>Situational Python</div>
+
+There are rare cases where the walrus operator is better than
+alternatives and there is a genuine dispute about whether the benefits
+in these cases outweigh the costs of having an additional feature. As we
+gain more experience with this feature as a community more of a
+consensus may be reached.
+
+TL;DR
+-----
+
+Don't use the walrus operator - there are always alternatives.
+
+Description
+-----------
+
+In-line assignment to a variable name in an expression
+
 Examples
 --------
 
@@ -22,26 +48,6 @@ we can save a line by writing:
 Zac
 ```
 
-Status
-------
-
-Deprecated Python
-
-The walrus operator is very rarely better than the alternatives and its
-very rare benefits are outweighed by the cost of adding yet more syntax
-and features to the language.
-
-Temporary Alternative Status
-----------------------------
-
-Situational Python
-
-There are rare cases where the walrus operator is better than
-alternatives and there is a genuine dispute about whether the benefits
-in these cases outweigh the costs of having an additional feature. As we
-gain more experience with this feature as a community more of a
-consensus may be reached.
-
 Situations
 ----------
 
@@ -51,11 +57,6 @@ avoids an expensive computation. For example:
 ```python
 filtered_list = [res for item in items if (res := slow(item))]
 ```
-
-TLDR;
------
-
-Don't use the walrus operator - there are always alternatives.
 
 Links
 -----

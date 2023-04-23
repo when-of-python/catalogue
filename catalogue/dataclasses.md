@@ -1,6 +1,18 @@
 Dataclasses
 ===========
 
+<div class='common'>Common Python</div>
+
+TL;DR
+-----
+
+Learn dataclasses and use them whenever you need a data structure with clear, self-documenting attributes. Use instead of named tuples.
+
+Description
+-----------
+
+Data structure with clear, self-documenting attributes.
+
 Example
 -------
 
@@ -30,20 +42,10 @@ class Data:
         ...
 ```
 
-Status
-------
-
-Common Python
-
 Misuse
 ------
 
 If you are having to override too much of what a dataclass provides then maybe a plain vanilla class is a better fit.
-
-TLDR;
------
-
-Learn dataclasses and use them whenever you need a data structure with clear, self-documenting attributes. Use instead of named tuples.
 
 Links
 -----
