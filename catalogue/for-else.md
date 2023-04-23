@@ -1,7 +1,5 @@
-For else
+For else <a class="status deprecated">Deprecated Python</a>
 ========
-
-<div class='deprecated'>Deprecated Python</div>
 
 TL;DR
 -----

@@ -1,7 +1,5 @@
-Match Case (Structural Pattern Matching)
+Match Case (Structural Pattern Matching) <a class="status situational">Situational Python</a>
 ========================================
-
-<div class='situational'>Situational Python</div>
 
 TL;DR
 -----

@@ -1,7 +1,5 @@
-Walrus Operator
+Walrus Operator <a class="status deprecated">Deprecated Python</a>
 ===============
-
-<div class='deprecated'>Deprecated Python</div>
 
 The walrus operator is very rarely better than the alternatives and its
 very rare benefits are outweighed by the cost of adding yet more syntax
@@ -9,7 +7,7 @@ and features to the language.
 
 Temporary alternative status:
 
-<div class='situational'>Situational Python</div>
+<a class="status situational">Situational Python</a>
 
 There are rare cases where the walrus operator is better than
 alternatives and there is a genuine dispute about whether the benefits

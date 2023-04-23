@@ -1,7 +1,5 @@
-Lambda
+Lambda <a class="status situational">Situational Python</a>
 ======
-
-<div class='situational'>Situational Python</div>
 
 TL;DR
 -----

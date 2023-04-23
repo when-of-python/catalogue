@@ -1,7 +1,5 @@
-StrEnum
+StrEnum <a class="status common">Common Python</a>
 =======
-
-<div class='common'>Common Python</div>
 
 TL;DR
 -----

@@ -1,7 +1,5 @@
-Type Hinting
+Type Hinting <a class="status common">Common Python</a>
 ============
-
-<div class='common'>Common Python</div>
 
 Type hinting should be widely used as appropriate. The community is
 still working out where to use, and possibly, where not to use, type
