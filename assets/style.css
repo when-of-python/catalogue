@@ -50,7 +50,20 @@ body, .sidebar, .sidebar-toggle {
     color: var(--theme-color);
     font-size: 0.8em;
 }
+.common, .situational, .deprecated {
+    color: black;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 10px;
+    width: min-content;
+}
 .common {
-    color: #00ff7e;
+    background-color: #00ff7e;
+}
+.situational {
+    background-color: #e6d51f;
+}
+.deprecated {
+    background-color: #fb0000;
 }
 
