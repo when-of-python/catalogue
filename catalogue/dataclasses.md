@@ -12,6 +12,7 @@ class Coord:
     srid: int = 4326
 ```
 
+```python
 @dataclass
 class Data:
     lbl: str
