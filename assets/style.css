@@ -37,8 +37,11 @@ h1 > .anchor > span {
 body, .sidebar, .sidebar-toggle {
     background: var(--bg-color);
 }
-.sidebar, .search {
+.sidebar, .search, .matching-post {
     border-color: var(--border-color) !important;
+}
+.search input::placeholder {
+    color: white;
 }
 
 .name-wrapper {
