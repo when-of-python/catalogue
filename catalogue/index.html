@@ -14,7 +14,7 @@
   </head>
   <body>
     <nav>
-      <a href="https://when-of-python.github.io/blog/">Blog</a>
+      <a href="/blog/">Blog</a>
       <a href="https://twitter.com/WhenOfPython">Twitter</a>
       <a href="https://github.com/when-of-python">GitHub</a>
     </nav>
@@ -29,9 +29,13 @@
        loadSidebar: true,
        subMaxLevel: 2,
        themeColor: '#e7ad52',
+       routes: {
+         // Docsify should not server any files in the blog/ subdirectory.
+         '/blog-source/(.*)': function() {return '';}
+       },
        plugins: [
          EditOnGithubPlugin.create(
-           'https://github.com/when-of-python/catalogue/blob/master/',
+           'https://github.com/when-of-python/web/blob/main/',
            null,
            'Edit on GitHub',
          )
