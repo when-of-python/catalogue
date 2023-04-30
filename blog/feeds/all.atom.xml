@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>The When of Python Blog</title><link href="https://when-of-python.github.io/blog/" rel="alternate"></link><link href="https://when-of-python.github.io/blog/feeds/all.atom.xml" rel="self"></link><id>https://when-of-python.github.io/blog/</id><updated>2022-10-05T07:00:00+13:00</updated><subtitle>Guidance on when to use Python features (and when not to)</subtitle><entry><title>Match Case - A Simple Switch Statement for Python?</title><link href="https://when-of-python.github.io/blog/simple-switch-statement-for-python.html" rel="alternate"></link><published>2022-10-05T07:00:00+13:00</published><updated>2022-10-05T07:00:00+13:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-10-05:/blog/simple-switch-statement-for-python.html</id><summary type="html">&lt;p&gt;At first glance, match case (Structural Pattern Matching) looks like a simple switch statement for Python. Unfortunately, match case is a mini-language that is unsafe to use apart from the very narrow cases where its benefits outweigh its costs / risks.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of match case (Structural Pattern Matching) been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Simple Switch Statement at Last?&lt;/h1&gt;
+&lt;p&gt;Python has always lacked a &lt;code&gt;switch&lt;/code&gt; statement to perform conditional logic e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## Note - not actual Python&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;when&lt;/span&gt; &lt;span class="n"&gt;eggs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;'spam'&lt;/span&gt;
+    &lt;span class="n"&gt;when&lt;/span&gt; &lt;span class="n"&gt;knights&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;'Ni!'&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The switch approach can be found in languages like PHP and also in SQL (&lt;code&gt;CASE&lt;/code&gt; &lt;code&gt;WHEN&lt;/code&gt; &lt;code&gt;THEN&lt;/code&gt; &lt;code&gt;END&lt;/code&gt; etc).&lt;/p&gt;
+&lt;p&gt;Instead, Python has relied largely on &lt;code&gt;if&lt;/code&gt;-&lt;code&gt;elif&lt;/code&gt;-&lt;code&gt;else&lt;/code&gt; constructs and, to a lesser extent, dictionaries - for example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mapper&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'eggs'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'spam'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'knights'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'Ni!'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'eggs'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In Python 3.10, Structural Pattern Matching (match case) was added which raised some questions. Was this basically a switch statement on steroids? Should we all start using this for our conditional logic? And could it be time to largely retire &lt;code&gt;if&lt;/code&gt;-&lt;code&gt;elif&lt;/code&gt;-&lt;code&gt;else&lt;/code&gt; constructs? Initial impressions were positive. Certainly the higher level syntax for Structural Pattern Matching looks clean and elegant:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;match&lt;/span&gt; &lt;span class="n"&gt;food&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="s1"&gt;'eggs'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;'spam'&lt;/span&gt;
+    &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Unfortunately major concerns arise when we take a closer look.&lt;/p&gt;
+&lt;h1&gt;Python Pattern Matching Problems&lt;/h1&gt;
+&lt;h2&gt;New Mini Language&lt;/h2&gt;
+&lt;p&gt;Structural Pattern Matching is a new mini language in Python - a powerful language that looks like normal Python but isn't. And that is where the main gotchas come from.&lt;/p&gt;
+&lt;h2&gt;Similarity to Object Instantiation Misleading&lt;/h2&gt;
+&lt;p&gt;Imagine we have a &lt;code&gt;Point&lt;/code&gt; class:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;case Point(x, y):&lt;/code&gt; seems to me to be an obvious way of looking for such a &lt;code&gt;Point&lt;/code&gt; object and unpacking its values into &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; but it isn't allowed. It is a perfectly valid syntax for instantiating a &lt;code&gt;Point&lt;/code&gt; object but we are not instantiating an object and supplying the object the case condition – instead we are supplying a pattern to be matched and unpacked. We have to have a firm grasp on the notion that Python patterns are not objects. If we forget we get a &lt;code&gt;TypeError&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;999&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+&lt;span class="c1"&gt;## TypeError: Point() accepts 0 positional sub-patterns (2 given)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note, we must match the parameter names (the left side) but can unpack to any variable names we like (the right side). For example, all of the following will work:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;apple&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;banana&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;but&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;will not.&lt;/p&gt;
+&lt;p&gt;It is a bit disconcerting being forced to use what feel like keyword arguments in our patterns when the original class definition is optionally positional. We should expect lots of mistakes here and it will require concentration to pick them up in code review.&lt;/p&gt;
+&lt;h2&gt;Similarity to &lt;code&gt;isinstance&lt;/code&gt; Misleading&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;case Point:&lt;/code&gt;, &lt;code&gt;case int:&lt;/code&gt;, &lt;code&gt;case str:&lt;/code&gt;, &lt;code&gt;case float:&lt;/code&gt; don’t work as you might expect. The proper approach is to supply parentheses: using the example of integer patterns, we need &lt;code&gt;case int():&lt;/code&gt;, or, if we want to "capture" the value into, say, &lt;code&gt;x&lt;/code&gt;, &lt;code&gt;case int(x):&lt;/code&gt;. But if we don't know about the need for parentheses, or we slip up (easy to do) these inadvertant patterns will match anything and assign it to the name Point or int or str etc. Definitely NOT what we want.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="the builtin str is now broken – hopefully obviously" src="images/str_overwritten.png"&gt;&lt;/p&gt;
+&lt;p&gt;The only protection against making this mistake is when you accidentally do this before other case conditions – e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="o"&gt;^&lt;/span&gt;
+&lt;span class="ne"&gt;SyntaxError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="n"&gt;capture&lt;/span&gt; &lt;span class="s1"&gt;'int'&lt;/span&gt; &lt;span class="n"&gt;makes&lt;/span&gt; &lt;span class="n"&gt;remaining&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt; &lt;span class="n"&gt;unreachable&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Otherwise you are on your own and completely free to make broken code. This will probably be a common error because of our experience with isinstance where we supply the type e.g. &lt;code&gt;isinstance(x, int)&lt;/code&gt;. Which reminds me of a passage in &lt;em&gt;Through the Looking-Glass, and What Alice Found There&lt;/em&gt; by Lewis Carroll.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="A Bread-and-Butterfly" src="images/bread_and_butterfly.png"&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;‘Crawling at your feet,’ said the Gnat (Alice drew her feet back in some alarm),
+‘you may observe a Bread-and-Butterfly. Its wings are thin slices of Bread-and-butter,
+its body is a crust, and its head is a lump of sugar.’&lt;/p&gt;
+&lt;p&gt;‘And what does it live on?’&lt;/p&gt;
+&lt;p&gt;‘Weak tea with cream in it.’&lt;/p&gt;
+&lt;p&gt;A new difficulty came into Alice’s head. ‘Supposing it couldn’t find any?’ she suggested.&lt;/p&gt;
+&lt;p&gt;‘Then it would die, of course.’&lt;/p&gt;
+&lt;p&gt;‘But that must happen very often,’ Alice remarked thoughtfully.&lt;/p&gt;
+&lt;p&gt;‘It always happens,’ said the Gnat. After this, Alice was silent for a minute or two, pondering.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;Use Cases (in Python)&lt;/h1&gt;
+&lt;p&gt;OK - so we should probably avoid case match in any situation where it is simpler and safer to use &lt;code&gt;if-elif-else&lt;/code&gt; or another alternative - which will almost be all cases. Although Pattern Matching might be a great feature in Scala, it doesn't appear likely to be all that useful in a language like Python.&lt;/p&gt;
+&lt;p&gt;Having said that, match case is not completely without value for Python. Structural Pattern Matching does appear to be useful for parsing complex nested data such as ASTs or deeply nested JSON. &lt;sup id="sf-simple-switch-statement-for-python-1-back"&gt;&lt;a href="#sf-simple-switch-statement-for-python-1" class="simple-footnote" title="Trey Hunner - Twitter"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I do not recommend embracing match-case EXCEPT in the unusual cases where it's VERY handy.&lt;/p&gt;
+&lt;p&gt;The use case I had happened to be one of those weird cases (recursively matching the types and attribute values of Python AST nodes).&lt;/p&gt;
+&lt;p&gt;It can be pretty handy in some niche cases though.&lt;/p&gt;
+&lt;p&gt;(Trey Hunner - Python trainer)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;But beyond that, it is hard to see the benefits outweighing the costs.&lt;/p&gt;
+&lt;h1&gt;Verdict&lt;/h1&gt;
+&lt;p&gt;Structural Pattern Matching should be for very narrow situational use only. Match case is not an important alternative for conditional logic in Python. In a narrow range of specialist cases it is probably the right tool for the job but it should not be thought of as Common Python.&lt;/p&gt;&lt;ol class="simple-footnotes"&gt;&lt;li id="sf-simple-switch-statement-for-python-1"&gt;&lt;a href="https://twitter.com/treyhunner/status/1575591049569144832"&gt;Trey Hunner - Twitter&lt;/a&gt; &lt;a href="#sf-simple-switch-statement-for-python-1-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><category term="Python"></category><category term="match case"></category><category term="structural pattern matching"></category></entry><entry><title>Comprehensions are Common Python</title><link href="https://when-of-python.github.io/blog/comprehensions-are-common-python.html" rel="alternate"></link><published>2022-10-02T18:00:00+13:00</published><updated>2022-10-02T18:00:00+13:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-10-02:/blog/comprehensions-are-common-python.html</id><summary type="html">&lt;p&gt;List comprehensions, and other types of comprehensions such as set comprehensions, are such an important part of Python we should treat them as Common Python - that is, as a feature we should all know so we can basically read each other's work. Even though they are Common Python we should only use this compressed syntax when it is relatively easy to understand. The rule of thumb is that we should change to another approach if our comprehension becomes an _in_comprehension.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of comprehensions been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Overview&lt;/h1&gt;
+&lt;p&gt;Comprehensions are well covered elsewhere so we'll only briefly introduce them below before making the specific points relevant to the When of Python. In summary, it will be argued that comprehensions are such an important part of Python we should treat them as Common Python but that we should only use this compressed syntax when it is relatively easy to understand.&lt;/p&gt;
+&lt;h1&gt;Comprehensions&lt;/h1&gt;
+&lt;h2&gt;List Comprehensions&lt;/h2&gt;
+&lt;p&gt;List comprehensions are a good starting point to explain the syntax and value of Python comprehensions. A common need in programming is to take a collection of items and return a modified or filtered collection. For example, maybe we want the square of every number in a list: &lt;code&gt;[1, 2, 3] =&amp;gt; [1, 4, 9]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We could create this new list using a &lt;code&gt;for&lt;/code&gt; loop:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;numbers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;squares&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or using &lt;code&gt;map&lt;/code&gt; we could write:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+
+&lt;span class="n"&gt;numbers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In pseudocode what we want is collect into a list the square of every item in the &lt;code&gt;numbers&lt;/code&gt; list. In Python we can write code where the syntax is very similar to the pseudocode using a comprehension:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## squares is a list of the square of every item in the numbers list&lt;/span&gt;
+&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And if we want to only include numbers &amp;lt; 3 the syntax is still very similar to a simple pseudo code version of what is desired.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## squares is a list of the square of every item in the numbers list&lt;/span&gt;
+&lt;span class="c1"&gt;## if the number &amp;lt; 3&lt;/span&gt;
+&lt;span class="n"&gt;squares&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Other Comprehensions&lt;/h2&gt;
+&lt;p&gt;Python 3 introduced other comprehensions including dictionary and set comprehensions. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Charles&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;George&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Camilla&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Shand&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Charles&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Dickens&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="n"&gt;unique_fnames&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_lname&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Comprehensions are Common Python&lt;/h1&gt;
+&lt;p&gt;Comprehensions are Common Python (see &lt;a href="https://when-of-python.github.io/blog/welcome-to-when-of-python.html"&gt;Welcome to the When of Python&lt;/a&gt;). This point was actually controversial in a Python mailing list debate in 2018. The objection to treating comprehensions as Common Python was that developers working with Python often come from other languages which don't have comprehension constructs. It was suggested that little would be lost avoiding their usage but the benefit would be that Rust developers, for example, could work on Python code without having to learn an unfamiliar concept.&lt;/p&gt;
+&lt;p&gt;Against this position I think comprehensions are an elegant, readable way of expressing simple tasks into relatively simple code (once the approach has been learned). For a defence of comprehensions I refer to Raymond Hettinger's classic talk on &lt;a href="https://youtu.be/OSGv2VnC0go?t=2755"&gt;Transforming Code into Beautiful, Idiomatic Python&lt;/a&gt;. Hettinger argues that we shouldn't break atoms of thought into subatomic particles. He advocates instead for concise, expressive one-liners where one logical line of code equals one sentence in English. We shouldn't cripple Python to keep it compatible with as many other languages as possible.&lt;/p&gt;
+&lt;p&gt;Certainly, comprehensions are very widespread in Python code, so we should include them in Common Python - that is, those features we should all know so we can basically read each other's work.&lt;/p&gt;
+&lt;p&gt;Note - just because we consider comprehensions Common Python and not Situational Python doesn't mean we shouldn't be thoughtful about when to use them and when not to.&lt;/p&gt;
+&lt;h1&gt;Incomprehensions&lt;/h1&gt;
+&lt;p&gt;Being one-liners (even if stretched over several lines) comprehensions can attract the same "cleverness" which plagues a lot of code. The desire to fit complexity into a single line can overwhelm concerns with readability, maintainability, and avoiding bugs. As a general rule of thumb, if a comprehension stops being easy to read, use an alternative approach instead e.g. a &lt;code&gt;for&lt;/code&gt; loop or &lt;code&gt;map&lt;/code&gt;. Note - Walrus operators in comprehensions should generally be viewed as "tricky" and not worth the cost.&lt;/p&gt;</content><category term="Python"></category><category term="comprehensions"></category><category term="feedback"></category><category term="common python"></category></entry><entry><title>Classy Data with Dataclasses</title><link href="https://when-of-python.github.io/blog/classy-data-with-dataclasses.html" rel="alternate"></link><published>2022-09-25T23:00:00+13:00</published><updated>2022-09-25T23:00:00+13:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-25:/blog/classy-data-with-dataclasses.html</id><summary type="html">&lt;p&gt;Passing data around can easily become confusing. Dataclasses are a fantastic way of structuring and documenting our data and we should be using them a lot more. They are the only standard keyword-based data structure which can serve both our immutable and our mutable data needs. Maybe we should stop teaching &lt;code&gt;collections.namedtuple&lt;/code&gt; and &lt;code&gt;typing.NamedTuple&lt;/code&gt; and focus on making &lt;code&gt;dataclasses.dataclass&lt;/code&gt;es as idiomatic, familiar, and readable as possible. It would be good to have One Obvious Way of creating keyword data structures.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of dataclasses been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Passing data around can easily become confusing. Dataclasses are a fantastic way of structuring and documenting our data and we should be using them a lot more (see &lt;a href="https://www.giulianopertile.com/blog/why-you-should-use-dataclasses-in-python/"&gt;Why You Should Use Data Classes in Python&lt;/a&gt;). Maybe we should stop teaching &lt;code&gt;collections.namedtuple&lt;/code&gt; and &lt;code&gt;typing.NamedTuple&lt;/code&gt; and focus on making &lt;code&gt;dataclasses.dataclass&lt;/code&gt;es as idiomatic, familiar, and readable as possible. This article compares different approaches to creating data structures and concludes with examples of dataclasses used in conjunction with type hinting.&lt;/p&gt;
+&lt;h1&gt;Passing Data Around With Confidence&lt;/h1&gt;
+&lt;p&gt;Passing data around is reasonably easy in Python. The syntax for tuples, lists, dictionaries, and sets is clean and easy to learn. Passing data around without being confused or uncertain - that takes more care. For example, imagine we are passing around coordinate data with latitude, longitude, and a code for the type of coordinate system. We can do it in a positional way or with keywords. But which is easier to deal with? &lt;code&gt;(35, 35, 27200)&lt;/code&gt; or &lt;code&gt;{'lat': 35, 'lon': 35, 'srid': 27200}&lt;/code&gt;? Which approach is most likely to result in bugs? And which approach is going to cope easiest with extra items and reordered data? While there are cases where plain tuples are a good choice the moment readability is jeopardised we should use a data structure option with keywords. But which type of keyword data structure should we choose?&lt;/p&gt;
+&lt;h1&gt;Dicts vs namedtuples vs NamedTuples vs Dataclasses&lt;/h1&gt;
+&lt;p&gt;Dictionaries are very flexibile and mutable - which is their greatest strength and their greatest weakness. When you receive a dictionary you can never be sure which keywords it will be using or whether it has been tampered with. Perhaps someone added the 'latitude' keyword and the dictionary is now:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;{'lat': 35, 'lon': 35, 'srid': 27200, 'latitude': 35}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Dictionaries also require extra boilerplate to construct.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Collections.namedtuple&lt;/code&gt; provides a good solution where a dot notation is possible, keywords are fixed, data can (more often) be trusted, and yet it is possible to populate them in a lightweight way if that makes most sense. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;collections&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;namedtuple&lt;/span&gt;
+
+&lt;span class="n"&gt;Coord&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;namedtuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Coord'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'lat, lon, srid'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Lightweight usage&lt;/span&gt;
+&lt;span class="n"&gt;place_a&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;36&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;174&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;place_b&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;37&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;175&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## More explicit usage (if so desired)&lt;/span&gt;
+&lt;span class="n"&gt;place_c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;36&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;175&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4326&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Better Handling of Defaults and Item Types&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;typing.NamedTuple&lt;/code&gt; offers an even better approach with a very readable syntax. E.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;NamedTuple&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you are working with a &lt;code&gt;typing.NamedTuple&lt;/code&gt; Coord in your code it is very easy to see just what you are dealing with and to reason about it. Merely hovering over a type hint or instantiation will be enough to understand what data you are receiving / passing without having to lose focus on the actual coding.&lt;/p&gt;
+&lt;p&gt;It is hard to overstate how valuable this in when passing around non-trivial data structures. It also proves its worth when changing the details of your data structure - it is very easy to introduce bugs when changes aren't propagated successfully throughout the code. Having a clearly defined (and discoverable) structure makes it easy to search for uses and make consistent changes with confidence.&lt;/p&gt;
+&lt;h1&gt;Type Hinting and Data Types&lt;/h1&gt;
+&lt;h2&gt;Type Hinting&lt;/h2&gt;
+&lt;p&gt;Type hinting is an important part of modern Python - whether used as glorified comments or for stricter static type checking purposes (see &lt;a href="https://when-of-python.github.io/blog/type-hinting-get-the-hint.html"&gt;Get the Hint - Type Hinting is Common Python&lt;/a&gt;. Used judiciously it can make code much more readable.&lt;/p&gt;
+&lt;p&gt;For example, which is easier to understand - a function definition without type hinting:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;or a definition with hinting:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Sequence&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the case where hinting is used we can hover over &lt;code&gt;Coord&lt;/code&gt; in our IDE and see precisely what we should expect including keywords to use and types.&lt;/p&gt;
+&lt;p&gt;Note - this is not an argument for type hinting everything all of the time. That is a separate debate. The point here is that type hinting, combined with a readable type of data structure, can make code much safer and more pleasant to work with.&lt;/p&gt;
+&lt;h2&gt;Why Dataclasses?&lt;/h2&gt;
+&lt;p&gt;This is a fair question - &lt;code&gt;typing.NamedTuple&lt;/code&gt; is a very good solution - so why do we need dataclasses? In some ways it is a close call and initially I concluded that we didn't in most cases &lt;sup id="sf-classy-data-with-dataclasses-1-back"&gt;&lt;a href="#sf-classy-data-with-dataclasses-1" class="simple-footnote" title="Python Named Tuples vs Data Classes"&gt;1&lt;/a&gt;&lt;/sup&gt;. There are some good arguments for using named tuples in some cases as explained in &lt;a href="https://death.andgravity.com/namedtuples"&gt;namedtuple in a post-dataclasses world&lt;/a&gt;. But I've changed my mind more recently because of the need to constrict Python for all the reasons covered in the &lt;a href="https://www.youtube.com/watch?v=JnY5MEiqG44"&gt;original When of Python talk&lt;/a&gt;. The unique benefit of dataclasses is that we can use them for all our keyword data structure needs - whether mutable or immutable. This is not true of named tuples. We can also focus our teaching / learning efforts on using dataclasses and using them well. We can forget about &lt;code&gt;collection.namedtuple&lt;/code&gt;'s approach to default arguments and its different ways of defining fields. We can forget about remembering the difference between &lt;code&gt;namedtuples&lt;/code&gt; and &lt;code&gt;NamedTuples&lt;/code&gt;.  We can forget about the sometimes subtle differences between &lt;code&gt;dataclasses.dataclass&lt;/code&gt; and &lt;code&gt;typing.NamedTuple&lt;/code&gt;&lt;sup id="sf-classy-data-with-dataclasses-2-back"&gt;&lt;a href="#sf-classy-data-with-dataclasses-2" class="simple-footnote" title="For example, no special function is needed to unpack or iterate over named tuples"&gt;2&lt;/a&gt;&lt;/sup&gt;. In short, we can ensure there is One Obvious Way of creating keyword data structures.&lt;/p&gt;
+&lt;p&gt;Note - depending on how they're used&lt;sup id="sf-classy-data-with-dataclasses-3-back"&gt;&lt;a href="#sf-classy-data-with-dataclasses-3" class="simple-footnote" title="Vanilla dataclasses can't be unpacked or iterated over without special functions so code relying on that will break without other modifications"&gt;3&lt;/a&gt;&lt;/sup&gt; it may not be too hard to swap out &lt;code&gt;typing.NamedTuple&lt;/code&gt;s for &lt;code&gt;dataclasses.dataclass&lt;/code&gt;es:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## typing.NamedTuple&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;NamedTuple&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;
+
+&lt;span class="c1"&gt;## dataclasses.dataclass&lt;/span&gt;
+&lt;span class="nd"&gt;@dataclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frozen&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Bringing it Together&lt;/h1&gt;
+&lt;p&gt;Type hinting with dataclasses makes it very easy to know what data functions expect and what data they'll produce in a way that tuples, lists, dictionaries, and sets do not.&lt;/p&gt;
+&lt;p&gt;To illustrate:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dataclasses&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;dataclass&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Sequence&lt;/span&gt;
+
+&lt;span class="n"&gt;WGS84&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;
+
+&lt;span class="nd"&gt;@dataclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frozen&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;WGS84&lt;/span&gt;
+
+&lt;span class="o"&gt;...&lt;/span&gt;
+
+&lt;span class="c1"&gt;## Hundreds of lines of code later, or in another module&lt;/span&gt;
+
+&lt;span class="n"&gt;coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;latitude&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;longitude&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="c1"&gt;## When writing this code I know which keywords I have to play with&lt;/span&gt;
+    &lt;span class="c1"&gt;## I just hover over Coord and everything is very clear&lt;/span&gt;
+    &lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lat&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;latitude&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;longitude&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;WGS84&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="o"&gt;...&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;make_map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Sequence&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;coord&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;coords&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;coord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;srid&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;WGS84&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"Unexpected SRID - got &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;coord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; instead of &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;WGS84&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Maybe we should stop teaching &lt;code&gt;collections.namedtuple&lt;/code&gt; and &lt;code&gt;typing.NamedTuple&lt;/code&gt; and focus on making &lt;code&gt;dataclasses.dataclass&lt;/code&gt;es as idiomatic, familiar, and readable as possible. There are big benefits for the Python community in having One Obvious Way of creating keyword data structures. For all the reasons covered in the article, dataclasses are a classy way of working with data.&lt;/p&gt;&lt;ol class="simple-footnotes"&gt;&lt;li id="sf-classy-data-with-dataclasses-1"&gt;&lt;a href="http://p-s.co.nz/wordpress/python-named-tuples-vs-data-classes/"&gt;Python Named Tuples vs Data Classes&lt;/a&gt; &lt;a href="#sf-classy-data-with-dataclasses-1-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;li id="sf-classy-data-with-dataclasses-2"&gt;For example, no special function is needed to unpack or iterate over named tuples &lt;a href="#sf-classy-data-with-dataclasses-2-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;li id="sf-classy-data-with-dataclasses-3"&gt;Vanilla dataclasses can't be unpacked or iterated over without special functions so code relying on that will break without other modifications &lt;a href="#sf-classy-data-with-dataclasses-3-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><category term="Python"></category><category term="python"></category><category term="dataclasses"></category><category term="namedtuple"></category></entry><entry><title>The When of Lambda</title><link href="https://when-of-python.github.io/blog/the-when-of-lambda.html" rel="alternate"></link><published>2022-09-22T08:00:00+12:00</published><updated>2022-09-22T08:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-22:/blog/the-when-of-lambda.html</id><summary type="html">&lt;p&gt;Lambdas are a Python language feature we should provide clear guidance on. Used well they simplify code and are perfectly readable; used poorly, and code becames opaque and bug-prone. Although use should be restrained, an accommodation should be made for Pandas and sorting, albeit with caveats to ensure usage doesn't compromise readability. And a &lt;code&gt;=&amp;gt;&lt;/code&gt; syntax could be nice.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of lambda been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Lambda Examples&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A lambda defines an anonymous, one-liner function which is usually very short. They are widely encountered in code and are idiomatic in at least two use cases:&lt;/p&gt;
+&lt;p&gt;1) Pandas e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;h&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;2) Sort e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;users&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lower&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;When of Lambda&lt;/h1&gt;
+&lt;p&gt;So when should we use them? And when shouldn't we? In other words, can we create a When of Python for lambda? Trey Hunner's article &lt;a href="https://treyhunner.com/2018/09/stop-writing-lambda-expressions/"&gt;Overusing lambda expressions in Python&lt;/a&gt; is highly relevant and I won't repeat all the great content in there. His main concern seems to be about the nameless nature of lambdas. Trey Hunner regularly teaches Python and places a high weight on readability. He makes a strong case that lambdas are overused and concludes with the following criteria:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I’d say that using lambda expressions is acceptable only if your situation meets all four of these criteria:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The operation you’re doing is trivial: the function doesn’t deserve a name&lt;/li&gt;
+&lt;li&gt;Having a lambda expression makes your code more understandable than the function names you can think of&lt;/li&gt;
+&lt;li&gt;You’re pretty sure there’s not already a function that does what you’re looking for&lt;/li&gt;
+&lt;li&gt;Everyone on your team understands lambda expressions and you’ve all agreed to use them&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I would agree with those principles but want to modify the fourth. Perhaps we would be better off accepting the two use cases described earlier (pandas and sorting) and concentrate on improving their use in that context.&lt;/p&gt;
+&lt;h1&gt;Idiomatic Use Clarified&lt;/h1&gt;
+&lt;h2&gt;Pandas&lt;/h2&gt;
+&lt;p&gt;Using Pandas requires understanding lambdas and being comfortable with them. But we should never make complex lambdas. The moment a lambda become at all difficult to understand we should make a proper named function and use that. &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;"If a function is important, it deserves a name" (Trey Hunner)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And we should at least hint at the meaning of variables we use. For example, if we are processing rows we could use &lt;code&gt;lambda row: row['height'] * 100&lt;/code&gt; instead of &lt;code&gt;lambda x: x['height'] * 100&lt;/code&gt;. Even &lt;code&gt;lambda r: r['height'] * 100&lt;/code&gt; would be good, especially if &lt;code&gt;r&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt; became idiomatic short-hands for row and column in such cases.&lt;/p&gt;
+&lt;h2&gt;Sorting&lt;/h2&gt;
+&lt;p&gt;There is an alternative available using &lt;code&gt;itemgetter&lt;/code&gt; but, to be honest, it is easier to use &lt;code&gt;lambda&lt;/code&gt; and &lt;code&gt;lambda&lt;/code&gt; is arguably more readable for most Python coders. Hunner presents the following comparison:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Without operator: accessing a key/index&lt;/span&gt;
+&lt;span class="n"&gt;rows_sorted_by_city&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;city&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="c1"&gt;# With operator: accessing a key/index&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;operator&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;itemgetter&lt;/span&gt;
+&lt;span class="n"&gt;rows_sorted_by_city&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;itemgetter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;city&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;but draws a different conclusion from myself on readability. I like the &lt;code&gt;lambda&lt;/code&gt; better because it is arguably idiomatic.&lt;/p&gt;
+&lt;p&gt;Incidentally, imagine if Python had a different syntax for lambdas and we could write:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Without operator: accessing a key/index&lt;/span&gt;
+&lt;span class="n"&gt;rows_sorted_by_city&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sorted&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;city&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I guess it comes down to a matter of taste but I like the &lt;code&gt;=&amp;gt;&lt;/code&gt; syntax. In the Pandas context it would be especially nice:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## vs&lt;/span&gt;
+
+&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Lambdas are a Python language feature we should provide clear guidance on. Used well they simplify code and are perfectly readable; used poorly, and code becames opaque and bug-prone. Although use should be restrained, an accommodation should be made for Pandas and sorting, albeit with caveats to ensure usage doesn't compromise readability. &lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="lambda"></category><category term="pandas"></category></entry><entry><title>The Walrus and the (Software) Carpenter</title><link href="https://when-of-python.github.io/blog/the-walrus-and-the-software-carpenter.html" rel="alternate"></link><published>2022-09-18T10:00:00+12:00</published><updated>2022-09-18T10:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-18:/blog/the-walrus-and-the-software-carpenter.html</id><summary type="html">&lt;p&gt;The Walrus operator risks encouraging buggy code by conflating assignment with evaluation. PHP stands as a warning as to where this can lead. There are few cases where the convenience of the Walrus operator outweigh its risks and even these are not clear-cut. From a When of Python view, the Walrus operator should be in Deprecated Python, or possibly Situational Python but with very few situations accepted. The Walrus will only very occasionally belong in production code.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of the Walrus operator been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;The Walrus and the Carpenter - Lewis Carroll&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;...
+&lt;em&gt;&lt;br&gt;&lt;br&gt;The Walrus and the Carpenter
+&lt;br&gt;    Were walking close at hand;
+&lt;br&gt;They wept like anything to see
+&lt;br&gt;    Such quantities of sand:
+&lt;br&gt;If this were only cleared away,'
+&lt;br&gt;    They said, it would be grand!'
+&lt;br&gt;...
+&lt;br&gt;&lt;br&gt;Lewis Carroll - Through the Looking Glass&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img alt="Walrus and the Carpenter - illustrator John Tenniel" src="images/walrus_and_carpenter.jpg"&gt;&lt;/p&gt;
+&lt;h1&gt;The Walrus&lt;/h1&gt;
+&lt;p&gt;The Walrus operator is an assignment expression. Normally we assign values to names with the syntax &lt;code&gt;name = value&lt;/code&gt; e.g. &lt;code&gt;fname = 'Zac'&lt;/code&gt;. The Walrus operator allows us to perform assignment as an inline expression within another statement. For example, instead of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Zac'&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we can save a line by writing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f_name&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Zac'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;The Software Carpenter&lt;/h1&gt;
+&lt;p&gt;"Software Carpenter" in this post means a skilled Software Engineer - someone who understands the craft of software development&lt;sup id="sf-the-walrus-and-the-software-carpenter-1-back"&gt;&lt;a href="#sf-the-walrus-and-the-software-carpenter-1" class="simple-footnote" title="Apologies if this is confusing to anyone. I am aware that the emphasis in Software Carpentry is on more basic skills but the Lewis Carroll reference was too good to pass up."&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;As an analogy I've built some very basic structures in my garage out of left-over pieces of timber.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Hacky woodwork" src="images/hacky_woodwork.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;They solve a practical need but would make a woodwork teacher cry. A skilled carpenter would build them much better.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Carpentry" src="images/carpentry.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;In the software world, there is a similar distinction to be made between hacking together code and being a Software Carpenter.&lt;/p&gt;
+&lt;p&gt;A Software Carpenter will care about the following:&lt;/p&gt;
+&lt;h2&gt;Readability and Maintainability&lt;/h2&gt;
+&lt;p&gt;Apart from throwaway code we need to care about readability and maintainability. In addition to unit testing and type hinting the best way of preventing bugs is to make code easily intelligible. This is especially important in projects which run for a long time and involve lots of different coders. And if code is mission critical or "enterprise" then it is especially important that code is written with readability as a high priority.&lt;/p&gt;
+&lt;h2&gt;Clever Coder not "Clever" Code&lt;/h2&gt;
+&lt;p&gt;Writing the simplest, most readable code possible is not easy. But that is the goal for a Software Carpenter. It can be fun to make the most dense, cryptic code possible - see &lt;a href="https://code.golf/"&gt;Code Golf&lt;/a&gt;. But we should never do this in production code i.e. code that matters. "Clever" code is a breeding ground for bugs.&lt;/p&gt;
+&lt;h1&gt;Walrus Examples - Simple, Readable Code?&lt;/h1&gt;
+&lt;p&gt;I recently asked for example code that demonstrated the value of the Walrus operator. The following was received:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;retrieve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"balance"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;show_balance&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"deposit"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;add_balance&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"withdrawal"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;decrease_balance&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;TransactionException&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="n"&gt;doesn&lt;/span&gt;&lt;span class="s1"&gt;'t make sense )&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But avoiding the Walrus operator only adds one line (as was acknowledged up-front by the contributor) - namely:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;retrieve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Using Python without the Walrus operator also simplifies the first condition clause. Instead of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;retrieve&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;transaction&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"balance"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we have:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;transaction_type&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"balance"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So not a very compelling use case there.&lt;/p&gt;
+&lt;p&gt;Another example was discussed in &lt;a href="https://when-of-python.github.io/blog/walrus-hunting-with-strenum.html"&gt;Walrus Hunting with StrEnum&lt;/a&gt;. In that case StrEnum seems a better solution. The person suggesting the code agreed but said the example helped the Walrus operator click for them. Fair enough, but the search for a genuinely useful use case continues.&lt;/p&gt;
+&lt;p&gt;Another developer suggested a good use case for the Walrus operator was&lt;sup id="sf-the-walrus-and-the-software-carpenter-2-back"&gt;&lt;a href="#sf-the-walrus-and-the-software-carpenter-2" class="simple-footnote" title="The example has been altered to avoid using the keyword list as a variable name"&gt;2&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;filtered_list&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;items&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;slow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;which seemed more persuasive. The &lt;code&gt;slow&lt;/code&gt; function is only called once per item. The non-Walrus, non-comprehension alternative is:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;filtered_list&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;slow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;filtered_list&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;which I have mixed feelings about. It &lt;em&gt;is&lt;/em&gt; a lot longer. But its meaning is so plain it is less likely to contain bugs.&lt;/p&gt;
+&lt;p&gt;In balance, perhaps, a Walrus operator is a good option in such a case. It is both elegant and efficient. This use case is arguably the most persuasive of those presented in &lt;a href="https://scribe.rip/should-you-be-using-pythons-walrus-operator-yes-and-here-s-why-36297be16907"&gt;Should You Be Using Python’s Walrus Operator? (Yes. And Here’s Why)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;But is a single use case of uncertain value enough to recommend teaching the Walrus operator to beginners? PHP is a language which has blended assignment and evaluation with often &lt;a href="https://www.php.net/manual/en/language.operators.logical.php"&gt;mind-boggling results&lt;/a&gt; - it is arguably a warning against this sort of "cleverness". Even an article promoting use of the Walrus operator (&lt;a href="https://scribe.rip/should-you-be-using-pythons-walrus-operator-yes-and-here-s-why-36297be16907"&gt;Should You Be Using Python’s Walrus Operator? (Yes. And Here’s Why)&lt;/a&gt;) acknowledges that the Walrus operator can be abused and it provides a useful section on "Gotchas and Limitations". If we want to shrink Common Python then tightly restricting the use of the Walrus operator is probably a good idea. Maybe it should be in Situational Python with a recommendation to limit usage to comprehensions.&lt;/p&gt;
+&lt;h1&gt;Current Verdict&lt;/h1&gt;
+&lt;p&gt;Until some compelling use cases for the Walrus appear we should probably discourage its widespread use in a When of Python. Mixing assignment and evaluation is a risky exercise and it would be better to invest energy understanding other safer and more useful language features or patterns instead. The one exception might be the use of the operator to avoid calling functions twice in comprehensions. The risks of this usage might be diminished if it became an idiomatic option (much the same way we often use lambdas when sorting). But generally speaking it might be best if Software Carpenters minimise contact with the Walrus:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;...
+&lt;em&gt;&lt;br&gt;&lt;br&gt;It seems a shame,' the Walrus said,
+&lt;br&gt;      To play them such a trick,
+&lt;br&gt;After we've brought them out so far,
+&lt;br&gt;      And made them trot so quick!'
+&lt;br&gt;...&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;&lt;ol class="simple-footnotes"&gt;&lt;li id="sf-the-walrus-and-the-software-carpenter-1"&gt;Apologies if this is confusing to anyone. I am aware that the emphasis in &lt;a href="https://www.software.ac.uk/programmes-events/carpentries/software-carpentry"&gt;Software Carpentry&lt;/a&gt; is on more basic skills but the &lt;a href="https://www.poetryfoundation.org/poems/43914/the-walrus-and-the-carpenter-56d222cbc80a9"&gt;Lewis Carroll reference&lt;/a&gt; was too good to pass up. &lt;a href="#sf-the-walrus-and-the-software-carpenter-1-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;li id="sf-the-walrus-and-the-software-carpenter-2"&gt;The example has been altered to avoid using the keyword &lt;code&gt;list&lt;/code&gt; as a variable name &lt;a href="#sf-the-walrus-and-the-software-carpenter-2-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><category term="Python"></category><category term="python"></category><category term="walrus operator"></category></entry><entry><title>Walrus Hunting with StrEnum</title><link href="https://when-of-python.github.io/blog/walrus-hunting-with-strenum.html" rel="alternate"></link><published>2022-09-14T20:00:00+12:00</published><updated>2022-09-14T20:00:00+12:00</updated><author><name>Grant Paton-Simpson (with Ben Denham)</name></author><id>tag:when-of-python.github.io,2022-09-14:/blog/walrus-hunting-with-strenum.html</id><summary type="html">&lt;p&gt;The Walrus operator finally seemed to have found a practical use case - as a way to make collections of strings or integers without as much boiler plate as the alternative without the operator. But Python has a better approach already - Enum - and in Python 3.11 it is even easier to use with strings (StrEnum). So the Walrus operator still struggles to find a problem for which it is the best solution.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of the Walrus operator been? How about Enum and IntEnum? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Walrus Operator - Finally a Useful Use Case?&lt;/h1&gt;
+&lt;h2&gt;The Walrus Operator&lt;/h2&gt;
+&lt;p&gt;The Walrus operator is named because &lt;code&gt;:=&lt;/code&gt; looks like the eyes and tusks of a walrus of its side. I really like the name&lt;sup id="sf-walrus-hunting-with-strenum-1-back"&gt;&lt;a href="#sf-walrus-hunting-with-strenum-1" class="simple-footnote" title="I also like the way Ruby has the delightfully named spaceship operator &lt;=&gt; Ruby — The Spaceship Operator 101"&gt;1&lt;/a&gt;&lt;/sup&gt; so it is a shame the Walrus operator isn't a useful addition to Python. Instead, the Walrus operator seems to be a solution looking for a problem. In spite of all the blog posts and tweets illustrating how it works there is very little that tries to explain why it is better than alternative approaches (unless we assume opaque one-liners are better than readable two-liners ;-)).&lt;/p&gt;
+&lt;p&gt;As a quick reminder, the Walrus operator is an assignment expression. Normally we assign values to names with the syntax &lt;code&gt;name = value&lt;/code&gt; e.g. &lt;code&gt;fname = 'Zac'&lt;/code&gt;. The Walrus operator allows us to perform assignment as an inline expression within another statement. For example, instead of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Zac'&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we can save a line by writing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f_name&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Zac'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is not an obvious improvement - indeed it can be argued that the Walrus operator commonly makes Python less readable and increases the complexity of basic code for no payoff. But perhaps it has other higher-value use cases?&lt;/p&gt;
+&lt;p&gt;One suggestion concerns collections of constants.&lt;/p&gt;
+&lt;h2&gt;Constants&lt;/h2&gt;
+&lt;p&gt;We often use "constants" to avoid magic numbers. E.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;PG_PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5432&lt;/span&gt;
+
+&lt;span class="o"&gt;...&lt;/span&gt;
+
+&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;PG_PORT&lt;/span&gt;  &lt;span class="c1"&gt;## more semantic than port=5432&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can also use them to identify strings that we wish to control as developer, sometimes in collections that cover available options. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;AUCKLAND&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Auckland'&lt;/span&gt;
+&lt;span class="n"&gt;WELLINGTON&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Wellingon'&lt;/span&gt;
+&lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Christchurch'&lt;/span&gt;
+&lt;span class="n"&gt;DUNEDIN&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Dunedin'&lt;/span&gt;
+
+&lt;span class="n"&gt;CITIES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;AUCKLAND&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;WELLINGTON&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;DUNEDIN&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Collections of Constants and the Walrus Operator&lt;/h2&gt;
+&lt;p&gt;Recently it has been suggested that the Walrus operator is a useful way of slimming down such constructs. Using the Walrus operator we can instead write:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;CITIES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="n"&gt;AUCKLAND&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Auckland'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;WELLINGTON&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Wellington'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Christchurch'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;DUNEDIN&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="s1"&gt;'Dunedin'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;While it is true that, in this case, the Walrus operator saves multiple lines and avoids duplication, there are better ways of achieving the same results. It would probably be better to use an enum to collect these strings together.&lt;/p&gt;
+&lt;h1&gt;StrEnum - A Valuable Addition&lt;/h1&gt;
+&lt;p&gt;StrEnum is part of Python 3.11&lt;sup id="sf-walrus-hunting-with-strenum-2-back"&gt;&lt;a href="#sf-walrus-hunting-with-strenum-2" class="simple-footnote" title="It has been possible to use string Enums since 3.4 but it is even easier now that StrEnum has been added."&gt;2&lt;/a&gt;&lt;/sup&gt; and it enables the following syntax:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;enum&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;StrEnum&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;City&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StrEnum&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;AUCKLAND&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Auckland'&lt;/span&gt;
+    &lt;span class="n"&gt;WELLINGTON&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Wellington'&lt;/span&gt;
+    &lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Christchurch'&lt;/span&gt;
+    &lt;span class="n"&gt;DUNEDIN&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Dunedin'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can then refer to individual cities using dot notation e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;city&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AUCKLAND&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The following is &lt;code&gt;True&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="s1"&gt;'Auckland'&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AUCKLAND&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can also combine our StrEnum nicely with type hinting to clarify what sorts of strings we expect to receive in a function:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;arrange_travel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;city&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is arguably better than:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;arrange_travel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;city&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;because it provides clear guidance about the type of inputs expected.&lt;/p&gt;
+&lt;p&gt;StrEnums also play nicely in other contexts - for example, as dictionary keys. The following works:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;city_popns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AUCKLAND&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1_571_700&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;WELLINGTON&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;202_700&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;369_000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DUNEDIN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;126_300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;## Both return 1_571_700&lt;/span&gt;
+&lt;span class="n"&gt;city_popns&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;City&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AUCKLAND&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;city_popns&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Auckland'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Using StrEnum Like a Ruby Symbol&lt;/h1&gt;
+&lt;p&gt;Ruby has a construct called a symbol. It's a string that is identified by a colon at the front of a variable name e.g. &lt;code&gt;:fname&lt;/code&gt;. The usage is subtle but important - basically "if the textual content of the object is important, use a String. If the identity of the object is important, use a Symbol." &lt;a href="https://medium.com/@lcriswell/ruby-symbols-vs-strings-248842529fd9"&gt;Ruby Symbols vs. Strings&lt;/a&gt;. The main benefit is clarity of programmer intention i.e. readability.&lt;/p&gt;
+&lt;p&gt;In Ruby another benefit of favouring symbols over strings is that they are interned - that is, there is only one instance no matter how many times it is used. This is much less relevant to Python. Most strings will be automatically be interned anyway - see &lt;a href="https://towardsdatascience.com/optimization-in-python-interning-805be5e9fd3e"&gt;Optimization in Python — Interning&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So for Python the real benefits of StrEnums are in readability and, potentially, type enforcement through type hinting. When we use a StrEnum we know it has a special meaning and is part of a controlled collection. We know that supplying any random string might not work - the code is expecting something from the type of StrEnum indicated.&lt;/p&gt;
+&lt;h1&gt;When the Type of StrEnum Matters&lt;/h1&gt;
+&lt;p&gt;There are cases where the fact our StrEnum is not really a string matters. See &lt;a href="https://docs.python.org/3.11/library/enum.html#enum.StrEnum"&gt;class enum.StrEnum&lt;/a&gt;. The documentation suggests we can simply convert our StrEnum to a string type e.g. &lt;code&gt;str(City.AUCKLAND)&lt;/code&gt;. Another approach is to provide a property to the StrEnum. E.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;City&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StrEnum&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  &lt;span class="c1"&gt;## in case we ever need the actual string type&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;
+
+    &lt;span class="n"&gt;AUCKLAND&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Auckland'&lt;/span&gt;
+    &lt;span class="n"&gt;WELLINGTON&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Wellington'&lt;/span&gt;
+    &lt;span class="n"&gt;CHRISTCHURCH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Christchurch'&lt;/span&gt;
+    &lt;span class="n"&gt;DUNEDIN&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Dunedin'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then we can write City.AUCKLAND.str instead if that is more to our taste.&lt;/p&gt;
+&lt;h1&gt;StrEnums 1: Walrus Operator 0&lt;/h1&gt;
+&lt;p&gt;In conclusion, the StrEnum is a new feature in Python we should start using a lot more. And if we do, it is even harder to think of cases where the Walrus operator is the best solution. Too harsh? Too kind? Add a comment.&lt;/p&gt;
+&lt;h1&gt;Postscript - Testing StrEnum&lt;/h1&gt;
+&lt;p&gt;Docker can be a convenient way of experimenting with unreleased (or old) versions of Python. The following lets you run scripts in your current working folder using the version of Python in the container.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run --rm -it --mount &lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;bind,source&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;,target&lt;span class="o"&gt;=&lt;/span&gt;/src --workdir /src python:3.11-rc /bin/bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol class="simple-footnotes"&gt;&lt;li id="sf-walrus-hunting-with-strenum-1"&gt;I also like the way Ruby has the delightfully named spaceship operator &lt;code&gt;&amp;lt;=&amp;gt;&lt;/code&gt; &lt;a href="https://medium.com/@albert.s.chun/ruby-the-spaceship-operator-101-717b42566971"&gt;Ruby — The Spaceship Operator 101&lt;/a&gt; &lt;a href="#sf-walrus-hunting-with-strenum-1-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;li id="sf-walrus-hunting-with-strenum-2"&gt;It has been possible to use string Enums since 3.4 but it is even easier now that StrEnum has been added. &lt;a href="#sf-walrus-hunting-with-strenum-2-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><category term="Python"></category><category term="python"></category><category term="walrus operator"></category><category term="enum"></category><category term="3.11"></category></entry><entry><title>Get the Hint - Type Hinting is Common Python</title><link href="https://when-of-python.github.io/blog/type-hinting-get-the-hint.html" rel="alternate"></link><published>2022-09-13T06:00:00+12:00</published><updated>2022-09-13T06:00:00+12:00</updated><author><name>Grant Paton-Simpson (featuring Danny Adair)</name></author><id>tag:when-of-python.github.io,2022-09-13:/blog/type-hinting-get-the-hint.html</id><summary type="html">&lt;p&gt;How we handle type hinting will define the future of Python for good or bad. Type hinting is useful as glorified commenting and as such should be part of everyone's Everyday Python. It should be part of Common Python. Type hinting is likely to be widely used in the code people encounter so we all need to be comfortable reading simple type hinting. Some enterprise and library codebases will benefit from a more strict and enforced form of type "hinting" and further advances in type hinting and checkers like mypy will improve the developer experience of using this feature. What has your experience of type hinting been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of type hinting been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Type Hinting - A Big Deal for Python?&lt;/h1&gt;
+&lt;p&gt;Some new features really define the future of a programming language. Long after the walrus operator has been forgotten, and structural pattern matching found its niche, type hinting will be shaping people's everyday Python - for better or worse. A lot depends on how we agree to use this language feature.&lt;/p&gt;
+&lt;p&gt;Currently, almost a third of active Python projects on Github are using type hinting for parameters (see &lt;a href="https://when-of-python.github.io/kiwipycon2022/#/52/0/11"&gt;The When of Python - KiwiPycon 2022&lt;/a&gt;). The sooner we figure out type hinting best practice the better.&lt;/p&gt;
+&lt;p&gt;To kick this blog post off I contacted Danny Adair - founder and former President of NZPUG - to get some tentative thoughts. I knew he had opinions on type hinting based on a conversation we had at the recent Kiwi PyCon. Knowing Danny was currently extra busy I asked for a quick reaction and here it is:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I think type hinting in Python can be useful, particularly if you (previously) enjoy(ed) the coziness of the harness that is static typing, and you're willing to sacrifice a duck for it.&lt;/p&gt;
+&lt;p&gt;I think there are some codebases that were screaming for it (like the one at Dropbox where Guido started pimping it) but I would argue against it as becoming a habit. Unfortunately "optional" stops being optional for all practical purposes once you touch type hinted code with your code.&lt;/p&gt;
+&lt;p&gt;"There should be one-- and preferably only one --obvious way to do it." - But don't worry it's optional...&lt;/p&gt;
+&lt;p&gt;(How's that for a rant)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Some important questions are raised about type hinting. Should it be restricted to a few enterprise codebases? Should it be a matter of personal taste - perhaps we should accept type hinting as an option for those who are happy to embrace the restrictions of a static typing approach but recommend against it generally? Can this be a matter of personal taste or is there a risk type hinting will draw everything in - potentially spoiling the dynamic, duck-typed flavour of Python which has been part of its success?&lt;/p&gt;
+&lt;p&gt;I'll invite Danny to add further comment when this post is published. But let's step back a bit now and refresh our memories on how type hinting works and different ways of using it.&lt;/p&gt;
+&lt;h1&gt;Different Ways of Type Hinting&lt;/h1&gt;
+&lt;p&gt;Type hinting allows us to indicate what types a function expects as arguments and what types it will return. E.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_greeting&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;age&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As the name makes clear, type hints are hints only but there are tools that enable type hinting to be checked and enforced.&lt;/p&gt;
+&lt;p&gt;Type hinting is still maturing in Python and more recent versions are less verbose and more readable e.g. &lt;code&gt;int | float&lt;/code&gt; rather than &lt;code&gt;typing.Union[int, float]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Initially I didn’t like type hinting. I suspected it was a costly and ritualistic safety behaviour rather than a way of writing better code. And people can certainly use type hinting like that. But I have changed my overall position on Python type hinting.&lt;/p&gt;
+&lt;p&gt;There are at least three ways to use type hinting in Python:&lt;/p&gt;
+&lt;h2&gt;1) As Glorified Comments&lt;/h2&gt;
+&lt;p&gt;We can use type hinting to improve readability and reduce confusion - basically to treat type hints like glorified comments. For example, what is the following function expecting for the date parameter?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;myfunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Is it OK if I supply date as a number (20220428) or must it be a string ("20220428") or maybe a datetime.date object? Type hinting can remove that confusion&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;myfunc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It is now much more straightforward to consume this function and to modify it with confidence. I strongly recommend using type hinting like this.&lt;/p&gt;
+&lt;p&gt;The following is very readable in my view:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;show_chart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: there is no need to add &lt;code&gt;: bool&lt;/code&gt; when the meaning is obvious (unless wanting to use static checking as discussed below). It just increases the noise-to-signal ratio in the code.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;date&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;show_chart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;On a similar vein, if a parameter obviously expects an integer or a float I don’t add a type hint. For example type hinting for the parameters below reduces readability for negligible practical gain:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or, knowing that mypy considers int a subtype of float:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Instead&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_coord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Coord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;is probably the right balance. To some extent it is a matter of personal taste.&lt;/p&gt;
+&lt;p&gt;I hope people aren’t deterred from using basic type hinting to increase readability by the detail required to fully implement type hinting.&lt;/p&gt;
+&lt;h2&gt;2) To Enable Static Checking&lt;/h2&gt;
+&lt;p&gt;Another option is to use type hinting to enable static checks with the aim of preventing type-based bugs – which potentially makes sense when working on a complex code base worked on by multiple coders. I doubt we should do the same for ordinary scripts – the costs can be very high (see endless Stack Overflow questions on Type Hinting complexities and subtleties).&lt;/p&gt;
+&lt;h2&gt;3) Ritual Self-Soothing&lt;/h2&gt;
+&lt;p&gt;For some people I suspect type hinting is a ritual self-soothing behaviour which functions to spin out the stressful decision-making parts of programming. Obviously I am against this especially when it makes otherwise beautiful, concise Python code “noisy” and less readable.&lt;/p&gt;
+&lt;h1&gt;Duck Typing&lt;/h1&gt;
+&lt;h2&gt;Time for a Duck Sacrifice?&lt;/h2&gt;
+&lt;p&gt;Danny's comment on duck sacrifice may be puzzling for some. To start with, it has nothing to do with duck punching as per &lt;a href="http://twentyfivetwenty.ca/monkey-patching-and-duck-punching"&gt;Monkey patching and Duck punching&lt;/a&gt; ;-). The issue is whether we lose or weaken the duck typing aspect of Python if we let type hinting spread too freely.&lt;/p&gt;
+&lt;p&gt;Python follows a Duck Typing philosophy – we look for matching behaviour not specific types. If it walks like a duck and quacks like a duck it’s a duck!&lt;/p&gt;
+&lt;p&gt;For example, we might not care whether we get a tuple or a list as long as we can reference the items by index. Returning to the Duck illustration, we don’t test for the DNA of a Duck (its type) we check for behaviours we’ll rely on e.g. can it quack?&lt;/p&gt;
+&lt;p&gt;There are pros and cons to every approach to typing but I like the way Python’s typing works: strong typing (&lt;code&gt;1 != '1'&lt;/code&gt;); dynamic typing (defined at run-time); and duck typing (anything as long as it quacks).&lt;/p&gt;
+&lt;p&gt;Fortunately, no duck sacrifice is necessary if we mainly use type hinting as glorified comments and, in the context of more disciplined static type checking, rely on Protocol to allow behaviour-based (structural) hinting.&lt;/p&gt;
+&lt;h2&gt;Structural Type Hinting using Protocol&lt;/h2&gt;
+&lt;p&gt;If we were able to blend type hinting with duck typing we would get something where we could specify accepted types based on the behaviours they support.&lt;/p&gt;
+&lt;p&gt;Fortunately this is very easy in Python using Protocol. Below I contrast Nominal Type Hinting (based on the names of types) with Structural Type Hinting (based on internal details of types e.g. behaviours / methods)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Full&lt;/span&gt; &lt;span class="n"&gt;Example&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;Code&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Protocol&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;BaseAttacker&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+       &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;NotImplementedError&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Soldier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseAttacker&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Soldier &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; swings their sword!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Archer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseAttacker&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Archer &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; fires their arrow!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Catapult&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  &lt;span class="c1"&gt;## note - not inheriting from BaseAttacker&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Catapult &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; hurls their fireball!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## only accept instances of BaseAttacker (or its subclasses)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;all_attack_by_type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;units&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;BaseAttacker&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;unit&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;units&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;unit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;s1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Soldier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Tim&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;s2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Soldier&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Sal&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;a1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Archer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Cal&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;c1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Catapult&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Mech&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;all_attack_by_type&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="c1"&gt;## will run but won&amp;#39;t pass static check&lt;/span&gt;
+&lt;span class="c1"&gt;## because c1 not an BaseAttacker instance&lt;/span&gt;
+&lt;span class="c1"&gt;## (or the instance of a subclass)&lt;/span&gt;
+
+&lt;span class="c1"&gt;## comment out next line if checking with mypy etc - will fail&lt;/span&gt;
+&lt;span class="n"&gt;all_attack_by_type&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;AttackerProtocol&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Protocol&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="err"&gt;…&lt;/span&gt; &lt;span class="c1"&gt;## idiomatic to use ellipsis&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;all_attack_duck_typed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;units&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;AttackerProtocol&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;unit&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;units&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;unit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;attack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;## will run as before even though c1 included&lt;/span&gt;
+&lt;span class="c1"&gt;## but will also pass a static check&lt;/span&gt;
+&lt;span class="n"&gt;all_attack_duck_typed&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;s1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;a1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Unexpected Conclusion&lt;/h1&gt;
+&lt;p&gt;Type hinting is useful as glorified commenting and as such should be part of everyone's Everyday Python. In other words it should be part of Common Python. Type hinting is likely to be widely used in the code people encounter (see earlier comment on usage in Python projects on Github) so we all need to be comfortable reading simple type hinting.&lt;/p&gt;
+&lt;p&gt;Some enterprise and library codebases will benefit from a more strict and enforced form of type "hinting" and further advances in type hinting and checkers like mypy will improve the developer experience of using this feature.&lt;/p&gt;
+&lt;p&gt;The dynamic flavour of Python can be maintained by using type hinting in this way and by making use of Protocol. No duck sacrifice is necessary.&lt;/p&gt;
+&lt;p&gt;If we use type hinting to improve the readability of our Python code generally, and to increase the robustness of enterprise and library code specifically; and if we can avoid using type hinting to make Python less flexible and Just Another Static Language, then type hinting will be a great addition to the language.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="types"></category><category term="type hint"></category></entry><entry><title>Deprecate for else or else?</title><link href="https://when-of-python.github.io/blog/deprecate-for-else-or-else.html" rel="alternate"></link><published>2022-09-05T21:00:00+12:00</published><updated>2022-09-05T21:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-05:/blog/deprecate-for-else-or-else.html</id><summary type="html">&lt;p&gt;The &lt;code&gt;for else&lt;/code&gt; construct is arguably too confusing for most Python coders and there are simple alternatives that are safe and versatile. A clear candidate for deprecation.&lt;/p&gt;</summary><content type="html">&lt;p&gt;The for else construct seems simple enough - the problem is that the correct interpretation of how it works is counterintuitive to a large proportion of Python coders. For example, which of the following is correct? It's not immediately obvious whether the else block runs if the break is hit, or if it is not hit.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;animals&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;my_pet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;break&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;No pet is found :-(&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;animals&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;my_pet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;break&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Pet found :-)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Some suggestions for better names than else have included &lt;code&gt;nobreak&lt;/code&gt; and (less seriously) &lt;code&gt;if_we_exited_the_block_without_encountering_a_break&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In practice, it's clearer to just remove the ambiguity for the reader and set a variable before breaking.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;found_pet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;animals&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;animal&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;my_pet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;found_pet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
+        &lt;span class="k"&gt;break&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;found_pet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;No pet found :(&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If Raymond Hettinger had a time machine he could tell Guido in the future no one will find &lt;code&gt;else&lt;/code&gt; intuitive: &lt;a href="https://m.youtube.com/watch?v=OSGv2VnC0go"&gt;Transforming Code into Beautiful, Idiomatic Python&lt;/a&gt;. Incidentally this is one of the classic Python presentations - watch it and bump the views over from 999,975 to a clean 1M ;-)&lt;/p&gt;
+&lt;p&gt;Guido says if he had a time machine he would not have included the feature at all: &lt;a href="https://mail.python.org/pipermail/python-ideas/2009-October/"&gt;Python-ideas for/else syntax&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Maybe we should put &lt;code&gt;for else&lt;/code&gt; in the &lt;strong&gt;Deprecate Python&lt;/strong&gt; category? Why not - there are alternatives that are versatile, simple, and safe.&lt;/p&gt;
+&lt;p&gt;Fair comment? Overly harsh? What do you think?&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="for else"></category></entry><entry><title>Pickle in a Pickle</title><link href="https://when-of-python.github.io/blog/pickle-in-a-pickle.html" rel="alternate"></link><published>2022-09-04T23:00:00+12:00</published><updated>2022-09-04T23:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-04:/blog/pickle-in-a-pickle.html</id><summary type="html">&lt;p&gt;Python pickle is something many of us have had a love-hate relationship with. We've loved it before using it and hated it afterwards ;-) Maybe we should put pickle in the Deprecate Python category?&lt;/p&gt;</summary><content type="html">&lt;p&gt;Python pickle is something many of us have had a love-hate relationship with. We've loved it before using it and hated it afterwards ;-). Even the official documentation at &lt;a href="https://docs.python.org/3/library/pickle.html"&gt;pickle — Python object serialization&lt;/a&gt; seems a bit faint in its praise.&lt;/p&gt;
+&lt;p&gt;Maybe we should put pickle in the &lt;strong&gt;Deprecate Python&lt;/strong&gt; category?&lt;/p&gt;
+&lt;p&gt;Fair comment? Overly harsh? What do you think?&lt;/p&gt;
+&lt;p&gt;Note - the following comments were transferred over from a more general blog post about features so all the pickle content can be together.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="pickle"></category></entry><entry><title>Python Feature Opinions</title><link href="https://when-of-python.github.io/blog/python-feature_opinions.html" rel="alternate"></link><published>2022-09-03T11:00:00+12:00</published><updated>2022-09-03T11:00:00+12:00</updated><author><name>Ben Denhan &amp; Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-03:/blog/python-feature_opinions.html</id><summary type="html">&lt;p&gt;The When of Python is at heart a community project.
+We need people to share their opinions on different Python language features.
+If you have opinions on any language features we'd love to hear from you.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Your Opinions Welcome&lt;/h2&gt;
+&lt;p&gt;The When of Python is at heart a community project.
+We need people to share their opinions on different Python language features.
+If you have opinions on any language features we'd love to hear from you.&lt;/p&gt;
+&lt;p&gt;E.g. here is what a comment on lambda might look like:&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Language feature:&lt;/strong&gt; lambda&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Common Python / Situational Python / Deprecated Python:&lt;/strong&gt; Situational (see &lt;a href="https://when-of-python.github.io/blog/welcome-to-when-of-python.html"&gt;Welcome to the When of Python&lt;/a&gt; for definitions)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Opinion:&lt;/strong&gt; Should only be used in sorting e.g. .sort(key=lambda ...) and, carefully, in Pandas e.g. .apply(lambda ...)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Any Interesting References (optional):&lt;/strong&gt; &lt;a href="https://treyhunner.com/2018/09/stop-writing-lambda-expressions/"&gt;Overusing lambda expressions in Python - Trey Hunner&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bio (optional):&lt;/strong&gt; up to you - Anon is OK&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;This format is only a suggestion.&lt;/p&gt;
+&lt;p&gt;But please fire something off to us, either in the comments, or if you prefer, privately (whenofpython@p-s.co.nz).&lt;/p&gt;
+&lt;p&gt;We know people have opinions. Is type hinting a brilliant new feature; a blight on Python; or something else? Was the walrus operator worth the grief? Is structural pattern matching as good as it initially seems? Should dataclasses replace collections.namedtuple and typing.NamedTuple? Etc. You get the idea :-)&lt;/p&gt;</content><category term="Python"></category><category term="feedback"></category></entry><entry><title>Feature Creep vs Easy On-Ramp</title><link href="https://when-of-python.github.io/blog/feature-creep-vs-easy-onramp.html" rel="alternate"></link><published>2022-09-02T09:00:00+12:00</published><updated>2022-09-02T09:00:00+12:00</updated><author><name>Ben Denham (with Grant Paton-Simpson)</name></author><id>tag:when-of-python.github.io,2022-09-02:/blog/feature-creep-vs-easy-onramp.html</id><summary type="html">&lt;p&gt;Experience with the X-Wing Miniatures Game provides a lesson for the Python community.
+We need to find a way to strip things back so it is easier (again) for beginners to learn the language.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Learning Python&lt;/h2&gt;
+&lt;p&gt;Python has a deep heritage as a learning language.  The creator of
+Python, Guido van Rossum, worked for several years on
+&lt;a href="https://en.wikipedia.org/wiki/ABC_(programming_language)"&gt;ABC&lt;/a&gt; which
+was intended for teaching and prototyping.  Python was born out of
+that context (see &lt;a href="https://python-course.eu/python-tutorial/history-and-philosophy-of-python.php"&gt;History and Philosophy of Python: Easy as
+ABC&lt;/a&gt;)
+and learnability is baked into its DNA.&lt;/p&gt;
+&lt;p&gt;As we were developing the ideas that would lead to the When of Python,
+we started thinking about whether Python was still as easy to learn as
+it used to be, given there is now often more than "one obvious way" to
+do things. We also wondered whether having a variety options for how
+to approach a task was necessarily a bad thing; it provides greater
+flexibility to the user after all.&lt;/p&gt;
+&lt;p&gt;This got me thinking about my experience with the X-Wing Miniatures Game...&lt;/p&gt;
+&lt;h2&gt;The X-Wing Miniatures Game&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="X-Wing miniatures" src="images/xwing.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;A few years ago I started playing the X-Wing Miniatures Game. Compared
+to similar games, the simplicity of the game was a major drawcard,
+because it meant that I could easily teach my friends how to play!
+Instead of having a hardback rulebook with hundreds of pages, all you
+needed to get going was a lightweight rules pamphlet and a handful of
+cards and tokens:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="X-Wing core rules" src="images/xwing-core.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;Like many games, over time they released new expansions to provide new
+possibilities for your squadron. Not only did each expansion add a new
+ship to the game, but they also added new pilot abilities, ship
+upgrades, and game mechanics:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="An X-Wing expansion" src="images/xwing-expansion.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;Each new expansion was a welcome addition for veteran players, as it
+helped keep the game fresh and exciting. However, after a few years of
+expansions, the sheer volume of added rules had created a steep
+learning curve that made the game unapproachable to beginners:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Lots more X-Wing rules" src="images/xwing-all.png"&gt;&lt;/p&gt;
+&lt;p&gt;In the end, the game designers had to release a second edition to
+drastically simplify the game because it had simply become too
+complex:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;"...it got more complicated, making it less easy to jump into the proverbial cockpit."
+ &lt;br&gt;&lt;a href="https://www.starwars.com/news/x-wing-second-edition"&gt;Fantasy Flight Games Hits Lightspeed with X-Wing Second Edition&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Releasing a second edition was no small endeavour: every player had to
+replace all of their existing cards and tokens with updated versions.&lt;/p&gt;
+&lt;h2&gt;Learnability&lt;/h2&gt;
+&lt;p&gt;Like X-Wing, learnability has been a big part of Python's
+success. Python recently surpassed Java as the top learning language
+in universities:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Headline: Python bumps off Java as top learning language (infoworld.com)" src="images/universities-headline.png"&gt;&lt;/p&gt;
+&lt;p&gt;That success has been attributed to its simplicity:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Python possesses a mix of qualities that makes it a good candidate for universities. It has a simpler syntax than Java or C++, allowing novices to start writing programs almost immediately.
+&lt;br&gt;&lt;a href="https://www.infoworld.com/article/2452940/python-bumps-off-java-as-top-learning-language.html"&gt;Python bumps off Java as top learning language - Eight out of the top 10 universities now use Python to introduce programming - Joab Jackson&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;And just last year, Python became the most popular language on the
+TIOBE index:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Headline: Python ends C and Java's 20-year reign atop the TIOBE index (techreublic.com)" src="images/tiobe-headline.png"&gt;&lt;/p&gt;
+&lt;p&gt;Again, simplicity is arguably a major factor in that
+success:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;"Python, which started as a simple scripting language, as an alternative to Perl, has become mature. Its ease of learning, its huge amount of libraries and its widespread use in all kinds of domains, has made it the most popular programming language of today," said TIOBE CEO Paul Jansen.
+&lt;br&gt;&lt;a href="https://www.techrepublic.com/article/python-ends-c-and-javas-20-year-reign-atop-the-tiobe-index/"&gt;Python ends C and Java’s 20-year reign atop the TIOBE index - Brandon Vigliarolo&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Threats to Python's Learnability&lt;/h2&gt;
+&lt;p&gt;But how easy is it really to learn modern Python?  In order to
+confidently read code, we have to be familar with all the language
+features that we're likely to come across, Consider how much more
+needs to be at least mentioned in a Python crash-course today compared
+to just 10 years ago. We now have type hinting, f-strings, the
+wonderfully-named walrus operator (&lt;code&gt;:=&lt;/code&gt;), positional-only parameters,
+and structural pattern matching (&lt;code&gt;match&lt;/code&gt;). And that's just what's been
+added in the last 10 years!&lt;/p&gt;
+&lt;p&gt;With so much more to learn, Python risks becoming unapproachable to
+beginners, especially those who aren't full-time software engineers,
+such as scientists, school teachers, and data analysts.&lt;/p&gt;
+&lt;p&gt;By alienating those users that have made Python so widespread,
+Python's language creep could ultimately threaten its popularity.&lt;/p&gt;
+&lt;h2&gt;The When of Python&lt;/h2&gt;
+&lt;p&gt;Guidance on when to use Python features, and when not to, could
+radically simplify the task of learning (and teaching) Python. The
+When of Python could achieve this by eventually capturing a community
+consensus on the features to associate with &lt;strong&gt;Common Python&lt;/strong&gt;,
+&lt;strong&gt;Situational Python&lt;/strong&gt;, and &lt;strong&gt;Deprecated Python&lt;/strong&gt;. In short, the When
+of Python could help Python remain true to its teaching language
+roots, which have been such a crucial ingredient in its huge success
+to date, and hopefully will remain so!&lt;/p&gt;</content><category term="Python"></category><category term="learners"></category><category term="analogies"></category></entry><entry><title>The Who of Python</title><link href="https://when-of-python.github.io/blog/who-of-python.html" rel="alternate"></link><published>2022-09-01T22:02:00+12:00</published><updated>2022-09-01T22:02:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-01:/blog/who-of-python.html</id><summary type="html">&lt;p&gt;Python is used by very different groups of people
+and how we decide which features are Common Python and
+which are Situational Python must take that into account.
+If something is common to one group only
+e.g. data scientists, or enterpise web application developers, it should be considered Situational Python - even if the use case is very common for that group.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Python is used by very different groups of people
+and how we decide which features are Common Python and
+which are Situational Python
+must take that into account.
+If something is common to one group only
+e.g. data scientists, or enterpise web application developers, it should be considered Situational Python
+even if the use case is very common for that group.&lt;/p&gt;
+&lt;p&gt;Nick Coghlan loosely and tentatively divided Python use cases up in a 2017 blog post (&lt;a href="https://www.curiousefficiency.org/posts/2017/10/considering-pythons-target-audience.html"&gt;Considering Python's Target Audience Nick Coghlan 2017-10-09&lt;/a&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Education&lt;/li&gt;
+&lt;li&gt;Personal automation &amp;amp; hobby projects&lt;/li&gt;
+&lt;li&gt;Organisational process automation&lt;/li&gt;
+&lt;li&gt;Set-and-forget infrastructure&lt;/li&gt;
+&lt;li&gt;Continuously upgraded infrastructure&lt;/li&gt;
+&lt;li&gt;Intermittently upgraded standard operating environments&lt;/li&gt;
+&lt;li&gt;Ephemeral software&lt;/li&gt;
+&lt;li&gt;Regular use applications&lt;/li&gt;
+&lt;li&gt;Shared abstraction layers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;He also suggested that largest split in Python's user base is between Python as a scripting language and Python as an application development language.&lt;/p&gt;
+&lt;p&gt;Another useful split would be between full-time developers and people who are astronomers, biologists etc first, and developers second.&lt;/p&gt;
+&lt;p&gt;However we divide things up the main point is that there is no such thing
+as an Everyday Python that is the same for everyone.
+But having said this, there is still a need for a Common Python so we can all basically &lt;em&gt;read&lt;/em&gt; each other's work.&lt;/p&gt;</content><category term="Python"></category><category term="language users"></category><category term="learners"></category><category term="teachers"></category><category term="web"></category><category term="data science"></category><category term="scripting"></category><category term="application development"></category></entry><entry><title>One Obvious Way - An Ongoing Challenge</title><link href="https://when-of-python.github.io/blog/one-obvious-way.html" rel="alternate"></link><published>2022-09-01T22:01:00+12:00</published><updated>2022-09-01T22:01:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-01:/blog/one-obvious-way.html</id><summary type="html">&lt;p&gt;Python prides itself on having one obvious way to do things
+but it is more of an ideal than a reality sometimes.
+But we should still aim in that direction.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;From the Zen of Python to the When of Python&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Python prides itself on having one obvious way to do things
+but it is more of an ideal than a reality sometimes.
+Nonetheless we should aim in that direction to increase code readability
+and reduce the barriers to learning and mastering Python.&lt;/p&gt;
+&lt;p&gt;The When of Python will hopefully make it easier to identify the preferred approaches to general tasks,
+and the preferred alternatives for specific situations.&lt;/p&gt;
+&lt;h2&gt;True 11 years ago, true today&lt;/h2&gt;
+&lt;p&gt;It was spooky reading a post of Nick Coghlan's from eleven years ago.
+It harmonises very well with a key concern of the When of Python - namely, making Python easier for learners.
+And not just people starting off as full-time developers.
+Python also needs to work for people who are astronomers, biologists etc first, and developers second.
+Anyway, here is what Nick had to say:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;What do you mean by "cognitive burden"?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Even without considering the near-term cost of changes, every addition to the language (and even the standard library) imposes a potential burden on anyone learning the language in the future. You can't just say, "Oh, I won't worry about learning that feature" if the code base you've been asked to maintain uses it, or if it is offered as an answer to a query posted on python-list or Stack Overflow or the like. The principle of "There Should Be One - and preferably only one - Obvious Way To Do It" is aimed squarely at reducing the cognitive load on people trying to learn the language. Quite clearly, the "only one" aspect is an ideal rather than a practical reality (two kinds of string formatting and three argument parsing libraries in the standard library all say "Hi!"), but in such cases we do try to indicate that the most recently added (and hopefully least quirky) approach is the preferred way to do it.&lt;/p&gt;
+&lt;p&gt;(&lt;a href="https://www.curiousefficiency.org/posts/2011/04/musings-on-culture-of-python-dev.html"&gt;Musings on the culture of python-dev  Nick Coghlan 2011-04-21&lt;/a&gt;)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Looking back from 2022, we've managed to simplify argument parsing. As far as string formatting goes, though, we now have four approaches! Oh well - two steps forward, one step back.
+Perhaps developing a When of Python will help.
+As we said in our Kiwi PyCon presentation, newer is not always better (or worse for that matter)
+so more explicit guidance is probably helpful.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="learners"></category><category term="teaching"></category></entry><entry><title>Welcome to the When of Python</title><link href="https://when-of-python.github.io/blog/welcome-to-when-of-python.html" rel="alternate"></link><published>2022-09-01T22:00:00+12:00</published><updated>2022-09-01T22:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:when-of-python.github.io,2022-09-01:/blog/welcome-to-when-of-python.html</id><summary type="html">&lt;p&gt;The When of Python is a fledgling community initiative.
+The goal is to effectively shrink Python so it fits our brains
+by providing guidance on when we should use particular language features
+(and when we should not).&lt;/p&gt;</summary><content type="html">&lt;p&gt;The When of Python is a fledgling community initiative.
+The goal is to effectively shrink Python so it fits our brains
+by providing guidance on when we should use particular language features
+(and when we should not).&lt;/p&gt;
+&lt;p&gt;We start with &lt;strong&gt;Common Python&lt;/strong&gt; - the features we should all know so we can basically read each other's work.
+Clarity on this will be especially useful for teachers and anyone learning Python.&lt;/p&gt;
+&lt;p&gt;Then there is &lt;strong&gt;Situational Python&lt;/strong&gt; - the Python features that are useful
+but not for everyone or not all the time. It depends on the situation, for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Web development might need very different features than scientific Python, e.g. asyncio&lt;/li&gt;
+&lt;li&gt;Advanced library code might need advanced features, e.g. low-level threading / multi-processing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For each feature we try to provide guidance on
+what the situations are where it is the preferred One Obvious Way.
+The situations might be defined by domain (e.g. web application development vs data science)
+or type of code (e.g. scripting vs code with enterprise responsibilities).&lt;/p&gt;
+&lt;p&gt;Finally there is &lt;strong&gt;Deprecated Python&lt;/strong&gt; - the features we should avoid using.
+And maybe we should go even further than that - perhaps working through existing code
+and expunging some features in favour of better alternatives.
+Soon(ish) we are planning to release some tools to make that easier.&lt;/p&gt;
+&lt;h2&gt;Initial Resources&lt;/h2&gt;
+&lt;p&gt;The When of Python presentation as delivered at Kiwi Pycon 2022, and an addendum of post-conference refinements:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://when-of-python.github.io/kiwipycon2022"&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Original presentation:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.youtube.com/watch?v=JnY5MEiqG44"&gt;The When of Python&lt;/a&gt;&lt;/p&gt;</content><category term="Python"></category><category term="learners"></category><category term="teachers"></category></entry></feed>
