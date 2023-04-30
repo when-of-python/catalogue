@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "whenofpython_blog"
+version = "0.1.0"
+description = "Blog for the When of Python project"
+authors = ["Grant Paton-Simpson", "Ben Denham"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pelican = {extras = ["markdown"], version = "^4.8.0"}
+pelican-simple-footnotes = "^1.0.2"
+pelican-sitemap = "^1.0.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
