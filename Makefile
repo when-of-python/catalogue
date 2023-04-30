@@ -11,7 +11,7 @@ preview: build
 	python3 -m http.server --directory output --bind localhost 3333
 
 github: build
-	poetry run ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) "$(OUTPUTDIR)"
+	poetry run ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) output
 	git push origin $(GITHUB_PAGES_BRANCH)
 
 .PHONY: build preview github
