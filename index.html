@@ -30,8 +30,8 @@
        subMaxLevel: 2,
        themeColor: '#e7ad52',
        routes: {
-         // Docsify should not server any files in the blog/ subdirectory.
-         '/blog-source/(.*)': function() {return '';}
+         // Docsify should not serve any files in the blog/ subdirectory.
+         '/blog/(.*)': function() {return '';}
        },
        plugins: [
          EditOnGithubPlugin.create(
