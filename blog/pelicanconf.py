@@ -4,6 +4,7 @@ SITESUBTITLE = 'Guidance on when to use Python features (and when not to)'
 SITEDESCRIPTION = '''
 <div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
 <div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
 <div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
 '''
 SITEIMAGE = 'images/logo.png'
