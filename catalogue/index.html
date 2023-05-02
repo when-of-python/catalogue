@@ -30,12 +30,12 @@
        subMaxLevel: 2,
        themeColor: '#e7ad52',
        routes: {
-         // Docsify should not server any files in the blog/ subdirectory.
+         // Docsify should not serve any files in the blog/ subdirectory.
          '/blog/(.*)': function() {return '';}
        },
        plugins: [
          EditOnGithubPlugin.create(
-           'https://github.com/when-of-python/web/blob/main/',
+           'https://github.com/when-of-python/web/blob/main/catalogue/',
            null,
            'Edit on GitHub',
          )
