@@ -31,7 +31,7 @@ If you have a fixed set of attributes it can be better to use a dataclass. The b
 * Default values and type hints can be defined easily
 * The possible attributes are clearly documented - both by the design of the dataclass and possibly in the class definition itself
 
-Let's compare a dictionary for location data and then a dataclass version:
+Let's compare using a dictionary for location data and then a dataclass version:
 
 ```python
 >> location = {'latitude': -36, 'longitude': 178, 'srid': 4326}
@@ -41,6 +41,8 @@ Let's compare a dictionary for location data and then a dataclass version:
 ```
 
 Oops! A simple typo did something we didn't expect and there were no safeguards.
+
+Now let's use a simple dataclass to store the same data:
 
 ```python
 @dataclass(frozen=True)
@@ -54,16 +56,18 @@ class Location:
 {'latitude': -36, 'longitude': 178, 'srid': 4326}
 ```
 
-Using the correct keys worker as expected.
+Using the correct keys worked as expected.
 
 ```python
 >> location_b = Location(latitude=-38, longtude=177)
 ... Location.__init__() got an unexpected keyword argument 'longtude'
 ```
 
-Ah! Protection against faulty use of the data structure.
+Ah! The dataclass provided protection against faulty use of the data structure.
 
-It is also easy to add validation to dataclasses e.g. to prevent impossible values for longitude.
+It is also easy to add validation to dataclasses e.g. to prevent faulty values for longitude.
+
+So even though dictionaries are very simple and versatile we should sometimes prefer alternatives.
 
 Links
 -----
