@@ -35,12 +35,12 @@ Let's compare a dictionary for location data and then a dataclass version:
 
 ```python
 >> location = {'latitude': -36, 'longitude': 178, 'srid': 4326}
->> location['longtude'] = 179
+>> location['longtude'] = 179  ## typo in key
 >> location
 {'latitude': -36, 'longitude': 178, 'srid': 4326, 'longtude': 179}
 ```
 
-Oops! A simple typo did something you didn't expect with no safeguards.
+Oops! A simple typo did something we didn't expect and there were no safeguards.
 
 ```python
 @dataclass(frozen=True)
@@ -49,9 +49,20 @@ class Location:
     longitude: float
     srid: int = 4326  ## WGS84
 
->> location = Location(latitude=-36, longitude=178)
-... dataclasses.FrozenInstanceError: cannot assign to field 'longtude'
+>> location_a = Location(latitude=-36, longitude=178)
+>> location_a
+{'latitude': -36, 'longitude': 178, 'srid': 4326}
 ```
+
+Using the correct keys worker as expected.
+
+```python
+>> location_b = Location(latitude=-38, longtude=177)
+... Location.__init__() got an unexpected keyword argument 'longtude'
+```
+
+Ah! Protection against faulty use of the data structure.
+
 It is also easy to add validation to dataclasses e.g. to prevent impossible values for longitude.
 
 Links
