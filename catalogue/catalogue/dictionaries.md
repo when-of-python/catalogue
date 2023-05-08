@@ -31,28 +31,31 @@ If you have a fixed set of attributes it can be better to use a dataclass. The b
 * Default values and type hints can be defined easily
 * The possible attributes are clearly documented - both by the design of the dataclass and possibly in the class definition itself
 
+Let's compare a dictionary for location data and then a dataclass version:
+
 ```python
 >> location = {'latitude': -36, 'longitude': 178, 'srid': 4326}
 >> location['longtude'] = 179
 >> location
 {'latitude': -36, 'longitude': 178, 'srid': 4326, 'longtude': 179}
-
->> @dataclass(frozen=True)
->> class Location:
->>    latitude: float
->>    longitude: float
->>    srid: int = 4326  ## WGS84
->>
->> location = Location(latitude=-36, longitude=178)
->> 
-... dataclasses.FrozenInstanceError: cannot assign to field 'longtude'
-
-It is also easy to add validation to dataclasses e.g. to prevent impossible values for longitude.
 ```
 
+Oops! A simple typo did something you didn't expect with no safeguards.
+
+```python
+@dataclass(frozen=True)
+class Location:
+    latitude: float
+    longitude: float
+    srid: int = 4326  ## WGS84
+
+>> location = Location(latitude=-36, longitude=178)
+... dataclasses.FrozenInstanceError: cannot assign to field 'longtude'
+```
+It is also easy to add validation to dataclasses e.g. to prevent impossible values for longitude.
 
 Links
 -----
 
-[The Mighty Dictionary](https://www.youtube.com/watch?v=C4Kc8xzcA68)
-[The Dictionary Even Mightier PyCon](https://www.youtube.com/watch?v=66P5FMkWoVU)
+* [The Mighty Dictionary](https://www.youtube.com/watch?v=C4Kc8xzcA68)
+* [The Dictionary Even Mightier PyCon](https://www.youtube.com/watch?v=66P5FMkWoVU)
