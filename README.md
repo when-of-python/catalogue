@@ -14,6 +14,6 @@ Python project:
   `export PATH=~/.local/bin:$PATH`
 * `cd` into this directory
 * Run `git submodule update --init`
-* Check READMEs and Makefiles in subdirectories for instructions on setting up subprojects
+* Run `make -C blog deps`
 * Use `make preview` to preview the content at [localhost:3333](http://localhost:3333)
 * Use `make github` to deploy all content to GitHub pages
