@@ -2,6 +2,7 @@
 * Catalogue
   * [Comprehensions](catalogue/comprehensions.md)
   * [Dataclasses](catalogue/dataclasses.md)
+  * [Dictionaries](catalogue/dictionaries.md)
   * [For else](catalogue/for-else.md)
   * [Lambda](catalogue/lambda.md)
   * [Match Case / Structural Pattern Matching](catalogue/match-case.md)
