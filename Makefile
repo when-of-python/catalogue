@@ -1,6 +1,7 @@
 GITHUB_PAGES_BRANCH=gh-pages
 
 build:
+	poetry install
 	cd blog/ && make publish && cd ..
 	mkdir -p output
 	rm -r output
