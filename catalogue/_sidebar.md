@@ -1,5 +1,6 @@
 * [Overview](README.md)
 * Catalogue
+  * [Classes](catalogue/classes.md)
   * [Comprehensions](catalogue/comprehensions.md)
   * [Dataclasses](catalogue/dataclasses.md)
   * [Dictionaries](catalogue/dictionaries.md)
