@@ -5,6 +5,7 @@
   * [Dictionaries](catalogue/dictionaries.md)
   * [For else](catalogue/for-else.md)
   * [Lambda](catalogue/lambda.md)
+  * [Logical Operators](catalogue/logical-operators.md)
   * [Match Case / Structural Pattern Matching](catalogue/match-case.md)
   * [Pickle](catalogue/pickle.md)
   * [StrEnum](catalogue/strenum.md)
