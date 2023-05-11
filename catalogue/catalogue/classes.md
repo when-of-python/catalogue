@@ -65,9 +65,11 @@ class SendEmail:
 
 In this case we make our html setting once when instantiating the object and use that object to send lots of html emails without having to specify the html setting each time. For example:
 
+```python
 emailer = SendEmail(html=True)
 emailer.send('whenofpython@fake.com', '<p>Keep up the good work!</p>')
 emailer.send('psf@fake.com', '<p>Thanks for supporting Python!</p>')
+```
 
 There is a better alternative though that avoids any OOP overhead:
 
