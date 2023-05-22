@@ -32,4 +32,4 @@ Only potentially worth using when working with special cases like Abstract Synta
 Links
 -----
 
-https://when-of-python.github.io/blog/simple-switch-statement-for-python.html
+https://whenof.python.nz/blog/simple-switch-statement-for-python.html

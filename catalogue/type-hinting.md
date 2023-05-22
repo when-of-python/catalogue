@@ -38,4 +38,4 @@ simplicity and readability.
 Links
 -----
 
-https://when-of-python.github.io/blog/type-hinting-get-the-hint.html
+https://whenof.python.nz/blog/type-hinting-get-the-hint.html

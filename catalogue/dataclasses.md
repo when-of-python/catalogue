@@ -48,4 +48,4 @@ If you are having to override too much of what a dataclass provides then maybe a
 Links
 -----
 
-https://when-of-python.github.io/blog/classy-data-with-dataclasses.html
+https://whenof.python.nz/blog/classy-data-with-dataclasses.html

@@ -8,24 +8,24 @@
 
   <title>  Classy Data with Dataclasses | The When of Python Blog
 </title>
-  <link rel="canonical" href="https://when-of-python.github.io/blog/classy-data-with-dataclasses.html">
+  <link rel="canonical" href="https://whenof.python.nz/blog/classy-data-with-dataclasses.html">
 
-    <link rel="apple-touch-icon" href="https://when-of-python.github.io/blog/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" type="image/png" href="https://when-of-python.github.io/blog/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://when-of-python.github.io/blog/favicon-16x16.png" sizes="16x16">
-    <link rel="manifest" href="https://when-of-python.github.io/blog/manifest.json">
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
     <meta name="theme-color" content="#333333">
 
-  <link rel="stylesheet" href="https://when-of-python.github.io/blog/css/darkly.bootstrap.css">
-  <link rel="stylesheet" href="https://when-of-python.github.io/blog/theme/css/fontawesome.min.css">
-  <link rel="stylesheet" href="https://when-of-python.github.io/blog/theme/css/pygments/native.min.css">
-  <link rel="stylesheet" href="https://when-of-python.github.io/blog/theme/css/theme.css">
-  <link rel="stylesheet" href="https://when-of-python.github.io/blog/css/custom.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
 
   <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
-        href="https://when-of-python.github.io/blog/feeds/all.atom.xml">
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
   <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
-        href="https://when-of-python.github.io/blog/feeds/python.atom.xml">  
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
   <meta name="description" content="Passing data around can easily become confusing. Dataclasses are a fantastic way of structuring and documenting our data and we should be using them a lot more. They are the only standard keyword-based data structure which can serve both our immutable and our mutable data needs. Maybe we should stop teaching collections.namedtuple and typing.NamedTuple and focus on making dataclasses.dataclasses as idiomatic, familiar, and readable as possible. It would be good to have One Obvious Way of creating keyword data structures.">
 
 
@@ -36,12 +36,12 @@
     <div class="container">
 <div class="row">
     <div class="col-sm-4">
-      <a href="https://when-of-python.github.io/blog/">
-        <img class="img-fluid rounded" src=https://when-of-python.github.io/blog/images/logo.png alt="The When of Python Blog">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
       </a>
     </div>
   <div class="col-sm-8">
-    <h1 class="title"><a href="https://when-of-python.github.io/blog/">The When of Python Blog</a></h1>
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
       <p class="text-muted">
 <div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
 <div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
@@ -70,14 +70,14 @@
         </li>
         <li class="list-inline-item">
           <i class="fas fa-folder-open"></i>
-          <a href="https://when-of-python.github.io/blog/category/python.html">Python</a>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
         </li>
           <li class="list-inline-item">
             <i class="fas fa-user"></i>
-              <a href="https://when-of-python.github.io/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
           <li class="list-inline-item">
             <i class="fas fa-tag"></i>
-              <a href="https://when-of-python.github.io/blog/tag/python.html">#python</a>,               <a href="https://when-of-python.github.io/blog/tag/dataclasses.html">#dataclasses</a>,               <a href="https://when-of-python.github.io/blog/tag/namedtuple.html">#namedtuple</a>          </li>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/dataclasses.html">#dataclasses</a>,               <a href="https://whenof.python.nz/blog/tag/namedtuple.html">#namedtuple</a>          </li>
       </ul>
     </header>
     <div class="content">
@@ -115,7 +115,7 @@
 <p>It is hard to overstate how valuable this in when passing around non-trivial data structures. It also proves its worth when changing the details of your data structure - it is very easy to introduce bugs when changes aren't propagated successfully throughout the code. Having a clearly defined (and discoverable) structure makes it easy to search for uses and make consistent changes with confidence.</p>
 <h1>Type Hinting and Data Types</h1>
 <h2>Type Hinting</h2>
-<p>Type hinting is an important part of modern Python - whether used as glorified comments or for stricter static type checking purposes (see <a href="https://when-of-python.github.io/blog/type-hinting-get-the-hint.html">Get the Hint - Type Hinting is Common Python</a>. Used judiciously it can make code much more readable.</p>
+<p>Type hinting is an important part of modern Python - whether used as glorified comments or for stricter static type checking purposes (see <a href="type-hinting-get-the-hint.html">Get the Hint - Type Hinting is Common Python</a>. Used judiciously it can make code much more readable.</p>
 <p>For example, which is easier to understand - a function definition without type hinting:</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_map</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
     <span class="o">...</span>
@@ -192,7 +192,7 @@
             async>
     </script>
   </div>
-  <script src="https://when-of-python.github.io/blog/js/comments.js"></script>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
 </div>    </div>
   </div>
 
@@ -200,10 +200,10 @@
     <div class="container">
 <div class="row">
   <ul class="col-sm-6 list-inline">
-      <li class="list-inline-item"><a href="https://when-of-python.github.io/blog/authors.html">Authors</a></li>
-    <li class="list-inline-item"><a href="https://when-of-python.github.io/blog/archives.html">Archives</a></li>
-    <li class="list-inline-item"><a href="https://when-of-python.github.io/blog/categories.html">Categories</a></li>
-      <li class="list-inline-item"><a href="https://when-of-python.github.io/blog/tags.html">Tags</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
   </ul>
   <p class="col-sm-6 text-sm-right text-muted">
     Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>

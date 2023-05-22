@@ -32,4 +32,4 @@ Deprecated Python
 Links
 -----
 
-https://when-of-python.github.io/blog/pickle-in-a-pickle.html
+https://whenof.python.nz/blog/pickle-in-a-pickle.html
