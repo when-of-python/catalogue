@@ -44,4 +44,4 @@ loop. Comprehensions are good; incomprehensions less so.
 Links
 -----
 
-https://when-of-python.github.io/blog/comprehensions-are-common-python.html
+https://whenof.python.nz/blog/comprehensions-are-common-python.html

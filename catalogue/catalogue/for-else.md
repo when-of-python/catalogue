@@ -30,4 +30,4 @@ Deprecated Python
 Links
 -----
 
-https://when-of-python.github.io/blog/deprecate-for-else-or-else.html
+https://whenof.python.nz/blog/deprecate-for-else-or-else.html
