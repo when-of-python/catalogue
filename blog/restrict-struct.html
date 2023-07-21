@@ -26,7 +26,7 @@
         href="https://whenof.python.nz/blog/feeds/all.atom.xml">
   <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
         href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
-  <meta name="description" content="Adding struct to Python is tempting because structs would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn / Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.">
+  <meta name="description" content="Adding struct to Python is tempting because structs would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn and Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.">
 
 
 </head>
@@ -85,8 +85,8 @@
 <h1>Introduction</h1>
 <p>Brett Cannon recently proposed adding a struct syntax for Python <a href="https://snarky.ca/proposing-a-struct-syntax/">Proposing a struct syntax for Python</a>.</p>
 <p><code>struct Point(x: int, y: int)</code></p>
-<p>Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article and possible responses from a When-Of-Python point of view.</p>
-<h1>Some Arguments / Questions / Issues</h1>
+<p>Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article (directly or indirectly) and possible responses from a When-Of-Python point of view.</p>
+<h1>Some Arguments</h1>
 <h2>We need an alternative to namedtuple and dataclasses</h2>
 <p>There probably are use cases where <code>struct</code> is better than <code>dataclass</code> but they aren't important enough to add yet another language feature to the core language.</p>
 <p>In practice you'd end up needing to know <code>dataclasses</code> anyway because sometimes you need mutability. So now you have to teach both rather than teaching just the one and teaching it well.</p>
@@ -97,7 +97,7 @@
 <h2>Struct has an elegant syntax</h2>
 <p>Agreed - when there are only a few attributes:</p>
 <p><code>struct Point(x: int, y: int)</code></p>
-<p>But I often find dataclasses growing additional attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:</p>
+<p>But I often find my dataclasses gain additional useful attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:</p>
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
     <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
@@ -139,7 +139,7 @@
 <blockquote>
 <p>I wish there was a way to do native docstring support while keeping this a single line, but e.g., struct Point(x: int, y: int), "a 2D point." just doesn't look right to me. Since it is a new keyword it might be possible to make a : optional and only usable to add a docstring, but that might be a little too weird when the : doesn't alow for other statements afterwards. Otherwise doing a bare string immediately after the definition could inherently be picked up as a docstring just like what PEP 257 calls an "attribute docstring".</p>
 </blockquote>
-<p>Another thing <code>dataclasses</code> cover nicely:</p>
+<p>Documentation is another thing <code>dataclasses</code> make easy and documentation really matters:</p>
 <div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -180,6 +180,8 @@
 <p>Better semantics than dataclasses have by default (at least in my opinion 😁)</p>
 </blockquote>
 <p>Maybe, maybe not - but people will have to learn both so better to become confident with one - and then really learn it well.</p>
+<h1>Conclusion</h1>
+<p>Adding <code>struct</code> to Python is tempting because <code>struct</code>s would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn and Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.</p>
     </div>
   </article>
 <div id="comments">
