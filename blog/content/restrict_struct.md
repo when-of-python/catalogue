@@ -4,7 +4,7 @@ Category: Python
 Tags: python, struct, dataclasses, namedtuple
 Slug: restrict-struct
 Authors: Grant Paton-Simpson
-Summary: Adding `struct` to Python is tempting because `struct`s would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn / Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.
+Summary: Adding `struct` to Python is tempting because `struct`s would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn and Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.
 
 What has your experience of structs in other languages been? Do you agree with this post? Do you disagree? Please comment below.
 
@@ -15,10 +15,10 @@ Brett Cannon recently proposed adding a struct syntax for Python [Proposing a st
 
 `struct Point(x: int, y: int)`
 
-Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article and possible responses from a When-Of-Python point of view.
+Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article (directly or indirectly) and possible responses from a When-Of-Python point of view.
 
-Some Arguments / Questions / Issues
-===================================
+Some Arguments
+==============
 
 We need an alternative to namedtuple and dataclasses
 ----------------------------------------------------
@@ -43,7 +43,7 @@ Agreed - when there are only a few attributes:
 
 `struct Point(x: int, y: int)`
 
-But I often find dataclasses growing additional attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:
+But I often find my dataclasses gain additional useful attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:
 
 ```python
 @dataclass
@@ -91,7 +91,7 @@ Brett acknowledges the problem with adding documentation to `structs`:
 
 > I wish there was a way to do native docstring support while keeping this a single line, but e.g., struct Point(x: int, y: int), "a 2D point." just doesn't look right to me. Since it is a new keyword it might be possible to make a : optional and only usable to add a docstring, but that might be a little too weird when the : doesn't alow for other statements afterwards. Otherwise doing a bare string immediately after the definition could inherently be picked up as a docstring just like what PEP 257 calls an "attribute docstring".
 
-Another thing `dataclasses` cover nicely:
+Documentation is another thing `dataclasses` make easy and documentation really matters:
 
 ```python
 @dataclass
@@ -142,5 +142,8 @@ But you're going to have to teach `dataclasses` anyway so why add teaching `stru
 
 Maybe, maybe not - but people will have to learn both so better to become confident with one - and then really learn it well.
 
+Conclusion
+==========
 
+Adding `struct` to Python is tempting because `struct`s would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn and Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.
 
