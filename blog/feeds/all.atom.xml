@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>The When of Python Blog</title><link href="https://whenof.python.nz/blog/" rel="alternate"></link><link href="https://whenof.python.nz/blog/feeds/all.atom.xml" rel="self"></link><id>https://whenof.python.nz/blog/</id><updated>2022-10-05T07:00:00+13:00</updated><subtitle>Guidance on when to use Python features (and when not to)</subtitle><entry><title>Match Case - A Simple Switch Statement for Python?</title><link href="https://whenof.python.nz/blog/simple-switch-statement-for-python.html" rel="alternate"></link><published>2022-10-05T07:00:00+13:00</published><updated>2022-10-05T07:00:00+13:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2022-10-05:/blog/simple-switch-statement-for-python.html</id><summary type="html">&lt;p&gt;At first glance, match case (Structural Pattern Matching) looks like a simple switch statement for Python. Unfortunately, match case is a mini-language that is unsafe to use apart from the very narrow cases where its benefits outweigh its costs / risks.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of match case (Structural Pattern Matching) been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>The When of Python Blog</title><link href="https://whenof.python.nz/blog/" rel="alternate"></link><link href="https://whenof.python.nz/blog/feeds/all.atom.xml" rel="self"></link><id>https://whenof.python.nz/blog/</id><updated>2023-07-22T10:00:00+12:00</updated><subtitle>Guidance on when to use Python features (and when not to)</subtitle><entry><title>Restrict Struct?</title><link href="https://whenof.python.nz/blog/restrict-struct.html" rel="alternate"></link><published>2023-07-22T10:00:00+12:00</published><updated>2023-07-22T10:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2023-07-22:/blog/restrict-struct.html</id><summary type="html">&lt;p&gt;Adding &lt;code&gt;struct&lt;/code&gt; to Python is tempting because &lt;code&gt;struct&lt;/code&gt;s would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn / Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of structs in other languages been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Brett Cannon recently proposed adding a struct syntax for Python &lt;a href="https://snarky.ca/proposing-a-struct-syntax/"&gt;Proposing a struct syntax for Python&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;struct Point(x: int, y: int)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article and possible responses from a When-Of-Python point of view.&lt;/p&gt;
+&lt;h1&gt;Some Arguments / Questions / Issues&lt;/h1&gt;
+&lt;h2&gt;We need an alternative to namedtuple and dataclasses&lt;/h2&gt;
+&lt;p&gt;There probably are use cases where &lt;code&gt;struct&lt;/code&gt; is better than &lt;code&gt;dataclass&lt;/code&gt; but they aren't important enough to add yet another language feature to the core language.&lt;/p&gt;
+&lt;p&gt;In practice you'd end up needing to know &lt;code&gt;dataclasses&lt;/code&gt; anyway because sometimes you need mutability. So now you have to teach both rather than teaching just the one and teaching it well.&lt;/p&gt;
+&lt;p&gt;But we're agreed that it would be a good idea to remove &lt;code&gt;collections.namedtuple&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;We don't need methods on our data structures&lt;/h2&gt;
+&lt;p&gt;A lot of the time we don't need methods in our data structures. And having methods does add an overhead. But methods are often very useful, especially when wanting to pre-calculate derived values or to validate input (in &lt;code&gt;dataclasses&lt;/code&gt; most commonly using the &lt;strong&gt;post_init&lt;/strong&gt; method).&lt;/p&gt;
+&lt;p&gt;And because we will sometimes need &lt;code&gt;dataclasses&lt;/code&gt; as well as something like a &lt;code&gt;struct&lt;/code&gt;, we should probably just use &lt;code&gt;dataclasses&lt;/code&gt; in both cases (with rare exceptions). The same principle applies in cooking. Do you really want to clutter up your kitchen with unitasker gadgets like meat claws and egg cubers. &lt;a href="https://www.npr.org/sections/thesalt/2015/12/23/460833325/the-unitasker-kitchen-gadgets-alton-brown-loves-to-loathe"&gt;The 'Unitasker' Kitchen Gadgets Alton Brown Loves To Loathe&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Struct has an elegant syntax&lt;/h2&gt;
+&lt;p&gt;Agreed - when there are only a few attributes:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;struct Point(x: int, y: int)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;But I often find dataclasses growing additional attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+
+&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;  &lt;span class="c1"&gt;# WGS84&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I also like how you can incrementally boost the robustness as you feel the need e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;  &lt;span class="c1"&gt;# WGS84&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__post_init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="mi"&gt;173&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mi"&gt;174&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Out of range x value &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and add new attributes in a logical order without having to thinking about the order of defaults:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kw_args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;lbl&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Unknown&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;srid&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;4326&lt;/span&gt;  &lt;span class="c1"&gt;# WGS84&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__post_init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="mi"&gt;173&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mi"&gt;174&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Out of range x value &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Brett acknowledges the problem with adding documentation to &lt;code&gt;structs&lt;/code&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I wish there was a way to do native docstring support while keeping this a single line, but e.g., struct Point(x: int, y: int), "a 2D point." just doesn't look right to me. Since it is a new keyword it might be possible to make a : optional and only usable to add a docstring, but that might be a little too weird when the : doesn't alow for other statements afterwards. Otherwise doing a bare string immediately after the definition could inherently be picked up as a docstring just like what PEP 257 calls an "attribute docstring".&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Another thing &lt;code&gt;dataclasses&lt;/code&gt; cover nicely:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;    Point for inclusion in standard plots.&lt;/span&gt;
+&lt;span class="sd"&gt;    Has validation for country.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Optional typing&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To be very specific as to why I think this could be better than dataclasses:
+   Typing is optional (there are still folks who don't want to lean into that and it simply isn't always necessary)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In practice I usually have very primitive data types in my &lt;code&gt;dataclasses&lt;/code&gt; like &lt;code&gt;str&lt;/code&gt; or &lt;code&gt;int&lt;/code&gt; (or other &lt;code&gt;dataclasses&lt;/code&gt; or &lt;code&gt;enum.StrEnums&lt;/code&gt;) but even if you don't want to think about typing, &lt;code&gt;dataclasses&lt;/code&gt; accept &lt;code&gt;...&lt;/code&gt; and &lt;code&gt;typing.Any&lt;/code&gt; e.g.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Point&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;...&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Performance&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Class construction should be faster (which intuitively you would think shouldn't matter, but I have talked to folks where this is an actual concern, especially when startup time is critical)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In cases where raw performance really matters we should consider another solution rather than adding something to the core Python language which we'll then have to teach as well as all the existing content.&lt;/p&gt;
+&lt;h2&gt;Misc&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Syntax typically leads to better tooling support since there's no ambiguity&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;True - especially with tools like mypy - but those tools will be forced to handle &lt;code&gt;dataclasses&lt;/code&gt; well at some point so ...&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Easier to teach than (data)classes, so can act as a stepping stone towards classes&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;But you're going to have to teach &lt;code&gt;dataclasses&lt;/code&gt; anyway so why add teaching &lt;code&gt;structs&lt;/code&gt; to that as well.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Better semantics than dataclasses have by default (at least in my opinion 😁)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Maybe, maybe not - but people will have to learn both so better to become confident with one - and then really learn it well.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="struct"></category><category term="dataclasses"></category><category term="namedtuple"></category></entry><entry><title>Match Case - A Simple Switch Statement for Python?</title><link href="https://whenof.python.nz/blog/simple-switch-statement-for-python.html" rel="alternate"></link><published>2022-10-05T07:00:00+13:00</published><updated>2022-10-05T07:00:00+13:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2022-10-05:/blog/simple-switch-statement-for-python.html</id><summary type="html">&lt;p&gt;At first glance, match case (Structural Pattern Matching) looks like a simple switch statement for Python. Unfortunately, match case is a mini-language that is unsafe to use apart from the very narrow cases where its benefits outweigh its costs / risks.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of match case (Structural Pattern Matching) been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
 &lt;h1&gt;Simple Switch Statement at Last?&lt;/h1&gt;
 &lt;p&gt;Python has always lacked a &lt;code&gt;switch&lt;/code&gt; statement to perform conditional logic e.g.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## Note - not actual Python&lt;/span&gt;
@@ -486,7 +584,7 @@ its body is a crust, and its head is a lump of sugar.’&lt;/p&gt;
 &lt;p&gt;In conclusion, the StrEnum is a new feature in Python we should start using a lot more. And if we do, it is even harder to think of cases where the Walrus operator is the best solution. Too harsh? Too kind? Add a comment.&lt;/p&gt;
 &lt;h1&gt;Postscript - Testing StrEnum&lt;/h1&gt;
 &lt;p&gt;Docker can be a convenient way of experimenting with unreleased (or old) versions of Python. The following lets you run scripts in your current working folder using the version of Python in the container.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;--rm&lt;span class="w"&gt; &lt;/span&gt;-it&lt;span class="w"&gt; &lt;/span&gt;--mount&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;bind,source&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;,target&lt;span class="o"&gt;=&lt;/span&gt;/src&lt;span class="w"&gt; &lt;/span&gt;--workdir&lt;span class="w"&gt; &lt;/span&gt;/src&lt;span class="w"&gt; &lt;/span&gt;python:3.11-rc&lt;span class="w"&gt; &lt;/span&gt;/bin/bash
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run --rm -it --mount &lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;bind,source&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;,target&lt;span class="o"&gt;=&lt;/span&gt;/src --workdir /src python:3.11-rc /bin/bash
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol class="simple-footnotes"&gt;&lt;li id="sf-walrus-hunting-with-strenum-1"&gt;I also like the way Ruby has the delightfully named spaceship operator &lt;code&gt;&amp;lt;=&amp;gt;&lt;/code&gt; &lt;a href="https://medium.com/@albert.s.chun/ruby-the-spaceship-operator-101-717b42566971"&gt;Ruby — The Spaceship Operator 101&lt;/a&gt; &lt;a href="#sf-walrus-hunting-with-strenum-1-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;li id="sf-walrus-hunting-with-strenum-2"&gt;It has been possible to use string Enums since 3.4 but it is even easier now that StrEnum has been added. &lt;a href="#sf-walrus-hunting-with-strenum-2-back" class="simple-footnote-back"&gt;↩&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><category term="Python"></category><category term="python"></category><category term="walrus operator"></category><category term="enum"></category><category term="3.11"></category></entry><entry><title>Get the Hint - Type Hinting is Common Python</title><link href="https://whenof.python.nz/blog/type-hinting-get-the-hint.html" rel="alternate"></link><published>2022-09-13T06:00:00+12:00</published><updated>2022-09-13T06:00:00+12:00</updated><author><name>Grant Paton-Simpson (featuring Danny Adair)</name></author><id>tag:whenof.python.nz,2022-09-13:/blog/type-hinting-get-the-hint.html</id><summary type="html">&lt;p&gt;How we handle type hinting will define the future of Python for good or bad. Type hinting is useful as glorified commenting and as such should be part of everyone's Everyday Python. It should be part of Common Python. Type hinting is likely to be widely used in the code people encounter so we all need to be comfortable reading simple type hinting. Some enterprise and library codebases will benefit from a more strict and enforced form of type "hinting" and further advances in type hinting and checkers like mypy will improve the developer experience of using this feature. What has your experience of type hinting been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of type hinting been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
 &lt;h1&gt;Type Hinting - A Big Deal for Python?&lt;/h1&gt;
 &lt;p&gt;Some new features really define the future of a programming language. Long after the walrus operator has been forgotten, and structural pattern matching found its niche, type hinting will be shaping people's everyday Python - for better or worse. A lot depends on how we agree to use this language feature.&lt;/p&gt;

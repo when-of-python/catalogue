@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Restrict Struct? | The When of Python Blog
+</title>
+  <link rel="canonical" href="https://whenof.python.nz/blog/restrict-struct.html">
+
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
+    <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
+  <meta name="description" content="Adding struct to Python is tempting because structs would be better than dataclasses in particular ways. But they would be Yet Another Thing To Learn / Teach. And they aren't worth it in the core language. It is like cluttering up your kitchen with unitasker gadgets like meat claws and egg cubers.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
+      <p class="text-muted">
+<div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
+<div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
+</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-twitter" href="https://twitter.com/WhenOfPython" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-github" href="https://github.com/when-of-python" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Restrict Struct?
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2023-07-22T10:00:00+12:00">
+          <i class="fas fa-clock"></i>
+          Sat 22 July 2023
+        </li>
+        <li class="list-inline-item">
+          <i class="fas fa-folder-open"></i>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fas fa-user"></i>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+          <li class="list-inline-item">
+            <i class="fas fa-tag"></i>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/struct.html">#struct</a>,               <a href="https://whenof.python.nz/blog/tag/dataclasses.html">#dataclasses</a>,               <a href="https://whenof.python.nz/blog/tag/namedtuple.html">#namedtuple</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <p>What has your experience of structs in other languages been? Do you agree with this post? Do you disagree? Please comment below.</p>
+<h1>Introduction</h1>
+<p>Brett Cannon recently proposed adding a struct syntax for Python <a href="https://snarky.ca/proposing-a-struct-syntax/">Proposing a struct syntax for Python</a>.</p>
+<p><code>struct Point(x: int, y: int)</code></p>
+<p>Like all his articles it was a fascinating read. And you have to respect someone who talks about Python with friends while doing a vacation road trip :-). But we should strongly resist adding yet more increasingly specialised features to the core language. So let's briefly look at some of the issues raised by the article and possible responses from a When-Of-Python point of view.</p>
+<h1>Some Arguments / Questions / Issues</h1>
+<h2>We need an alternative to namedtuple and dataclasses</h2>
+<p>There probably are use cases where <code>struct</code> is better than <code>dataclass</code> but they aren't important enough to add yet another language feature to the core language.</p>
+<p>In practice you'd end up needing to know <code>dataclasses</code> anyway because sometimes you need mutability. So now you have to teach both rather than teaching just the one and teaching it well.</p>
+<p>But we're agreed that it would be a good idea to remove <code>collections.namedtuple</code>.</p>
+<h2>We don't need methods on our data structures</h2>
+<p>A lot of the time we don't need methods in our data structures. And having methods does add an overhead. But methods are often very useful, especially when wanting to pre-calculate derived values or to validate input (in <code>dataclasses</code> most commonly using the <strong>post_init</strong> method).</p>
+<p>And because we will sometimes need <code>dataclasses</code> as well as something like a <code>struct</code>, we should probably just use <code>dataclasses</code> in both cases (with rare exceptions). The same principle applies in cooking. Do you really want to clutter up your kitchen with unitasker gadgets like meat claws and egg cubers. <a href="https://www.npr.org/sections/thesalt/2015/12/23/460833325/the-unitasker-kitchen-gadgets-alton-brown-loves-to-loathe">The 'Unitasker' Kitchen Gadgets Alton Brown Loves To Loathe</a></p>
+<h2>Struct has an elegant syntax</h2>
+<p>Agreed - when there are only a few attributes:</p>
+<p><code>struct Point(x: int, y: int)</code></p>
+<p>But I often find dataclasses growing additional attributes over time and the vertical layout of dataclasses proves really readable - especially when we want type hints, default arguments, and comments:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span>  <span class="c1"># WGS84</span>
+</code></pre></div>
+
+<p>I also like how you can incrementally boost the robustness as you feel the need e.g.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span>  <span class="c1"># WGS84</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">173</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">174</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Out of range x value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>and add new attributes in a logical order without having to thinking about the order of defaults:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_args</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">lbl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span>  <span class="c1"># WGS84</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">173</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">174</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Out of range x value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Brett acknowledges the problem with adding documentation to <code>structs</code>:</p>
+<blockquote>
+<p>I wish there was a way to do native docstring support while keeping this a single line, but e.g., struct Point(x: int, y: int), "a 2D point." just doesn't look right to me. Since it is a new keyword it might be possible to make a : optional and only usable to add a docstring, but that might be a little too weird when the : doesn't alow for other statements afterwards. Otherwise doing a bare string immediately after the definition could inherently be picked up as a docstring just like what PEP 257 calls an "attribute docstring".</p>
+</blockquote>
+<p>Another thing <code>dataclasses</code> cover nicely:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Point for inclusion in standard plots.</span>
+<span class="sd">    Has validation for country.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+</code></pre></div>
+
+<h2>Optional typing</h2>
+<blockquote>
+<p>To be very specific as to why I think this could be better than dataclasses:
+   Typing is optional (there are still folks who don't want to lean into that and it simply isn't always necessary)</p>
+</blockquote>
+<p>In practice I usually have very primitive data types in my <code>dataclasses</code> like <code>str</code> or <code>int</code> (or other <code>dataclasses</code> or <code>enum.StrEnums</code>) but even if you don't want to think about typing, <code>dataclasses</code> accept <code>...</code> and <code>typing.Any</code> e.g.</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="o">...</span>
+    <span class="n">y</span><span class="p">:</span> <span class="o">...</span>
+</code></pre></div>
+
+<h2>Performance</h2>
+<blockquote>
+<p>Class construction should be faster (which intuitively you would think shouldn't matter, but I have talked to folks where this is an actual concern, especially when startup time is critical)</p>
+</blockquote>
+<p>In cases where raw performance really matters we should consider another solution rather than adding something to the core Python language which we'll then have to teach as well as all the existing content.</p>
+<h2>Misc</h2>
+<blockquote>
+<p>Syntax typically leads to better tooling support since there's no ambiguity</p>
+</blockquote>
+<p>True - especially with tools like mypy - but those tools will be forced to handle <code>dataclasses</code> well at some point so ...</p>
+<blockquote>
+<p>Easier to teach than (data)classes, so can act as a stepping stone towards classes</p>
+</blockquote>
+<p>But you're going to have to teach <code>dataclasses</code> anyway so why add teaching <code>structs</code> to that as well.</p>
+<blockquote>
+<p>Better semantics than dataclasses have by default (at least in my opinion 😁)</p>
+</blockquote>
+<p>Maybe, maybe not - but people will have to learn both so better to become confident with one - and then really learn it well.</p>
+    </div>
+  </article>
+<div id="comments">
+  <div id="comments-inner">
+    <div id="manual-commenting"></div>
+    <script src="https://utteranc.es/client.js"
+            repo="when-of-python/blog"
+            issue-term="pathname"
+            theme="github-dark-orange"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
+</div>    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>
