@@ -120,6 +120,8 @@ class Point:
     y: ...
 ```
 
+More details and options can be found at [death and gravity: Dataclasses without type annotations](https://death.andgravity.com/dataclasses)
+
 Performance
 -----------
 
