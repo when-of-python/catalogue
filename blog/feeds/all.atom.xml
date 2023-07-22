@@ -80,6 +80,7 @@
     &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;More details and options can be found at &lt;a href="https://death.andgravity.com/dataclasses"&gt;death and gravity: Dataclasses without type annotations&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;Performance&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Class construction should be faster (which intuitively you would think shouldn't matter, but I have talked to folks where this is an actual concern, especially when startup time is critical)&lt;/p&gt;
