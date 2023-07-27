@@ -8,6 +8,7 @@
   * [Lambda](catalogue/lambda.md)
   * [Logical Operators](catalogue/logical-operators.md)
   * [Match Case / Structural Pattern Matching](catalogue/match-case.md)
+  * [pathlib](catalogue/pathlib.md)
   * [Pickle](catalogue/pickle.md)
   * [StrEnum](catalogue/strenum.md)
   * [Type Hinting](catalogue/type-hinting.md)
