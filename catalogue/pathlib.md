@@ -1,10 +1,10 @@
-pathlib.Path <a class="status common">Common Python</a>
-============
+pathlib <a class="status common">Common Python</a>
+=======
 
 TL;DR
 -----
 
-pathlib is the best way of working with paths in Python. Alternatives should only be used in cases where squeezing out every little drop of performance is required.
+`pathlib` is the best way of working with paths in Python. Alternatives should only be used in cases where squeezing out every little drop of performance is required.
 
 Description
 -----------
