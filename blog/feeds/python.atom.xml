@@ -651,6 +651,7 @@ its body is a crust, and its head is a lump of sugar.’&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;is probably the right balance. To some extent it is a matter of personal taste.&lt;/p&gt;
+&lt;p&gt;David Beazley in his 2022 book "Python Distilled" takes a relaxed and pragmatic approach: "If the inputs and outputs of a function aren't clear from their names, they might be annotated with types" (p.23)&lt;/p&gt;
 &lt;p&gt;I hope people aren’t deterred from using basic type hinting to increase readability by the detail required to fully implement type hinting.&lt;/p&gt;
 &lt;h2&gt;2) To Enable Static Checking&lt;/h2&gt;
 &lt;p&gt;Another option is to use type hinting to enable static checks with the aim of preventing type-based bugs – which potentially makes sense when working on a complex code base worked on by multiple coders. I doubt we should do the same for ordinary scripts – the costs can be very high (see endless Stack Overflow questions on Type Hinting complexities and subtleties).&lt;/p&gt;
