@@ -92,6 +92,8 @@ def create_coord(x, y) -> Coord:
 ```
 is probably the right balance. To some extent it is a matter of personal taste.
 
+David Beazley in his 2022 book "Python Distilled" takes a relaxed and pragmatic approach: "If the inputs and outputs of a function aren't clear from their names, they might be annotated with types" (p.23)
+
 I hope people aren’t deterred from using basic type hinting to increase readability by the detail required to fully implement type hinting.
 
 2) To Enable Static Checking
