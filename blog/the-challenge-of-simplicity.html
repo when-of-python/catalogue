@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  The Challenge of Simplicity | The When of Python Blog
+</title>
+  <link rel="canonical" href="https://whenof.python.nz/blog/the-challenge-of-simplicity.html">
+
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
+    <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
+  <meta name="description" content="The core goal of the When of Python is to simplify the language so it is as elegant as possible and fits within our brain. The challenge is that, as Python continues to grow in popularity, the language will end up being used in almost every imaginable situation. In which case there will need to be lots of simplifying constructs specific to each situation. As Christopher Neugebauer pointed out in his Kiwi Pycon talk "The Complexity of Simplicity", there will always be complexity so the only question is where it gets handled. Either Python requires users to build complex tools out of simple components, or it provides simple constructs that fit specific situations e.g. for matrix multiplication, or for asynchronous processing. So to stay simple, the Python ecosystem will need to become more complex. Or, to put it another way, situational simplicity means more Python. Having said that, the core language can stay simple and we should keep trying to slim down and refine Common Python.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
+      <p class="text-muted">
+<div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
+<div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
+</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-twitter" href="https://twitter.com/WhenOfPython" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-github" href="https://github.com/when-of-python" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  The Challenge of Simplicity
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2023-09-22T08:50:00+12:00">
+          <i class="fas fa-clock"></i>
+          Fri 22 September 2023
+        </li>
+        <li class="list-inline-item">
+          <i class="fas fa-folder-open"></i>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fas fa-user"></i>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+          <li class="list-inline-item">
+            <i class="fas fa-tag"></i>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/simplicity.html">#simplicity</a>,               <a href="https://whenof.python.nz/blog/tag/complexity.html">#complexity</a>,               <a href="https://whenof.python.nz/blog/tag/zen-of-python.html">#zen of python</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <h2>The Ongoing Spread of Python</h2>
+<p>Python continues to grow in popularity and it is quite possible that Python will eventually <em>be</em> programming. In my Kiwi PyCon 2023 lightning talk I predicted that this will be the case by 2045 i.e. in about two decades. Not in the sense that other languages won't exist, or that other languages won't be important - but in the sense that nearly all programmers will know Python in addition to any other languages. The assumption behind this prediction is that Python will be aggressively refined and improved as it becomes more important and that these refinements will further increase adoption.</p>
+<p>Should this prediction be correct, Python, including Python derivatives such as Mojo and PyPy (and new languages based on Python which don't even exist yet), will be used for even more situations. And these situations will be complex in new ways. As Christopher Neugebauer pointed out in his Kiwi Pycon talk "The Complexity of Simplicity", we can take complexity as given so the only question is where it gets handled. Either Python requires users to build complex tools out of simple components, or it provides simple constructs that fit specific situations e.g. matrix multiplication, or asynchronous processing.</p>
+<h2>Everything Needs a Simple Interface</h2>
+<p>The question is whether the new interfaces require any changes to the core language or not. An example of a change to the core language is the addition in 2015 of the "@" operator. The operator was added in Python 3.5 to enable matrix multiplication <a href="https://docs.python.org/3/whatsnew/3.5.html#pep-465-a-dedicated-infix-operator-for-matrix-multiplication">PEP 465 - A dedicated infix operator for matrix multiplication</a>. But these cases are rare and the situations for which they are appropriate, and inappropriate, should be clearly communicated when they are introduced. Much more common is the creation of specialist libraries with their own syntax e.g. pandas, polars etc. These can come and go while the core language remains unaffected. So there is no reason to expect that Common Python will have to expand significantly to cope with increasing situational demands.</p>
+<h2>There Will be More Python</h2>
+<p>The end result will possibly be a core, Common Python very similar to what we have now; an ecosystem of Python-like languages (some optimised for speed); and a large array of specialist libraries covering almost every imaginable programming task. No individual will be able to understand all of it. But we should all be able to understand Common Python and the Situational Python we regularly use.</p>
+<p>It doesn't seem out-of-order to suggest that we slim down and refine Common Python just because there will be an ever-expanding Situational Python. Admittedly, maintaining simplicity at the same time as adding new complexity will require self-discipline but Python has a good track record in this regard. While staying simple isn't always simple, it is a realistic goal.</p>
+    </div>
+  </article>
+<div id="comments">
+  <div id="comments-inner">
+    <div id="manual-commenting"></div>
+    <script src="https://utteranc.es/client.js"
+            repo="when-of-python/blog"
+            issue-term="pathname"
+            theme="github-dark-orange"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
+</div>    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

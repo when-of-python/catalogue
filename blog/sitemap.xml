@@ -5,9 +5,16 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/</loc>
-<lastmod>2023-09-10T17:24:47-00:00</lastmod>
+<lastmod>2023-09-22T23:35:35-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/the-challenge-of-simplicity.html</loc>
+<lastmod>2023-09-22T08:50:00+12:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -124,7 +131,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/category/python.html</loc>
-<lastmod>2023-09-02T19:00:00+11:39</lastmod>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/python.html</loc>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/simplicity.html</loc>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/complexity.html</loc>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/zen-of-python.html</loc>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -132,13 +167,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://whenof.python.nz/blog/tag/deprecated-python.html</loc>
 <lastmod>2023-09-02T19:00:00+11:39</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://whenof.python.nz/blog/tag/python.html</loc>
-<lastmod>2023-07-22T10:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -341,7 +369,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
-<lastmod>2023-09-02T19:00:00+11:39</lastmod>
+<lastmod>2023-09-22T08:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
