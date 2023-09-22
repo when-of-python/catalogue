@@ -55,6 +55,8 @@ And if we want to only include numbers < 3 the syntax is still very similar to a
 squares = [num ** 2 for num in numbers if num < 3]
 ```
 
+See also [How to write a Python list comprehension in 3 simple steps](https://twitter.com/mathsppblog/status/1699791864692613427) for a useful animation.
+
 Other Comprehensions
 --------------------
 
