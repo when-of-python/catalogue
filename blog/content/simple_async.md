@@ -14,7 +14,7 @@ Being able to achieve tasks at the same time (asynchronously) instead of one-aft
 Alternatives
 ------------
 
-Different Python libraries for providing asynchronous programming often have radically different approaches. So while there may not be One Obvious Way for asynchronous programming in general there might be One Obvious Way for each approach. Each has its own strengths and weaknesses and in many cases it is a matter of personal taste as to which one we use. There are numerous articles on the topic but two of the best are:
+Different Python libraries for providing asynchronous programming often have radically different approaches. So while there may not be One Obvious Way for asynchronous programming in general there might be One Obvious Way for each approach. Each has its own strengths and weaknesses and in many cases it is a matter of personal taste[ref]People sometimes express strong preferences - in one comment, a programmer memorably described asyncio as a "complex inefficient single-core evil twin of a language" [Comment on Asyncio article](https://charlesleifer.com/blog/asyncio/#c3919)[/ref] as to which one we use. There are numerous articles on the topic but two of the best are:
 
 * [Asyncio, twisted, tornado, gevent walk into a bar... they pay, they leave, they drink, they order](https://www.bitecode.dev/p/asyncio-twisted-tornado-gevent-walk)
 * [The easy way to concurrency and parallelism with Python stdlib ... Because life doesn't have to be hard all the time](https://www.bitecode.dev/p/the-easy-way-to-concurrency-and-parallelism)
