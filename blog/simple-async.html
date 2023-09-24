@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Simple Async | The When of Python Blog
+</title>
+  <link rel="canonical" href="https://whenof.python.nz/blog/simple-async.html">
+
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
+    <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
+  <meta name="description" content="Python has multiple solutions for asynchronous programming - each with its own strengths and weakness. In many cases, people reach for a much more complicated solution than is actually needed forgetting the simple pool executors in the batteries-included concurrent futures library. Guidance is needed in this area so people avoid over-engineering and unnecessary complexity.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
+      <p class="text-muted">
+<div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
+<div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
+</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-twitter" href="https://twitter.com/WhenOfPython" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-github" href="https://github.com/when-of-python" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Simple Async
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2023-09-24T14:00:00+13:00">
+          <i class="fas fa-clock"></i>
+          Sun 24 September 2023
+        </li>
+        <li class="list-inline-item">
+          <i class="fas fa-folder-open"></i>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fas fa-user"></i>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+          <li class="list-inline-item">
+            <i class="fas fa-tag"></i>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/async.html">#async</a>,               <a href="https://whenof.python.nz/blog/tag/futures.html">#futures</a>,               <a href="https://whenof.python.nz/blog/tag/simplicity.html">#simplicity</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <h2>Asynchronous Programming</h2>
+<p>Being able to achieve tasks at the same time (asynchronously) instead of one-after-the-other (synchronously) can significantly speed up computer processes. The total time for a set of tasks can be the duration of the slowest task (plus a little overhead) rather than the sum of all the tasks combined. Some languages are built for asynchronous programming from the ground up but even though that is not the case with Python it can be surprisingly easy to run concurrent tasks.</p>
+<h2>Alternatives</h2>
+<p>Different Python libraries for providing asynchronous programming often have radically different approaches. So while there may not be One Obvious Way for asynchronous programming in general there might be One Obvious Way for each approach. Each has its own strengths and weaknesses and in many cases it is a matter of personal taste as to which one we use. There are numerous articles on the topic but two of the best are:</p>
+<ul>
+<li><a href="https://www.bitecode.dev/p/asyncio-twisted-tornado-gevent-walk">Asyncio, twisted, tornado, gevent walk into a bar... they pay, they leave, they drink, they order</a></li>
+<li><a href="https://www.bitecode.dev/p/the-easy-way-to-concurrency-and-parallelism">The easy way to concurrency and parallelism with Python stdlib ... Because life doesn't have to be hard all the time</a></li>
+</ul>
+<h2>Reach for Pool Executors First</h2>
+<p>As recommended in "The easy way to concurrency and parallelism with Python stdlib" (above), we should reach for the pool executors first and only use more complicated approaches if we have special requirements.</p>
+<p>"You can distribute work to a bunch of process workers or thread workers with a few lines of code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>
+
+<span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+    <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">do_something_blockint</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This simple approach only covers a limited use cases, but for those, it works surprisingly well.
+What's more, those use cases are the ones you are most like to have to solve by yourselves, as the other ones often have infra or libs solutions already."</p>
+<h2>Simple Pool Executor Recipes</h2>
+<p>The following talk was delivered several years ago but remains up-to-date - check it out - it contains multiple simple recipes using the pool executors supplied by concurrent futures.</p>
+<p><a href="https://www.youtube.com/watch?v=5_K8GwZ_268">Practical Python Async for Dummies</a></p>
+    </div>
+  </article>
+<div id="comments">
+  <div id="comments-inner">
+    <div id="manual-commenting"></div>
+    <script src="https://utteranc.es/client.js"
+            repo="when-of-python/blog"
+            issue-term="pathname"
+            theme="github-dark-orange"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
+</div>    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

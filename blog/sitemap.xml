@@ -5,9 +5,16 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/</loc>
-<lastmod>2023-09-22T23:35:35-00:00</lastmod>
+<lastmod>2023-09-24T14:09:15-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/simple-async.html</loc>
+<lastmod>2023-09-24T14:00:00+13:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -131,21 +138,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/category/python.html</loc>
-<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://whenof.python.nz/blog/tag/python.html</loc>
-<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/async.html</loc>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/futures.html</loc>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://whenof.python.nz/blog/tag/simplicity.html</loc>
-<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -369,7 +390,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
-<lastmod>2023-09-22T08:50:00+11:39</lastmod>
+<lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
