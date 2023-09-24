@@ -84,7 +84,7 @@
       <h2>Asynchronous Programming</h2>
 <p>Being able to achieve tasks at the same time (asynchronously) instead of one-after-the-other (synchronously) can significantly speed up computer processes. The total time for a set of tasks can be the duration of the slowest task (plus a little overhead) rather than the sum of all the tasks combined. Some languages are built for asynchronous programming from the ground up but even though that is not the case with Python it can be surprisingly easy to run concurrent tasks.</p>
 <h2>Alternatives</h2>
-<p>Different Python libraries for providing asynchronous programming often have radically different approaches. So while there may not be One Obvious Way for asynchronous programming in general there might be One Obvious Way for each approach. Each has its own strengths and weaknesses and in many cases it is a matter of personal taste as to which one we use. There are numerous articles on the topic but two of the best are:</p>
+<p>Different Python libraries for providing asynchronous programming often have radically different approaches. So while there may not be One Obvious Way for asynchronous programming in general there might be One Obvious Way for each approach. Each has its own strengths and weaknesses and in many cases it is a matter of personal taste<sup id="sf-simple-async-1-back"><a href="#sf-simple-async-1" class="simple-footnote" title='People sometimes express strong preferences - in one comment, a programmer memorably described asyncio as a "complex inefficient single-core evil twin of a language" Comment on Asyncio article'>1</a></sup> as to which one we use. There are numerous articles on the topic but two of the best are:</p>
 <ul>
 <li><a href="https://www.bitecode.dev/p/asyncio-twisted-tornado-gevent-walk">Asyncio, twisted, tornado, gevent walk into a bar... they pay, they leave, they drink, they order</a></li>
 <li><a href="https://www.bitecode.dev/p/the-easy-way-to-concurrency-and-parallelism">The easy way to concurrency and parallelism with Python stdlib ... Because life doesn't have to be hard all the time</a></li>
@@ -102,7 +102,7 @@
 What's more, those use cases are the ones you are most like to have to solve by yourselves, as the other ones often have infra or libs solutions already."</p>
 <h2>Simple Pool Executor Recipes</h2>
 <p>The following talk was delivered several years ago but remains up-to-date - check it out - it contains multiple simple recipes using the pool executors supplied by concurrent futures.</p>
-<p><a href="https://www.youtube.com/watch?v=5_K8GwZ_268">Practical Python Async for Dummies</a></p>
+<p><a href="https://www.youtube.com/watch?v=5_K8GwZ_268">Practical Python Async for Dummies</a></p><ol class="simple-footnotes"><li id="sf-simple-async-1">People sometimes express strong preferences - in one comment, a programmer memorably described asyncio as a "complex inefficient single-core evil twin of a language" <a href="https://charlesleifer.com/blog/asyncio/#c3919">Comment on Asyncio article</a> <a href="#sf-simple-async-1-back" class="simple-footnote-back">↩</a></li></ol>
     </div>
   </article>
 <div id="comments">
