@@ -23,7 +23,7 @@ my_date.strftime('%d-%m-%Y')  ## 30-05-2027
 When not to use
 ---------------
 
-Don't use `strftime` when doing string interpolation unless you are needing to use the formatted string somewhere else as well.
+Don't use `strftime` when doing string interpolation unless you also need to use the formatted string somewhere else.
 
 DON'T - unnecessary and inelegant:
 
