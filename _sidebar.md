@@ -11,5 +11,6 @@
   * [pathlib](catalogue/pathlib.md)
   * [Pickle](catalogue/pickle.md)
   * [StrEnum](catalogue/strenum.md)
+  * [strftime](catalogue/strftime.md)
   * [Type Hinting](catalogue/type-hinting.md)
   * [Walrus](catalogue/walrus.md)
