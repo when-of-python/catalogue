@@ -9,7 +9,7 @@ TL;DR
 Description
 -----------
 
-`strftime`() allows us to format a date as a string e.g.
+`strftime()` allows us to format a date as a string e.g.
 
 Example
 -------
