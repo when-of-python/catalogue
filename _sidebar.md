@@ -6,6 +6,7 @@
   * [Dictionaries](catalogue/dictionaries.md)
   * [For else](catalogue/for-else.md)
   * [Lambda](catalogue/lambda.md)
+  * [len](catalogue/len.md)
   * [Logical Operators](catalogue/logical-operators.md)
   * [Match Case / Structural Pattern Matching](catalogue/match-case.md)
   * [pathlib](catalogue/pathlib.md)
