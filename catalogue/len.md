@@ -4,7 +4,7 @@ len <a class="status common">Common Python</a>
 TL;DR
 -----
 
-The len() function is perfect for getting length - but it shouldn't be used for unnecessary calculations to enable simple iteration or to check for emptiness - there are better ways to do that.
+The `len()` function is perfect for getting length - but it shouldn't be used for unnecessary calculations to enable simple iteration or to check for emptiness - there are better ways to do that.
 
 Description
 -----------
@@ -37,13 +37,13 @@ for pet in pets:
     print(pet)
 ```
 
-We should also avoid using len() to evaluate emptiness. Instead of:
+We can also avoid using `len()` to evaluate emptiness. Instead of:
 
 ```python
 if len(pets) == 0:
 ```
 
-we should write the more pythonic:
+we can write the more pythonic:
 
 ```python
 if not pets:
