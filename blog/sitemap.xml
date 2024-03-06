@@ -5,9 +5,16 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/</loc>
-<lastmod>2023-12-16T11:36:04-00:00</lastmod>
+<lastmod>2024-03-07T08:00:50-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/the-power-of-sane-defaults-and-python-packaging.html</loc>
+<lastmod>2024-03-07T07:00:00+13:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -138,14 +145,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/category/python.html</loc>
-<lastmod>2023-09-24T14:00:00+11:39</lastmod>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://whenof.python.nz/blog/tag/python.html</loc>
-<lastmod>2023-09-24T14:00:00+11:39</lastmod>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/packaging.html</loc>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/rye.html</loc>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/uv.html</loc>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -390,7 +418,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
-<lastmod>2023-09-24T14:00:00+11:39</lastmod>
+<lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
