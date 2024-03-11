@@ -9,7 +9,7 @@ Don't use - it confuses lots of programmers and there are much more readable alt
 Description
 -----------
 
-Python-specific object serialisation.
+An optional `else` clause in an `for`-loop that will be executed after the end of the loop if a `break` statement is never executed in the loop's body.
 
 Example
 -------
