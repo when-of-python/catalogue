@@ -30,7 +30,7 @@ class Data:
     vals: Sequence[float]
 
     def __post_init__(self):
-        ## Validate
+        ## validate
         if not 10 <= len(self.vals) <= 100:
             raise Exception(f"Must have between 10 and 100 values ({len(self.vals)} supplied)")
 
