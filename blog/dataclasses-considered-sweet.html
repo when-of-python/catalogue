@@ -91,83 +91,99 @@
 <h2>Dataclasses as Foundational Data Structures</h2>
 <p>The more complex a program, the more we benefit from making the meaning of the different parts of the program explicit. We do this by giving things names. So we often shift from data structures that are positional only to those that rely on keywords. We might shift, for example, from tuples to named tuples, or from lists to dictionaries. This is where dataclasses really shine. Even though dataclasses can do much, much more, in their simplest version they provide a very concise, readable syntax for defining a data structure that names its internal parts and, at a basic level, documents them.</p>
 <p>For example:</p>
-<p>@dataclass
-class Coord:
-    lbl: str
-    lat: float
-    lon: float
-    srid: int = 4326</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Coord</span><span class="p">:</span>
+    <span class="n">lbl</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span>
+</code></pre></div>
+
 <p>There is very little boilerplate and it is hard to think of a more concise way of defining attributes. If we get an instance of a Coord class in our program we know exactly what we're getting and we can refer to parts of it by name. We can also look up the definition of the dataclass to see if there is extra documentation. I recently saw a student using a list as a data structure for configuration and his code became increasingly confusing as he changed the number, type, and order of the items. Items were read from the list by position and it was therefore difficult to read the code for correctness.</p>
 <p>As mentioned in the Overview, dataclasses can be used as a convenient way of making classes in general, not just data-centric classes. But even when we are using our dataclass exclusively as a data structure, there are lots of general class features we can add that make the data structure safer, and more convenient to use. Note - dataclasses are worth using as data structures even when kept very simple - don't be deterred by all the extra things you need to understand to strengthen your dataclass. </p>
 <p>We can add derived values as properties - for example:</p>
-<p>@dataclass
-class Area:
-    h_metres: float
-    w_metres: float
-    lbl: str | None = None</p>
-<div class="highlight"><pre><span></span><code><span class="nv">@property</span>
-<span class="n">def</span><span class="w"> </span><span class="n">h_cm</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">h_metres</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Area</span><span class="p">:</span>
+    <span class="n">h_metres</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">w_metres</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lbl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="nv">@property</span>
-<span class="n">def</span><span class="w"> </span><span class="n">area_sq_metres</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">h_metres</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">w_metres</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">h_cm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metres</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area_sq_metres</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metres</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_metres</span>
 </code></pre></div>
 
 <p>We can add validation using the dataclass-supported <strong>post_init</strong> method:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__post_init__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">h_metres</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span>:
-<span class="w">        </span><span class="nv">raise</span><span class="w"> </span><span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;h_metres value ({self.h_metres}) not in expected range&quot;</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_metres</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;h_metres value (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">h_metres</span><span class="si">}</span><span class="s2">) not in expected range&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>We can make a nice representation of dataclass objects when printed e.g. in log files or error messages:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__str__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;Area {self.h_metres}m x {self.w_metres}m ({self.area_sq_metres:,} square metres)&quot;</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Area </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">h_metres</span><span class="si">}</span><span class="s2">m x </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">w_metres</span><span class="si">}</span><span class="s2">m (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">area_sq_metres</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> square metres)&quot;</span>
 </code></pre></div>
 
 <p>We can potentially handle default values. Depending on what we are trying to do there are different strategies. In ascending order of trickiness we have:</p>
 <p>1) equals e.g.</p>
-<p>@dataclass
-class Business:
-    ...
-    country: str = 'NZ'</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Business</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">country</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;NZ&#39;</span>
+</code></pre></div>
+
 <p>2) using <strong>post_init</strong>, where we have access to all the values in the dataclass (including any defined by property) e.g.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__post_init__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">lbl</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">None</span>:
-<span class="w">        </span><span class="nv">self</span>.<span class="nv">lbl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;{self.name} (auto-generated)&quot;</span>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lbl</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lbl</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (auto-generated)&quot;</span>
 </code></pre></div>
 
 <p>This seems to be the best (only?) way of working with other instance attribute values. See https://stackoverflow.com/questions/66437553/reference-a-variable-of-a-dataclass-in-a-field-with-a-default-factory</p>
 <p>3) default_factory for a fresh mutable (one that isn't shared by all instances of the class)</p>
-<p>from dataclasses import dataclass, field</p>
-<p>class Business:
-    ...
-    branches: list = field(default_factory=[])</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="k">class</span> <span class="nc">Business</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">branches</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="p">[])</span>
+</code></pre></div>
+
 <p>4) default_factory for a function</p>
-<p>from uuid import uuid4</p>
-<p>class Business:
-    ...
-    user_id: str = field(default_factory = lambda : str(uuid4()))</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="k">class</span> <span class="nc">Business</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span> <span class="o">=</span> <span class="k">lambda</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">()))</span>
+</code></pre></div>
+
 <p>Finally, we can add convenience functions for ingesting or exporting data - for example, in the case of a Coord object we might make it easy to write something like:</p>
-<p>new_coord = coord.with_new_srid(srid=2193)</p>
+<div class="highlight"><pre><span></span><code><span class="n">new_coord</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">with_new_srid</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">2193</span><span class="p">)</span>
+</code></pre></div>
+
 <p>Whether we make a simple dataclass, or a more sophisticated one, having a well-named data structure makes it much easier to define interface expectations in the program. Basically, what does a function require as an argument and what will it return as a result. Dataclasses make it easy to just use a name in type hinting that is self-explanatory e.g. without even having to look at the code we might reasonably infer that an instance of an OutputSpec dataclass defines the configuration for our output. And if we want to know what aspects of the output are configured we can just look at the dataclass definition for OutputSpec.</p>
 <h2>Dataclasses as Syntactic Sugar</h2>
 <p>Dataclasses provide some syntactic sugar by replacing:</p>
-<p>class Coord:</p>
-<div class="highlight"><pre><span></span><code>def __init__(self, lbl: str, lat: float, lon: float, srid: int = 4326):
-    self.lbl = lbl
-    self.lat = lat
-    self.lon = lon
-    self.srid = srid
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Coord</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lbl</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl</span> <span class="o">=</span> <span class="n">lbl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">srid</span> <span class="o">=</span> <span class="n">srid</span>
 </code></pre></div>
 
 <p>with:</p>
-<p>@dataclass
-class Coord:
-    lbl: str
-    lat: float
-    lon: float
-    srid: int = 4326</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Coord</span><span class="p">:</span>
+    <span class="n">lbl</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lat</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">lon</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">srid</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4326</span>
+</code></pre></div>
+
 <p>The best bit is the removal of all the repetitive boilerplate self.x = x etc. And the code is more declarative - in most cases it is very easy to see what attributes will be in the class.</p>
 <h2>Sweet Enough?</h2>
 <p>There is a dark side to dataclasses though - the dataclass decorator makes a series of "magic" changes to your standard class - not least of all the behind-the-scenes transformation of class attributes into instance attributes. The main downside is that people might become confused about the syntax for defining class versus instance attributes and accidentally add class attributes to standard classes. This is already happening in the wild. And Python generally favours explicit over implicit as per The Zen of Python.</p>
@@ -175,15 +191,16 @@ class Coord:
 <p>To be honest, I'm not sure. My suspicion is that the syntactic sugar of the dataclass is sufficiently sweet that we'll see lots of uses in the wild beyond usage as a data structure. I have already encountered one dev team that mainly uses dataclasses for all class use. In short, the community will decide. But a practical rule-of-thumb might be - use a dataclass unless you find yourself overriding lots of the magic, in which case, a standard Python class will be more explicit. Hacking something that is already magic sounds like a recipe for mysterious behaviours, increased mental load, and subtle bugs.</p>
 <p>On a final note, if people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.</p>
 <p>Normal class:</p>
-<p>class Business:
-    counter = 0  ## &lt;======= class attribute shared by all instances</p>
-<div class="highlight"><pre><span></span><code>def __init__(self, name: str):
-    self.name = name  ## &lt;======= instance attribute unique to an instance
-</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Business</span><span class="p">:</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1">## &lt;======= class attribute shared by all instances</span>
 
-<p>@dataclass
-class Business:
-    name: str  ## &lt;======= instance attribute (once decorator does its magic)</p>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>  <span class="c1">## &lt;======= instance attribute unique to an instance</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Business</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">## &lt;======= instance attribute (once decorator does its magic)</span>
+</code></pre></div>
     </div>
   </article>
 <div id="comments">
