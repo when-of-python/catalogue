@@ -30,12 +30,14 @@ The more complex a program, the more we benefit from making the meaning of the d
 
 For example:
 
+```python
 @dataclass
 class Coord:
     lbl: str
     lat: float
     lon: float
     srid: int = 4326
+```
 
 There is very little boilerplate and it is hard to think of a more concise way of defining attributes. If we get an instance of a Coord class in our program we know exactly what we're getting and we can refer to parts of it by name. We can also look up the definition of the dataclass to see if there is extra documentation. I recently saw a student using a list as a data structure for configuration and his code became increasingly confusing as he changed the number, type, and order of the items. Items were read from the list by position and it was therefore difficult to read the code for correctness.
 
@@ -43,6 +45,7 @@ As mentioned in the Overview, dataclasses can be used as a convenient way of mak
 
 We can add derived values as properties - for example:
 
+```python
 @dataclass
 class Area:
     h_metres: float
@@ -56,54 +59,69 @@ class Area:
     @property
     def area_sq_metres(self):
         return self.h_metres * self.w_metres
+```
 
 We can add validation using the dataclass-supported __post_init__ method:
 
+```python
     def __post_init__(self):
         if not 1 <= self.h_metres <= 100:
             raise ValueError(f"h_metres value ({self.h_metres}) not in expected range")
+```
 
 We can make a nice representation of dataclass objects when printed e.g. in log files or error messages:
 
+```python
     def __str__(self):
       return f"Area {self.h_metres}m x {self.w_metres}m ({self.area_sq_metres:,} square metres)"
+```
 
 We can potentially handle default values. Depending on what we are trying to do there are different strategies. In ascending order of trickiness we have:
 
 1) equals e.g.
 
+```python
 @dataclass
 class Business:
     ...
     country: str = 'NZ'
+```
 
 2) using __post_init__, where we have access to all the values in the dataclass (including any defined by property) e.g.
 
+```python
     def __post_init__(self):
         if self.lbl is None:
             self.lbl = f"{self.name} (auto-generated)"
+```
 
 This seems to be the best (only?) way of working with other instance attribute values. See https://stackoverflow.com/questions/66437553/reference-a-variable-of-a-dataclass-in-a-field-with-a-default-factory
 
 3) default_factory for a fresh mutable (one that isn't shared by all instances of the class)
 
+```python
 from dataclasses import dataclass, field
 
 class Business:
     ...
     branches: list = field(default_factory=[])
+```
 
 4) default_factory for a function
 
+```python
 from uuid import uuid4
 
 class Business:
     ...
     user_id: str = field(default_factory = lambda : str(uuid4()))
+```
 
 Finally, we can add convenience functions for ingesting or exporting data - for example, in the case of a Coord object we might make it easy to write something like:
 
+```python
 new_coord = coord.with_new_srid(srid=2193)
+```
 
 Whether we make a simple dataclass, or a more sophisticated one, having a well-named data structure makes it much easier to define interface expectations in the program. Basically, what does a function require as an argument and what will it return as a result. Dataclasses make it easy to just use a name in type hinting that is self-explanatory e.g. without even having to look at the code we might reasonably infer that an instance of an OutputSpec dataclass defines the configuration for our output. And if we want to know what aspects of the output are configured we can just look at the dataclass definition for OutputSpec.
 
@@ -112,6 +130,7 @@ Dataclasses as Syntactic Sugar
 
 Dataclasses provide some syntactic sugar by replacing:
 
+```python
 class Coord:
 
     def __init__(self, lbl: str, lat: float, lon: float, srid: int = 4326):
@@ -119,15 +138,18 @@ class Coord:
         self.lat = lat
         self.lon = lon
         self.srid = srid
+```
 
 with:
 
+```python
 @dataclass
 class Coord:
     lbl: str
     lat: float
     lon: float
     srid: int = 4326
+```
 
 The best bit is the removal of all the repetitive boilerplate self.x = x etc. And the code is more declarative - in most cases it is very easy to see what attributes will be in the class.
 
@@ -144,6 +166,7 @@ On a final note, if people are commonly going to use dataclasses as generic clas
 
 Normal class:
 
+```python
 class Business:
     counter = 0  ## <======= class attribute shared by all instances
 
@@ -153,4 +176,4 @@ class Business:
 @dataclass
 class Business:
     name: str  ## <======= instance attribute (once decorator does its magic)
-
+```
