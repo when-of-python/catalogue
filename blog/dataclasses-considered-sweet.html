@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Dataclasses Considered Sweet | The When of Python Blog
+</title>
+  <link rel="canonical" href="https://whenof.python.nz/blog/dataclasses-considered-sweet.html">
+
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
+    <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
+  <meta name="description" content="Dataclasses are versatile and they're a crucial part of Python. Firstly, as a great data structure - somewhere orderly and documented to store values. Secondly, as a super-convenient way of defining (most) classes, not just data classes. These benefits do come with a cost though, and these costs will need to be mitigated. If people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
+      <p class="text-muted">
+<div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
+<div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
+</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-twitter" href="https://twitter.com/WhenOfPython" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-github" href="https://github.com/when-of-python" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Dataclasses Considered Sweet
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2024-04-08T12:50:00+12:00">
+          <i class="fas fa-clock"></i>
+          Mon 08 April 2024
+        </li>
+        <li class="list-inline-item">
+          <i class="fas fa-folder-open"></i>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fas fa-user"></i>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+          <li class="list-inline-item">
+            <i class="fas fa-tag"></i>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/dataclasses.html">#dataclasses</a>,               <a href="https://whenof.python.nz/blog/tag/classes.html">#classes</a>,               <a href="https://whenof.python.nz/blog/tag/object-oriented-programming.html">#object oriented programming</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <h1>Dataclasses Considered Sweet</h1>
+<h2>Overview</h2>
+<p>Dataclasses are versatile and they're a crucial part of Python.</p>
+<p>Firstly, dataclasses are a great data structure. They enable us to store multiple values in a customised and clearly defined structure. Alongside lists and dictionaries, dataclasses are a valuable fundamental building block in our Python programs.</p>
+<p>Secondly, dataclasses are a super-convenient way of defining (most) classes, not just data classes. In addition to removing a whole lot of boilerplate every time, they provide a very readable definition of the (instance) attributes in a class.</p>
+<p>These benefits do come with a cost though, and these costs will need to be mitigated.</p>
+<p>There will also need to be guidance on when to use a dataclass and when to use a standard class.</p>
+<h2>Dataclasses as Foundational Data Structures</h2>
+<p>The more complex a program, the more we benefit from making the meaning of the different parts of the program explicit. We do this by giving things names. So we often shift from data structures that are positional only to those that rely on keywords. We might shift, for example, from tuples to named tuples, or from lists to dictionaries. This is where dataclasses really shine. Even though dataclasses can do much, much more, in their simplest version they provide a very concise, readable syntax for defining a data structure that names its internal parts and, at a basic level, documents them.</p>
+<p>For example:</p>
+<p>@dataclass
+class Coord:
+    lbl: str
+    lat: float
+    lon: float
+    srid: int = 4326</p>
+<p>There is very little boilerplate and it is hard to think of a more concise way of defining attributes. If we get an instance of a Coord class in our program we know exactly what we're getting and we can refer to parts of it by name. We can also look up the definition of the dataclass to see if there is extra documentation. I recently saw a student using a list as a data structure for configuration and his code became increasingly confusing as he changed the number, type, and order of the items. Items were read from the list by position and it was therefore difficult to read the code for correctness.</p>
+<p>As mentioned in the Overview, dataclasses can be used as a convenient way of making classes in general, not just data-centric classes. But even when we are using our dataclass exclusively as a data structure, there are lots of general class features we can add that make the data structure safer, and more convenient to use. Note - dataclasses are worth using as data structures even when kept very simple - don't be deterred by all the extra things you need to understand to strengthen your dataclass. </p>
+<p>We can add derived values as properties - for example:</p>
+<p>@dataclass
+class Area:
+    h_metres: float
+    w_metres: float
+    lbl: str | None = None</p>
+<div class="highlight"><pre><span></span><code><span class="nv">@property</span>
+<span class="n">def</span><span class="w"> </span><span class="n">h_cm</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">h_metres</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="nv">@property</span>
+<span class="n">def</span><span class="w"> </span><span class="n">area_sq_metres</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">h_metres</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">w_metres</span>
+</code></pre></div>
+
+<p>We can add validation using the dataclass-supported <strong>post_init</strong> method:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__post_init__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">h_metres</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span>:
+<span class="w">        </span><span class="nv">raise</span><span class="w"> </span><span class="nv">ValueError</span><span class="ss">(</span><span class="nv">f</span><span class="s2">&quot;h_metres value ({self.h_metres}) not in expected range&quot;</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>We can make a nice representation of dataclass objects when printed e.g. in log files or error messages:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__str__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;Area {self.h_metres}m x {self.w_metres}m ({self.area_sq_metres:,} square metres)&quot;</span>
+</code></pre></div>
+
+<p>We can potentially handle default values. Depending on what we are trying to do there are different strategies. In ascending order of trickiness we have:</p>
+<p>1) equals e.g.</p>
+<p>@dataclass
+class Business:
+    ...
+    country: str = 'NZ'</p>
+<p>2) using <strong>post_init</strong>, where we have access to all the values in the dataclass (including any defined by property) e.g.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">def</span><span class="w"> </span><span class="nv">__post_init__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nv">self</span>.<span class="nv">lbl</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">None</span>:
+<span class="w">        </span><span class="nv">self</span>.<span class="nv">lbl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">f</span><span class="s2">&quot;{self.name} (auto-generated)&quot;</span>
+</code></pre></div>
+
+<p>This seems to be the best (only?) way of working with other instance attribute values. See https://stackoverflow.com/questions/66437553/reference-a-variable-of-a-dataclass-in-a-field-with-a-default-factory</p>
+<p>3) default_factory for a fresh mutable (one that isn't shared by all instances of the class)</p>
+<p>from dataclasses import dataclass, field</p>
+<p>class Business:
+    ...
+    branches: list = field(default_factory=[])</p>
+<p>4) default_factory for a function</p>
+<p>from uuid import uuid4</p>
+<p>class Business:
+    ...
+    user_id: str = field(default_factory = lambda : str(uuid4()))</p>
+<p>Finally, we can add convenience functions for ingesting or exporting data - for example, in the case of a Coord object we might make it easy to write something like:</p>
+<p>new_coord = coord.with_new_srid(srid=2193)</p>
+<p>Whether we make a simple dataclass, or a more sophisticated one, having a well-named data structure makes it much easier to define interface expectations in the program. Basically, what does a function require as an argument and what will it return as a result. Dataclasses make it easy to just use a name in type hinting that is self-explanatory e.g. without even having to look at the code we might reasonably infer that an instance of an OutputSpec dataclass defines the configuration for our output. And if we want to know what aspects of the output are configured we can just look at the dataclass definition for OutputSpec.</p>
+<h2>Dataclasses as Syntactic Sugar</h2>
+<p>Dataclasses provide some syntactic sugar by replacing:</p>
+<p>class Coord:</p>
+<div class="highlight"><pre><span></span><code>def __init__(self, lbl: str, lat: float, lon: float, srid: int = 4326):
+    self.lbl = lbl
+    self.lat = lat
+    self.lon = lon
+    self.srid = srid
+</code></pre></div>
+
+<p>with:</p>
+<p>@dataclass
+class Coord:
+    lbl: str
+    lat: float
+    lon: float
+    srid: int = 4326</p>
+<p>The best bit is the removal of all the repetitive boilerplate self.x = x etc. And the code is more declarative - in most cases it is very easy to see what attributes will be in the class.</p>
+<h2>Sweet Enough?</h2>
+<p>There is a dark side to dataclasses though - the dataclass decorator makes a series of "magic" changes to your standard class - not least of all the behind-the-scenes transformation of class attributes into instance attributes. The main downside is that people might become confused about the syntax for defining class versus instance attributes and accidentally add class attributes to standard classes. This is already happening in the wild. And Python generally favours explicit over implicit as per The Zen of Python.</p>
+<p>The question is - do the benefits of dataclasses outweigh the costs? In the case of data-centric classes, where classes are used as data structures alongside dictionaries and lists and so on, the answer is Yes. In practice, the declarative nature of the dataclass, the ability to flexibly handle default values using fields etc, is so valuable it is worth potential confusion about ways of declaring class versus instance attributes. But what about other uses of dataclasses? Is it worth the rather modest convenience of reducing boilerplate?</p>
+<p>To be honest, I'm not sure. My suspicion is that the syntactic sugar of the dataclass is sufficiently sweet that we'll see lots of uses in the wild beyond usage as a data structure. I have already encountered one dev team that mainly uses dataclasses for all class use. In short, the community will decide. But a practical rule-of-thumb might be - use a dataclass unless you find yourself overriding lots of the magic, in which case, a standard Python class will be more explicit. Hacking something that is already magic sounds like a recipe for mysterious behaviours, increased mental load, and subtle bugs.</p>
+<p>On a final note, if people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.</p>
+<p>Normal class:</p>
+<p>class Business:
+    counter = 0  ## &lt;======= class attribute shared by all instances</p>
+<div class="highlight"><pre><span></span><code>def __init__(self, name: str):
+    self.name = name  ## &lt;======= instance attribute unique to an instance
+</code></pre></div>
+
+<p>@dataclass
+class Business:
+    name: str  ## &lt;======= instance attribute (once decorator does its magic)</p>
+    </div>
+  </article>
+<div id="comments">
+  <div id="comments-inner">
+    <div id="manual-commenting"></div>
+    <script src="https://utteranc.es/client.js"
+            repo="when-of-python/blog"
+            issue-term="pathname"
+            theme="github-dark-orange"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
+</div>    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>
