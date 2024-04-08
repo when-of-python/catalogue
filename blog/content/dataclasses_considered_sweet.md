@@ -1,10 +1,19 @@
+Title: Dataclasses Considered Sweet
+Date: 2024-04-08 12:50
+Category: Python
+Tags: python, dataclasses, classes, object oriented programming
+Slug: dataclasses-considered-sweet
+Authors: Grant Paton-Simpson
+Summary: Dataclasses are versatile and they're a crucial part of Python. Firstly, as a great data structure - somewhere orderly and documented to store values. Secondly, as a super-convenient way of defining (most) classes, not just data classes. These benefits do come with a cost though, and these costs will need to be mitigated. If people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.
+
+
 Dataclasses Considered Sweet
 ============================
 
 Overview
 --------
 
-Dataclasses are versatile and a crucial part of Python.
+Dataclasses are versatile and they're a crucial part of Python.
 
 Firstly, dataclasses are a great data structure. They enable us to store multiple values in a customised and clearly defined structure. Alongside lists and dictionaries, dataclasses are a valuable fundamental building block in our Python programs.
 
