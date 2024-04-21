@@ -1,4 +1,4 @@
-For else <a class="status deprecated">Deprecated Python</a>
+for else <a class="status deprecated">Deprecated Python</a>
 ========
 
 TL;DR
