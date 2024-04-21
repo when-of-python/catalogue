@@ -5,9 +5,16 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/</loc>
-<lastmod>2024-04-08T13:00:22-00:00</lastmod>
+<lastmod>2024-04-21T17:03:33-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/string-theory.html</loc>
+<lastmod>2024-04-21T07:00:00+12:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -152,14 +159,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/category/python.html</loc>
-<lastmod>2024-04-08T12:50:00+11:39</lastmod>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://whenof.python.nz/blog/tag/python.html</loc>
-<lastmod>2024-04-08T12:50:00+11:39</lastmod>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/string.html</loc>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/interpolation.html</loc>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/concatenation.html</loc>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/f-strings.html</loc>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -439,7 +474,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
-<lastmod>2024-04-08T12:50:00+11:39</lastmod>
+<lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
