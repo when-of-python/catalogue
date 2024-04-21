@@ -18,13 +18,16 @@ fname = 'Jo'
 print('Hello ' + fname)
 
 ```
+
+'Hello Jo'
+
 Glueing, or joining strings together with a glue string, is especially useful when working with a sequence of items we wish to present together:
 
 ```python
 print(' \N{WHITE HEART} '.join(['Romeo', 'Juliet']))
 ```
 
-Romeo 🤍 Juliet
+'Romeo 🤍 Juliet'
 
 In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(<ref>or expressions resulting in strings, or anything which has a \_\_str\_\_ method</ref>). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.
 
@@ -32,19 +35,34 @@ In version 3.6, Python introduced formatted string literals, better known as f-s
 ## sprint
 fname = 'Elon'
 print("Hello %s" % fname)
+```
+
+'Hello Elon'
+
+```python
 lname = 'Musk'
 print("Hello %s %s" % (fname, lname))
+```
 
+'Hello Elon Musk'
+
+```python
 ## format
 print("Hello {fname} {lname}".format(fname=fname, lname=lname))
 print("{unit_id:0>10}".format(unit_id="ABC1234"))  ## just showing how powerful the format method can become
+```
 
+'Hello Elon Musk'
+'000ABC1234'
+
+```python
 ## f-string
 fname = 'Elon'
 lname = 'Musk'
 print(f"{fname} {lname}")
 ```
 
+'Elon Musk'
 
 When Not to Use f-string Interpolation
 ======================================
@@ -52,12 +70,18 @@ When Not to Use f-string Interpolation
 The first question is whether interpolation should be used at all. Sometimes there is a more elegant solution using string methods.
 
 ```python
+word = 'crocodile'
+
 ## f-string overkill
 print(f"{word:*^30}")
 
 ## semantic string method
 print(word.center(30, '*'))
 ```
+
+'\*\*\*\*\*\*\*\*\*\*crocodile\*\*\*\*\*\*\*\*\*\*\*'
+
+'\*\*\*\*\*\*\*\*\*\*crocodile\*\*\*\*\*\*\*\*\*\*\*'
 
 In other cases interpolation of any sort is not a good idea from a security point of view. If strings are being built from variables which in any way come from user input they open up vulnerabilities like SQL injection attacks. Here is the warning from the older psycopg docs: “Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.” And in newer documentation it says:
 
@@ -112,4 +136,4 @@ from datetime import datetime
 print(f"{datetime.today():%Y-%m-%d}")
 ```
 
-2024-04-21
+'2024-04-21'
