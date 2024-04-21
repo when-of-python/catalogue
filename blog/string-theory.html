@@ -84,51 +84,51 @@
       <p>What has your experience of working with strings, especially f-strings, been? Do you agree with this post? Do you disagree? Please comment below.</p>
 <h1>Concatenation, Gluing, and Interpolation</h1>
 <p>Concatenation is one of the first ways we learn of joining strings together in Python, and it remains useful for simple cases, even when we learn about more sophisticated alternatives:</p>
-<div class="highlight"><pre><span></span><code><span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Jo&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello &#39;</span> <span class="o">+</span> <span class="n">fname</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">fname</span> <span class="o">=</span> <span class="s1">'Jo'</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Hello '</span> <span class="o">+</span> <span class="n">fname</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'Hello Jo'</p>
 <p>Glueing, or joining strings together with a glue string, is especially useful when working with a sequence of items we wish to present together:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\N{WHITE HEART}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;Romeo&#39;</span><span class="p">,</span> <span class="s1">&#39;Juliet&#39;</span><span class="p">]))</span>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s1">' </span><span class="se">\N{WHITE HEART}</span><span class="s1"> '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'Romeo'</span><span class="p">,</span> <span class="s1">'Juliet'</span><span class="p">]))</span>
 </code></pre></div>
 
 <p>'Romeo 🤍 Juliet'</p>
-<p>In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(<ref>or expressions resulting in strings, or anything which has a __str__ method</ref>). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.</p>
+<p>In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(<sup id="sf-string-theory-1-back"><a href="#sf-string-theory-1" class="simple-footnote" title="or expressions resulting in strings, or anything which has a __str__ method">1</a></sup>). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## sprint</span>
-<span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Elon&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fname</span><span class="p">)</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="s1">'Elon'</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">fname</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'Hello Elon'</p>
-<div class="highlight"><pre><span></span><code><span class="n">lname</span> <span class="o">=</span> <span class="s1">&#39;Musk&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">lname</span> <span class="o">=</span> <span class="s1">'Musk'</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="p">))</span>
 </code></pre></div>
 
 <p>'Hello Elon Musk'</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## format</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello </span><span class="si">{fname}</span><span class="s2"> </span><span class="si">{lname}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="o">=</span><span class="n">lname</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{unit_id:0&gt;10}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_id</span><span class="o">=</span><span class="s2">&quot;ABC1234&quot;</span><span class="p">))</span>  <span class="c1">## just showing how powerful the format method can become</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Hello </span><span class="si">{fname}</span><span class="s2"> </span><span class="si">{lname}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="n">lname</span><span class="o">=</span><span class="n">lname</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">{unit_id:0&gt;10}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit_id</span><span class="o">=</span><span class="s2">"ABC1234"</span><span class="p">))</span>  <span class="c1">## just showing how powerful the format method can become</span>
 </code></pre></div>
 
 <p>'Hello Elon Musk'</p>
 <p>'000ABC1234'</p>
 <div class="highlight"><pre><span></span><code><span class="c1">## f-string</span>
-<span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Elon&#39;</span>
-<span class="n">lname</span> <span class="o">=</span> <span class="s1">&#39;Musk&#39;</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fname</span> <span class="o">=</span> <span class="s1">'Elon'</span>
+<span class="n">lname</span> <span class="o">=</span> <span class="s1">'Musk'</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">lname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'Elon Musk'</p>
 <h1>When Not to Use f-string Interpolation</h1>
 <p>The first question is whether interpolation should be used at all. Sometimes there is a more elegant solution using string methods.</p>
-<div class="highlight"><pre><span></span><code><span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;crocodile&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="n">word</span> <span class="o">=</span> <span class="s1">'crocodile'</span>
 
 <span class="c1">## f-string overkill</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">*^30</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">*^30</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1">## semantic string method</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">'*'</span><span class="p">))</span>
 </code></pre></div>
 
 <p>'**********crocodile***********'</p>
@@ -146,27 +146,27 @@ You don’t want to manually merge values to a query: use the provided methods i
 ):</p>
 <h2>Zero-Padding</h2>
 <div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="mi">12345</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">0&gt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">0&gt;10</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'0000012345'</p>
 <h2>Commas in Numbers</h2>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'12,345'</p>
 <h2>Percentages</h2>
 <div class="highlight"><pre><span></span><code><span class="n">num</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>'50%'</p>
 <h2>Dates</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="si">:</span><span class="s2">%Y-%m-%d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>'2024-04-21'</p>
+<p>'2024-04-21'</p><ol class="simple-footnotes"><li id="sf-string-theory-1">or expressions resulting in strings, or anything which has a __str__ method <a href="#sf-string-theory-1-back" class="simple-footnote-back">↩</a></li></ol>
     </div>
   </article>
 <div id="comments">
