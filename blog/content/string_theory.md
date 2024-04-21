@@ -29,7 +29,7 @@ print(' \N{WHITE HEART} '.join(['Romeo', 'Juliet']))
 
 'Romeo 🤍 Juliet'
 
-In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(<ref>or expressions resulting in strings, or anything which has a \_\_str\_\_ method</ref>). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.
+In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string([ref]or expressions resulting in strings, or anything which has a \_\_str\_\_ method[/ref]). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.
 
 ```python
 ## sprint
