@@ -53,6 +53,7 @@ print("{unit_id:0>10}".format(unit_id="ABC1234"))  ## just showing how powerful 
 ```
 
 'Hello Elon Musk'
+
 '000ABC1234'
 
 ```python
