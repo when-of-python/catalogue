@@ -6,7 +6,7 @@ Slug: string-theory
 Authors: Grant Paton-Simpson
 Summary: Python has multiple ways of working with strings depending on the task. For inserting strings into other strings, f-strings are the preferred solution, and it is worth learning a few techniques for zero padding, displaying numbers with thousand separators, percentages, and dates.
 
-What has your experience of working with strings, esepcially f-strings, been? Do you agree with this post? Do you disagree? Please comment below.
+What has your experience of working with strings, especially f-strings, been? Do you agree with this post? Do you disagree? Please comment below.
 
 Concatenation, Gluing, and Interpolation 
 ========================================
@@ -21,8 +21,10 @@ print('Hello ' + fname)
 Glueing, or joining strings together with a glue string, is especially useful when working with a sequence of items we wish to present together:
 
 ```python
-' \N{BLACK HEART} '.join(['Romeo', 'Juliet'])
+print(' \N{BLACK HEART} '.join(['Romeo', 'Juliet']))
 ```
+
+Romeo 🖤 Juliet
 
 In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(<ref>or expressions resulting in strings, or anything which has a \_\_str\_\_ method</ref>). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.
 
