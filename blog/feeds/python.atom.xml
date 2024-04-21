@@ -6,37 +6,51 @@
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;'Hello Jo'&lt;/p&gt;
 &lt;p&gt;Glueing, or joining strings together with a glue string, is especially useful when working with a sequence of items we wish to present together:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39; &lt;/span&gt;&lt;span class="se"&gt;\N{WHITE HEART}&lt;/span&gt;&lt;span class="s1"&gt; &amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Romeo&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Juliet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Romeo 🤍 Juliet&lt;/p&gt;
+&lt;p&gt;'Romeo 🤍 Juliet'&lt;/p&gt;
 &lt;p&gt;In version 3.6, Python introduced formatted string literals, better known as f-strings. These make it possible to inject, or interpolate, other strings inside a larger string(&lt;ref&gt;or expressions resulting in strings, or anything which has a __str__ method&lt;/ref&gt;). f-strings are more readable than the alternative approaches Python had used earlier - namely sprint and the format method.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## sprint&lt;/span&gt;
 &lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Elon&amp;#39;&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Hello &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;lname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Musk&amp;#39;&lt;/span&gt;
-&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Hello &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lname&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="c1"&gt;## format&lt;/span&gt;
+&lt;p&gt;'Hello Elon'&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;lname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Musk&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Hello &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lname&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;'Hello Elon Musk'&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## format&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Hello &lt;/span&gt;&lt;span class="si"&gt;{fname}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;{lname}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;lname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;lname&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;{unit_id:0&amp;gt;10}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unit_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ABC1234&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  &lt;span class="c1"&gt;## just showing how powerful the format method can become&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="c1"&gt;## f-string&lt;/span&gt;
+&lt;p&gt;'Hello Elon Musk'
+'000ABC1234'&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## f-string&lt;/span&gt;
 &lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Elon&amp;#39;&lt;/span&gt;
 &lt;span class="n"&gt;lname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Musk&amp;#39;&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;fname&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;lname&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;'Elon Musk'&lt;/p&gt;
 &lt;h1&gt;When Not to Use f-string Interpolation&lt;/h1&gt;
 &lt;p&gt;The first question is whether interpolation should be used at all. Sometimes there is a more elegant solution using string methods.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;## f-string overkill&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;word&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;crocodile&amp;#39;&lt;/span&gt;
+
+&lt;span class="c1"&gt;## f-string overkill&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="si"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;*^30&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="c1"&gt;## semantic string method&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;word&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;center&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;*&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;p&gt;'**********crocodile***********'&lt;/p&gt;
+&lt;p&gt;'**********crocodile***********'&lt;/p&gt;
 &lt;p&gt;In other cases interpolation of any sort is not a good idea from a security point of view. If strings are being built from variables which in any way come from user input they open up vulnerabilities like SQL injection attacks. Here is the warning from the older psycopg docs: “Never, never, NEVER use Python string concatenation (+) or string parameters interpolation (%) to pass variables to a SQL query string. Not even at gunpoint.” And in newer documentation it says:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Don’t manually merge values to a query: hackers from a foreign country will break into your computer and steal not only your disks, but also your cds, leaving you only with the three most embarrassing records you ever bought. On cassette tapes.
@@ -70,7 +84,7 @@ You don’t want to manually merge values to a query: use the provided methods i
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="si"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;%Y-%m-%d&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;2024-04-21&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="string"></category><category term="interpolation"></category><category term="concatenation"></category><category term="f-strings"></category></entry><entry><title>Dataclasses Considered Sweet</title><link href="https://whenof.python.nz/blog/dataclasses-considered-sweet.html" rel="alternate"></link><published>2024-04-08T12:50:00+12:00</published><updated>2024-04-08T12:50:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2024-04-08:/blog/dataclasses-considered-sweet.html</id><summary type="html">&lt;p&gt;Dataclasses are versatile and they're a crucial part of Python. Firstly, as a great data structure - somewhere orderly and documented to store values. Secondly, as a super-convenient way of defining (most) classes, not just data classes. These benefits do come with a cost though, and these costs will need to be mitigated. If people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Dataclasses Considered Sweet&lt;/h1&gt;
+&lt;p&gt;'2024-04-21'&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="string"></category><category term="interpolation"></category><category term="concatenation"></category><category term="f-strings"></category></entry><entry><title>Dataclasses Considered Sweet</title><link href="https://whenof.python.nz/blog/dataclasses-considered-sweet.html" rel="alternate"></link><published>2024-04-08T12:50:00+12:00</published><updated>2024-04-08T12:50:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2024-04-08:/blog/dataclasses-considered-sweet.html</id><summary type="html">&lt;p&gt;Dataclasses are versatile and they're a crucial part of Python. Firstly, as a great data structure - somewhere orderly and documented to store values. Secondly, as a super-convenient way of defining (most) classes, not just data classes. These benefits do come with a cost though, and these costs will need to be mitigated. If people are commonly going to use dataclasses as generic classes, it is especially important that Python teachers and resources clarify the difference between a class attribute and and instance attribute. Different languages handle this in different ways which only adds to the potential for confusion.&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Dataclasses Considered Sweet&lt;/h1&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
 &lt;p&gt;Dataclasses are versatile and they're a crucial part of Python.&lt;/p&gt;
 &lt;p&gt;Firstly, dataclasses are a great data structure. They enable us to store multiple values in a customised and clearly defined structure. Alongside lists and dictionaries, dataclasses are a valuable fundamental building block in our Python programs.&lt;/p&gt;
