@@ -70,10 +70,5 @@ else:
 It might also be thought that we can avoid `else` when there is no effect on the logical flow but sometimes we should use `else` to avoid misleading the reader as to the relative significance of the alternatives. See [Unnecessary else statements](https://www.pythonmorsels.com/unnecessary-else-statements/)
 
 
-Status
-------
-
-Common Python
-
 
 
