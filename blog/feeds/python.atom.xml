@@ -1,5 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>The When of Python Blog - Python</title><link href="https://whenof.python.nz/blog/" rel="alternate"></link><link href="https://whenof.python.nz/blog/feeds/python.atom.xml" rel="self"></link><id>https://whenof.python.nz/blog/</id><updated>2024-04-21T07:00:00+12:00</updated><subtitle>Guidance on when to use Python features (and when not to)</subtitle><entry><title>String Theory</title><link href="https://whenof.python.nz/blog/string-theory.html" rel="alternate"></link><published>2024-04-21T07:00:00+12:00</published><updated>2024-04-21T07:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2024-04-21:/blog/string-theory.html</id><summary type="html">&lt;p&gt;Python has multiple ways of working with strings depending on the task. For inserting strings into other strings, f-strings are the preferred solution, and it is worth learning a few techniques for zero padding, displaying numbers with thousand separators, percentages, and dates.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of working with strings, especially f-strings, been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>The When of Python Blog - Python</title><link href="https://whenof.python.nz/blog/" rel="alternate"></link><link href="https://whenof.python.nz/blog/feeds/python.atom.xml" rel="self"></link><id>https://whenof.python.nz/blog/</id><updated>2024-05-11T13:00:00+12:00</updated><subtitle>Guidance on when to use Python features (and when not to)</subtitle><entry><title>Assert Assertions</title><link href="https://whenof.python.nz/blog/assert-assertions.html" rel="alternate"></link><published>2024-05-11T13:00:00+12:00</published><updated>2024-05-11T13:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2024-05-11:/blog/assert-assertions.html</id><summary type="html">&lt;p&gt;The &lt;code&gt;assert&lt;/code&gt; statement makes it easy to set up tests in pytest. Outside of the testing context, the best (simplified) advice from a Lean Python point of view is to avoid them. Generally speaking, either exceptions or comments are better.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of &lt;code&gt;assert&lt;/code&gt; been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;The &lt;code&gt;assert&lt;/code&gt; statement enables us to state something which we require to be true. We can also include a comment to display should the assertion fail. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;num should be greater than 0 but was &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="si"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;,&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;square&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;The square of &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; is &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="si"&gt;:&lt;/span&gt;&lt;span class="s2"&gt;,&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;square&lt;/span&gt;
+
+&lt;span class="n"&gt;get_square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;get_square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;get_square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;666&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this case, as long as &lt;code&gt;assert&lt;/code&gt;s haven't been deactivated (through the use of the -O optimise option), the program will halt when we pass -3 to the get_square function.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;The&lt;span class="w"&gt; &lt;/span&gt;square&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;144&lt;/span&gt;
+...
+AssertionError:&lt;span class="w"&gt; &lt;/span&gt;num&lt;span class="w"&gt; &lt;/span&gt;should&lt;span class="w"&gt; &lt;/span&gt;be&lt;span class="w"&gt; &lt;/span&gt;greater&lt;span class="w"&gt; &lt;/span&gt;than&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;but&lt;span class="w"&gt; &lt;/span&gt;was&lt;span class="w"&gt; &lt;/span&gt;-3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If we run our script with the -O option then the program will accept the -3 value and output the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;The&lt;span class="w"&gt; &lt;/span&gt;square&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;144&lt;/span&gt;
+The&lt;span class="w"&gt; &lt;/span&gt;square&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;-3&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;9&lt;/span&gt;
+The&lt;span class="w"&gt; &lt;/span&gt;square&lt;span class="w"&gt; &lt;/span&gt;of&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;666&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;443&lt;/span&gt;,556
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;(Simplified) Guidance&lt;/h1&gt;
+&lt;p&gt;1) With rare exceptions we should only use &lt;code&gt;assert&lt;/code&gt;s in unit tests e.g. when using pytest&lt;/p&gt;
+&lt;p&gt;2) We shouldn't use &lt;code&gt;assert&lt;/code&gt;s as comments or documentation - we should write actual comments in readable English&lt;/p&gt;
+&lt;p&gt;3) If we want to program defensively then we should use exceptions rather than &lt;code&gt;assert&lt;/code&gt;s (which can be just switched off, even if this is rare in practice)&lt;/p&gt;
+&lt;p&gt;4) We shouldn't use &lt;code&gt;assert&lt;/code&gt;s to check for (currently) impossible values. So instead of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;MyEnum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SPAM&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+   &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;MyEnum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;EGG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+   &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Unexpected &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="si"&gt;=}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="c1"&gt;# This can never happen if we&amp;#39;ve checked all the cases in the Enum&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we should write:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;MyEnum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SPAM&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+   &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;MyEnum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;EGG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+   &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Unexpected &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="si"&gt;=}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# This can never happen if we&amp;#39;ve checked all the cases in the Enum&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Why? Because it allows us to simplify the basic guidance on using &lt;code&gt;assert&lt;/code&gt; - all things being equal we should reduce the complexity of our code and the things we have to learn or teach. Furthermore, there is no point worrying about the performance cost of an exception vs an &lt;code&gt;assert&lt;/code&gt; (assuming it is deactivated using -O flag) in this case - the exception will presumably only ever be raised once before the bug is found and fixed.&lt;/p&gt;
+&lt;p&gt;5) There are special cases where we might want to use assertions outside of unit tests. Simple guidance doesn't have to cover these. Examples of special cases that can be ignored in simple / simplified guidance:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;While teaching how to program so students can self-test their code with &lt;code&gt;assert&lt;/code&gt;s you provide&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To assist type checkers handle unreachable code. Note - we could just use an exception there as well.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Using something like &lt;code&gt;assert my_value is not None&lt;/code&gt; etc to keep mypy happy&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Avoiding the overhead of exception raising in extremely performance-sensitive code (although why are we using Python in that case?)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When debugging code&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Warning&lt;/h1&gt;
+&lt;p&gt;Don't wrap &lt;code&gt;assert&lt;/code&gt; in parentheses if you have a comment. Surprisingly, they cease to operate! For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;  &lt;span class="c1"&gt;## will fail&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;## will fail&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;1 doesn&amp;#39;t equal 0&amp;quot;&lt;/span&gt;  &lt;span class="c1"&gt;## will fail&lt;/span&gt;
+&lt;span class="c1"&gt;## but&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;1 doesn&amp;#39;t equal 0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;## will pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;There will be plenty of experienced developers who use &lt;code&gt;assert&lt;/code&gt; to improve their Python code. And there is nothing wrong with that. But the best (simple) advice from a Lean Python point of view is to restrict the use of &lt;code&gt;assert&lt;/code&gt; to testing and use exceptions and comments instead.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="assert"></category><category term="testing"></category></entry><entry><title>String Theory</title><link href="https://whenof.python.nz/blog/string-theory.html" rel="alternate"></link><published>2024-04-21T07:00:00+12:00</published><updated>2024-04-21T07:00:00+12:00</updated><author><name>Grant Paton-Simpson</name></author><id>tag:whenof.python.nz,2024-04-21:/blog/string-theory.html</id><summary type="html">&lt;p&gt;Python has multiple ways of working with strings depending on the task. For inserting strings into other strings, f-strings are the preferred solution, and it is worth learning a few techniques for zero padding, displaying numbers with thousand separators, percentages, and dates.&lt;/p&gt;</summary><content type="html">&lt;p&gt;What has your experience of working with strings, especially f-strings, been? Do you agree with this post? Do you disagree? Please comment below.&lt;/p&gt;
 &lt;h1&gt;Concatenation, Gluing, and Interpolation&lt;/h1&gt;
 &lt;p&gt;Concatenation is one of the first ways we learn of joining strings together in Python, and it remains useful for simple cases, even when we learn about more sophisticated alternatives:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;fname&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'Jo'&lt;/span&gt;

@@ -5,9 +5,16 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/</loc>
-<lastmod>2024-04-22T05:51:25-00:00</lastmod>
+<lastmod>2024-05-11T21:59:49-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/assert-assertions.html</loc>
+<lastmod>2024-05-11T13:00:00+12:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -159,14 +166,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/category/python.html</loc>
-<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://whenof.python.nz/blog/tag/python.html</loc>
-<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<lastmod>2024-05-11T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/assert.html</loc>
+<lastmod>2024-05-11T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/testing.html</loc>
+<lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -474,7 +495,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
-<lastmod>2024-04-21T07:00:00+11:39</lastmod>
+<lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

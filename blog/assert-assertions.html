@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>  Assert Assertions | The When of Python Blog
+</title>
+  <link rel="canonical" href="https://whenof.python.nz/blog/assert-assertions.html">
+
+    <link rel="apple-touch-icon" href="https://whenof.python.nz/blog/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://whenof.python.nz/blog/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://whenof.python.nz/blog/manifest.json">
+    <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/darkly.bootstrap.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/fontawesome.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/pygments/native.min.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/theme/css/theme.css">
+  <link rel="stylesheet" href="https://whenof.python.nz/blog/css/custom.css">
+
+  <link rel="alternate" type="application/atom+xml" title="Full Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/all.atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+        href="https://whenof.python.nz/blog/feeds/python.atom.xml">  
+  <meta name="description" content="The assert statement makes it easy to set up tests in pytest. Outside of the testing context, the best (simplified) advice from a Lean Python point of view is to avoid them. Generally speaking, either exceptions or comments are better.">
+
+
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+<div class="row">
+    <div class="col-sm-4">
+      <a href="https://whenof.python.nz/blog/">
+        <img class="img-fluid rounded" src=https://whenof.python.nz/blog/images/logo.png alt="The When of Python Blog">
+      </a>
+    </div>
+  <div class="col-sm-8">
+    <h1 class="title"><a href="https://whenof.python.nz/blog/">The When of Python Blog</a></h1>
+      <p class="text-muted">
+<div class="text-muted" style="padding-bottom: 10px;">Guidance on when to use Python features (and when not to).</div>
+<div class="text-muted" style="padding-bottom: 10px;">Comment your opinions on our articles to join the discussion.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Browse the <a href="/">When of Python catalogue</a>.</div>
+<div class="text-muted" style="padding-bottom: 10px;">Follow us on <a href="https://twitter.com/WhenOfPython">Twitter</a> and <a href="https://github.com/when-of-python">GitHub</a> to get the latest updates first.</div>
+</p>
+      <ul class="list-inline">
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-twitter" href="https://twitter.com/WhenOfPython" target="_blank"></a></li>
+          <li class="list-inline-item"><a class="fab fa-fa-brands fa-github" href="https://github.com/when-of-python" target="_blank"></a></li>
+      </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>  Assert Assertions
+</h1>
+      <hr>
+  <article class="article">
+    <header>
+      <ul class="list-inline">
+        <li class="list-inline-item text-muted" title="2024-05-11T13:00:00+12:00">
+          <i class="fas fa-clock"></i>
+          Sat 11 May 2024
+        </li>
+        <li class="list-inline-item">
+          <i class="fas fa-folder-open"></i>
+          <a href="https://whenof.python.nz/blog/category/python.html">Python</a>
+        </li>
+          <li class="list-inline-item">
+            <i class="fas fa-user"></i>
+              <a href="https://whenof.python.nz/blog/author/grant-paton-simpson.html">Grant Paton-Simpson</a>          </li>
+          <li class="list-inline-item">
+            <i class="fas fa-tag"></i>
+              <a href="https://whenof.python.nz/blog/tag/python.html">#python</a>,               <a href="https://whenof.python.nz/blog/tag/assert.html">#assert</a>,               <a href="https://whenof.python.nz/blog/tag/testing.html">#testing</a>          </li>
+      </ul>
+    </header>
+    <div class="content">
+      <p>What has your experience of <code>assert</code> been? Do you agree with this post? Do you disagree? Please comment below.</p>
+<h1>Introduction</h1>
+<p>The <code>assert</code> statement enables us to state something which we require to be true. We can also include a comment to display should the assertion fail. For example:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_square</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;num should be greater than 0 but was </span><span class="si">{</span><span class="n">num</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">square</span> <span class="o">=</span> <span class="n">num</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The square of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">square</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">square</span>
+
+<span class="n">get_square</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">get_square</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">get_square</span><span class="p">(</span><span class="mi">666</span><span class="p">)</span>
+</code></pre></div>
+
+<p>In this case, as long as <code>assert</code>s haven't been deactivated (through the use of the -O optimise option), the program will halt when we pass -3 to the get_square function.</p>
+<div class="highlight"><pre><span></span><code>The<span class="w"> </span>square<span class="w"> </span>of<span class="w"> </span><span class="m">12</span><span class="w"> </span>is<span class="w"> </span><span class="m">144</span>
+...
+AssertionError:<span class="w"> </span>num<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>greater<span class="w"> </span>than<span class="w"> </span><span class="m">0</span><span class="w"> </span>but<span class="w"> </span>was<span class="w"> </span>-3
+</code></pre></div>
+
+<p>If we run our script with the -O option then the program will accept the -3 value and output the following:</p>
+<div class="highlight"><pre><span></span><code>The<span class="w"> </span>square<span class="w"> </span>of<span class="w"> </span><span class="m">12</span><span class="w"> </span>is<span class="w"> </span><span class="m">144</span>
+The<span class="w"> </span>square<span class="w"> </span>of<span class="w"> </span>-3<span class="w"> </span>is<span class="w"> </span><span class="m">9</span>
+The<span class="w"> </span>square<span class="w"> </span>of<span class="w"> </span><span class="m">666</span><span class="w"> </span>is<span class="w"> </span><span class="m">443</span>,556
+</code></pre></div>
+
+<h1>(Simplified) Guidance</h1>
+<p>1) With rare exceptions we should only use <code>assert</code>s in unit tests e.g. when using pytest</p>
+<p>2) We shouldn't use <code>assert</code>s as comments or documentation - we should write actual comments in readable English</p>
+<p>3) If we want to program defensively then we should use exceptions rather than <code>assert</code>s (which can be just switched off, even if this is rare in practice)</p>
+<p>4) We shouldn't use <code>assert</code>s to check for (currently) impossible values. So instead of:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">MyEnum</span><span class="o">.</span><span class="n">SPAM</span><span class="p">:</span>
+   <span class="o">...</span>
+<span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="n">MyEnum</span><span class="o">.</span><span class="n">EGG</span><span class="p">:</span>
+   <span class="o">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unexpected </span><span class="si">{</span><span class="n">value</span><span class="si">=}</span><span class="s2">&quot;</span> <span class="c1"># This can never happen if we&#39;ve checked all the cases in the Enum</span>
+</code></pre></div>
+
+<p>we should write:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">MyEnum</span><span class="o">.</span><span class="n">SPAM</span><span class="p">:</span>
+   <span class="o">...</span>
+<span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="n">MyEnum</span><span class="o">.</span><span class="n">EGG</span><span class="p">:</span>
+   <span class="o">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected </span><span class="si">{</span><span class="n">value</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># This can never happen if we&#39;ve checked all the cases in the Enum</span>
+</code></pre></div>
+
+<p>Why? Because it allows us to simplify the basic guidance on using <code>assert</code> - all things being equal we should reduce the complexity of our code and the things we have to learn or teach. Furthermore, there is no point worrying about the performance cost of an exception vs an <code>assert</code> (assuming it is deactivated using -O flag) in this case - the exception will presumably only ever be raised once before the bug is found and fixed.</p>
+<p>5) There are special cases where we might want to use assertions outside of unit tests. Simple guidance doesn't have to cover these. Examples of special cases that can be ignored in simple / simplified guidance:</p>
+<ul>
+<li>
+<p>While teaching how to program so students can self-test their code with <code>assert</code>s you provide</p>
+</li>
+<li>
+<p>To assist type checkers handle unreachable code. Note - we could just use an exception there as well.</p>
+</li>
+<li>
+<p>Using something like <code>assert my_value is not None</code> etc to keep mypy happy</p>
+</li>
+<li>
+<p>Avoiding the overhead of exception raising in extremely performance-sensitive code (although why are we using Python in that case?)</p>
+</li>
+<li>
+<p>When debugging code</p>
+</li>
+</ul>
+<h1>Warning</h1>
+<p>Don't wrap <code>assert</code> in parentheses if you have a comment. Surprisingly, they cease to operate! For example:</p>
+<div class="highlight"><pre><span></span><code><span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1">## will fail</span>
+<span class="k">assert</span> <span class="p">(</span><span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1">## will fail</span>
+<span class="k">assert</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;1 doesn&#39;t equal 0&quot;</span>  <span class="c1">## will fail</span>
+<span class="c1">## but</span>
+<span class="k">assert</span><span class="p">(</span><span class="mi">1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;1 doesn&#39;t equal 0&quot;</span><span class="p">)</span>  <span class="c1">## will pass</span>
+</code></pre></div>
+
+<h1>Conclusion</h1>
+<p>There will be plenty of experienced developers who use <code>assert</code> to improve their Python code. And there is nothing wrong with that. But the best (simple) advice from a Lean Python point of view is to restrict the use of <code>assert</code> to testing and use exceptions and comments instead.</p>
+    </div>
+  </article>
+<div id="comments">
+  <div id="comments-inner">
+    <div id="manual-commenting"></div>
+    <script src="https://utteranc.es/client.js"
+            repo="when-of-python/blog"
+            issue-term="pathname"
+            theme="github-dark-orange"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </div>
+  <script src="https://whenof.python.nz/blog/js/comments.js"></script>
+</div>    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/authors.html">Authors</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a href="https://whenof.python.nz/blog/categories.html">Categories</a></li>
+      <li class="list-inline-item"><a href="https://whenof.python.nz/blog/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">
+    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a>
+    / <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">&#x2728;</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>
