@@ -43,7 +43,7 @@ assert 1 == 0, "1 doesn't equal 0"  ## will fail
 assert(1 == 0, "1 doesn't equal 0")  ## will pass
 ```
 
-Status
-------
+Links
+-----
 
-Common Python
+https://whenof.python.nz/blog/assert-assertions.html
