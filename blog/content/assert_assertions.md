@@ -4,7 +4,7 @@ Category: Python
 Tags: python, assert, testing
 Slug: assert-assertions
 Authors: Grant Paton-Simpson
-Summary: The `assert` statement makes it easy to set up tests in pytest. Outside of the testing context, the best (simplified) advice is to avoid them. In many cases either exceptions or comments are better.
+Summary: The `assert` statement makes it easy to set up tests in pytest. Outside of the testing context, the best (simplified) advice from a Lean Python point of view is to avoid them. Generally speaking, either exceptions or comments are better.
 
 What has your experience of `assert` been? Do you agree with this post? Do you disagree? Please comment below.
 
@@ -97,3 +97,8 @@ assert 1 == 0, "1 doesn't equal 0"  ## will fail
 ## but
 assert(1 == 0, "1 doesn't equal 0")  ## will pass
 ```
+
+Conclusion
+==========
+
+There will be plenty of experienced developers who use `assert` to improve their Python code. And there is nothing wrong with that. But the best (simple) advice from a Lean Python point of view is to restrict the use of `assert` to testing and use exceptions and comments instead.
