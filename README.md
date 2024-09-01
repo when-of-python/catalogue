@@ -1,10 +1,10 @@
-# The When of Python
+# Lean Python
 
-This repository contains the primary web content for the When of
-Python project:
+This repository contains the primary web content for the Lean Python
+project:
 
-* `/catalogue` - The catalogue of Python features served at [whenof.python.nz](https://whenof.python.nz)
-* `/blog` - The blog served at [whenof.python.nz/blog](https://whenof.python.nz/blog)
+* `/catalogue` - The catalogue of Python features served at [lean.python.nz](https://lean.python.nz)
+* `/blog` - The blog served at [lean.python.nz/blog](https://lean.python.nz/blog)
 
 ## Usage
 

@@ -35,4 +35,4 @@ In pandas when the function is very simple and easier to understand by seeing th
 Links
 -----
 
-https://whenof.python.nz/blog/the-when-of-lambda.html
+https://lean.python.nz/blog/the-when-of-lambda.html

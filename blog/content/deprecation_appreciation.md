@@ -16,7 +16,7 @@ The "designed" feeling is not just about what has been included but also about w
 Reality
 =======
 
-In reality, Python has not been able to retain all the elegance of its earliest, smaller and less capable versions. Some good features have been added without others being deprecated, or, at least, explicitly reserved for more specialised use cases - see [Classy Data with Dataclasses](https://whenof.python.nz/blog/classy-data-with-dataclasses.html). Over time, this situation only gets worse unless there is some process of deprecation.
+In reality, Python has not been able to retain all the elegance of its earliest, smaller and less capable versions. Some good features have been added without others being deprecated, or, at least, explicitly reserved for more specialised use cases - see [Classy Data with Dataclasses](https://lean.python.nz/blog/classy-data-with-dataclasses.html). Over time, this situation only gets worse unless there is some process of deprecation.
 
 Deprecation
 ===========
