@@ -70,4 +70,4 @@ city_popns['Auckland']
 Links
 -----
 
-https://whenof.python.nz/blog/walrus-hunting-with-strenum.html
+https://lean.python.nz/blog/walrus-hunting-with-strenum.html

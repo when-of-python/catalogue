@@ -59,4 +59,4 @@ filtered_list = [res for item in items if (res := slow(item))]
 Links
 -----
 
-https://whenof.python.nz/blog/the-walrus-and-the-software-carpenter.html
+https://lean.python.nz/blog/the-walrus-and-the-software-carpenter.html

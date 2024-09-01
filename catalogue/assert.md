@@ -46,4 +46,4 @@ assert(1 == 0, "1 doesn't equal 0")  ## will pass
 Links
 -----
 
-https://whenof.python.nz/blog/assert-assertions.html
+https://lean.python.nz/blog/assert-assertions.html
