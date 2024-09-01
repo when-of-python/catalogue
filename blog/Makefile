@@ -48,7 +48,7 @@ help:
 	@echo '                                                                          '
 
 deps:
-	poetry install
+	poetry install --no-root
 
 html:
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
