@@ -47,4 +47,4 @@ If you are having to override too much of what a dataclass provides then maybe a
 Links
 -----
 
-https://lean.python.nz/blog/classy-data-with-dataclasses.html
+https://whenof.python.nz/blog/classy-data-with-dataclasses.html

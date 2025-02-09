@@ -67,8 +67,8 @@ In this case we make our html setting once when instantiating the object and use
 
 ```python
 emailer = SendEmail(html=True)
-emailer.send('leanpython@example.com', '<p>Keep up the good work!</p>')
-emailer.send('psf@example.com', '<p>Thanks for supporting Python!</p>')
+emailer.send('whenofpython@fake.com', '<p>Keep up the good work!</p>')
+emailer.send('psf@fake.com', '<p>Thanks for supporting Python!</p>')
 ```
 
 There is a better alternative though that avoids any OOP overhead:
@@ -80,8 +80,8 @@ def send_email(address: str, msg: str, *, html=False):
     email_lib(address, msg, html=html)
 
 send_html_email = partial(send_email, html=True)
-send_html_email('leanpython@example.com', '<p>Keep up the good work!</p>')
-send_html_email('psf@example.com', '<p>Thanks for supporting Python!</p>')
+send_html_email('whenofpython@fake.com', '<p>Keep up the good work!</p>')
+send_html_email('psf@fake.com', '<p>Thanks for supporting Python!</p>')
 ```
 
 Links

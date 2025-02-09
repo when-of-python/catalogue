@@ -4,511 +4,532 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>https://lean.python.nz/blog/</loc>
-<lastmod>2024-09-01T14:53:46-00:00</lastmod>
+<loc>https://whenof.python.nz/blog/</loc>
+<lastmod>2025-02-10T09:39:38-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/assert-assertions.html</loc>
+<loc>https://whenof.python.nz/blog/lean-python-a-manifesto.html</loc>
+<lastmod>2024-05-25T13:00:00+12:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/assert-assertions.html</loc>
 <lastmod>2024-05-11T13:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/string-theory.html</loc>
+<loc>https://whenof.python.nz/blog/string-theory.html</loc>
 <lastmod>2024-04-21T07:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/dataclasses-considered-sweet.html</loc>
+<loc>https://whenof.python.nz/blog/dataclasses-considered-sweet.html</loc>
 <lastmod>2024-04-08T12:50:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/the-power-of-sane-defaults-and-python-packaging.html</loc>
+<loc>https://whenof.python.nz/blog/the-power-of-sane-defaults-and-python-packaging.html</loc>
 <lastmod>2024-03-07T07:00:00+13:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/simple-async.html</loc>
+<loc>https://whenof.python.nz/blog/simple-async.html</loc>
 <lastmod>2023-09-24T14:00:00+13:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/the-challenge-of-simplicity.html</loc>
+<loc>https://whenof.python.nz/blog/the-challenge-of-simplicity.html</loc>
 <lastmod>2023-09-22T08:50:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/deprecation-appreciation.html</loc>
+<loc>https://whenof.python.nz/blog/deprecation-appreciation.html</loc>
 <lastmod>2023-09-02T19:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/restrict-struct.html</loc>
+<loc>https://whenof.python.nz/blog/restrict-struct.html</loc>
 <lastmod>2023-07-22T10:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/simple-switch-statement-for-python.html</loc>
+<loc>https://whenof.python.nz/blog/simple-switch-statement-for-python.html</loc>
 <lastmod>2022-10-05T07:00:00+13:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/comprehensions-are-common-python.html</loc>
+<loc>https://whenof.python.nz/blog/comprehensions-are-common-python.html</loc>
 <lastmod>2022-10-02T18:00:00+13:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/classy-data-with-dataclasses.html</loc>
+<loc>https://whenof.python.nz/blog/classy-data-with-dataclasses.html</loc>
 <lastmod>2022-09-25T23:00:00+13:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/the-when-of-lambda.html</loc>
+<loc>https://whenof.python.nz/blog/the-when-of-lambda.html</loc>
 <lastmod>2022-09-22T08:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/the-walrus-and-the-software-carpenter.html</loc>
+<loc>https://whenof.python.nz/blog/the-walrus-and-the-software-carpenter.html</loc>
 <lastmod>2022-09-18T10:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/walrus-hunting-with-strenum.html</loc>
+<loc>https://whenof.python.nz/blog/walrus-hunting-with-strenum.html</loc>
 <lastmod>2022-09-14T20:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/type-hinting-get-the-hint.html</loc>
+<loc>https://whenof.python.nz/blog/type-hinting-get-the-hint.html</loc>
 <lastmod>2022-09-13T06:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/deprecate-for-else-or-else.html</loc>
+<loc>https://whenof.python.nz/blog/deprecate-for-else-or-else.html</loc>
 <lastmod>2022-09-05T21:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/pickle-in-a-pickle.html</loc>
+<loc>https://whenof.python.nz/blog/pickle-in-a-pickle.html</loc>
 <lastmod>2022-09-04T23:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/python-feature_opinions.html</loc>
+<loc>https://whenof.python.nz/blog/python-feature_opinions.html</loc>
 <lastmod>2022-09-03T11:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/feature-creep-vs-easy-onramp.html</loc>
+<loc>https://whenof.python.nz/blog/feature-creep-vs-easy-onramp.html</loc>
 <lastmod>2022-09-02T09:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/who-of-python.html</loc>
+<loc>https://whenof.python.nz/blog/who-of-python.html</loc>
 <lastmod>2022-09-01T22:02:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/one-obvious-way.html</loc>
+<loc>https://whenof.python.nz/blog/one-obvious-way.html</loc>
 <lastmod>2022-09-01T22:01:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/welcome-to-when-of-python.html</loc>
+<loc>https://whenof.python.nz/blog/welcome-to-when-of-python.html</loc>
 <lastmod>2022-09-01T22:00:00+12:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/category/python.html</loc>
+<loc>https://whenof.python.nz/blog/category/python.html</loc>
+<lastmod>2024-05-25T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/python.html</loc>
+<lastmod>2024-05-25T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/lean.html</loc>
+<lastmod>2024-05-25T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/tag/assert.html</loc>
 <lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/python.html</loc>
+<loc>https://whenof.python.nz/blog/tag/testing.html</loc>
 <lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/assert.html</loc>
-<lastmod>2024-05-11T13:00:00+11:39</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://lean.python.nz/blog/tag/testing.html</loc>
-<lastmod>2024-05-11T13:00:00+11:39</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://lean.python.nz/blog/tag/string.html</loc>
+<loc>https://whenof.python.nz/blog/tag/string.html</loc>
 <lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/interpolation.html</loc>
+<loc>https://whenof.python.nz/blog/tag/interpolation.html</loc>
 <lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/concatenation.html</loc>
+<loc>https://whenof.python.nz/blog/tag/concatenation.html</loc>
 <lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/f-strings.html</loc>
+<loc>https://whenof.python.nz/blog/tag/f-strings.html</loc>
 <lastmod>2024-04-21T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/dataclasses.html</loc>
+<loc>https://whenof.python.nz/blog/tag/dataclasses.html</loc>
 <lastmod>2024-04-08T12:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/classes.html</loc>
+<loc>https://whenof.python.nz/blog/tag/classes.html</loc>
 <lastmod>2024-04-08T12:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/object-oriented-programming.html</loc>
+<loc>https://whenof.python.nz/blog/tag/object-oriented-programming.html</loc>
 <lastmod>2024-04-08T12:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/packaging.html</loc>
+<loc>https://whenof.python.nz/blog/tag/packaging.html</loc>
 <lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/rye.html</loc>
+<loc>https://whenof.python.nz/blog/tag/rye.html</loc>
 <lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/uv.html</loc>
+<loc>https://whenof.python.nz/blog/tag/uv.html</loc>
 <lastmod>2024-03-07T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/async.html</loc>
+<loc>https://whenof.python.nz/blog/tag/async.html</loc>
 <lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/futures.html</loc>
+<loc>https://whenof.python.nz/blog/tag/futures.html</loc>
 <lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/simplicity.html</loc>
+<loc>https://whenof.python.nz/blog/tag/simplicity.html</loc>
 <lastmod>2023-09-24T14:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/complexity.html</loc>
+<loc>https://whenof.python.nz/blog/tag/complexity.html</loc>
 <lastmod>2023-09-22T08:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/zen-of-python.html</loc>
+<loc>https://whenof.python.nz/blog/tag/zen-of-python.html</loc>
 <lastmod>2023-09-22T08:50:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/deprecated-python.html</loc>
+<loc>https://whenof.python.nz/blog/tag/deprecated-python.html</loc>
 <lastmod>2023-09-02T19:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/struct.html</loc>
+<loc>https://whenof.python.nz/blog/tag/struct.html</loc>
 <lastmod>2023-07-22T10:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/namedtuple.html</loc>
+<loc>https://whenof.python.nz/blog/tag/namedtuple.html</loc>
 <lastmod>2023-07-22T10:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/match-case.html</loc>
+<loc>https://whenof.python.nz/blog/tag/match-case.html</loc>
 <lastmod>2022-10-05T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/structural-pattern-matching.html</loc>
+<loc>https://whenof.python.nz/blog/tag/structural-pattern-matching.html</loc>
 <lastmod>2022-10-05T07:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/comprehensions.html</loc>
+<loc>https://whenof.python.nz/blog/tag/comprehensions.html</loc>
 <lastmod>2022-10-02T18:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/feedback.html</loc>
+<loc>https://whenof.python.nz/blog/tag/feedback.html</loc>
 <lastmod>2022-10-02T18:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/common-python.html</loc>
+<loc>https://whenof.python.nz/blog/tag/common-python.html</loc>
 <lastmod>2022-10-02T18:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/lambda.html</loc>
+<loc>https://whenof.python.nz/blog/tag/lambda.html</loc>
 <lastmod>2022-09-22T08:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/pandas.html</loc>
+<loc>https://whenof.python.nz/blog/tag/pandas.html</loc>
 <lastmod>2022-09-22T08:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/walrus-operator.html</loc>
+<loc>https://whenof.python.nz/blog/tag/walrus-operator.html</loc>
 <lastmod>2022-09-18T10:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/enum.html</loc>
+<loc>https://whenof.python.nz/blog/tag/enum.html</loc>
 <lastmod>2022-09-14T20:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/311.html</loc>
+<loc>https://whenof.python.nz/blog/tag/311.html</loc>
 <lastmod>2022-09-14T20:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/types.html</loc>
+<loc>https://whenof.python.nz/blog/tag/types.html</loc>
 <lastmod>2022-09-13T06:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/type-hint.html</loc>
+<loc>https://whenof.python.nz/blog/tag/type-hint.html</loc>
 <lastmod>2022-09-13T06:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/for-else.html</loc>
+<loc>https://whenof.python.nz/blog/tag/for-else.html</loc>
 <lastmod>2022-09-05T21:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/pickle.html</loc>
+<loc>https://whenof.python.nz/blog/tag/pickle.html</loc>
 <lastmod>2022-09-04T23:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/learners.html</loc>
+<loc>https://whenof.python.nz/blog/tag/learners.html</loc>
 <lastmod>2022-09-02T09:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/analogies.html</loc>
+<loc>https://whenof.python.nz/blog/tag/analogies.html</loc>
 <lastmod>2022-09-02T09:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/language-users.html</loc>
+<loc>https://whenof.python.nz/blog/tag/language-users.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/teachers.html</loc>
+<loc>https://whenof.python.nz/blog/tag/teachers.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/web.html</loc>
+<loc>https://whenof.python.nz/blog/tag/web.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/data-science.html</loc>
+<loc>https://whenof.python.nz/blog/tag/data-science.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/scripting.html</loc>
+<loc>https://whenof.python.nz/blog/tag/scripting.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/application-development.html</loc>
+<loc>https://whenof.python.nz/blog/tag/application-development.html</loc>
 <lastmod>2022-09-01T22:02:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/tag/teaching.html</loc>
+<loc>https://whenof.python.nz/blog/tag/teaching.html</loc>
 <lastmod>2022-09-01T22:01:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/author/ben-denham-with-grant-paton-simpson.html</loc>
+<loc>https://whenof.python.nz/blog/author/ben-denham-with-grant-paton-simpson.html</loc>
 <lastmod>2022-09-02T09:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/author/ben-denhan-grant-paton-simpson.html</loc>
+<loc>https://whenof.python.nz/blog/author/ben-denhan-grant-paton-simpson.html</loc>
 <lastmod>2022-09-03T11:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/author/grant-paton-simpson.html</loc>
+<loc>https://whenof.python.nz/blog/author/grant-paton-simpson.html</loc>
 <lastmod>2024-05-11T13:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/author/grant-paton-simpson-featuring-danny-adair.html</loc>
+<loc>https://whenof.python.nz/blog/author/grant-paton-simpson-ben-denham.html</loc>
+<lastmod>2024-05-25T13:00:00+11:39</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://whenof.python.nz/blog/author/grant-paton-simpson-featuring-danny-adair.html</loc>
 <lastmod>2022-09-13T06:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>https://lean.python.nz/blog/author/grant-paton-simpson-with-ben-denham.html</loc>
+<loc>https://whenof.python.nz/blog/author/grant-paton-simpson-with-ben-denham.html</loc>
 <lastmod>2022-09-14T20:00:00+11:39</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>

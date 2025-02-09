@@ -1,6 +1,6 @@
-# Lean Python
+# The When of Python
 
-Lean Python is a fledgling community initiative. The goal is to
+The When of Python is a fledgling community initiative. The goal is to
 effectively shrink Python so it fits our brains by providing guidance
 on when we should use particular language features (and when we should
 not).
@@ -12,7 +12,7 @@ they should be used.
 * Search for a particular feature using the search bar in the top left
   of this page.
 
-Lean Python organises Python's features into three broad
+The When of Python organises Python's features into three broad
 categories:
 
 ## <a class="status common">Common Python</a>
